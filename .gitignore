@@ -75,7 +75,6 @@ StyleCopReport.xml
 *_p.c
 *_h.h
 *.ilk
-*.meta
 *.obj
 *.iobj
 *.pch
@@ -419,3 +418,7 @@ InitTestScene*.unity
 
 
 # End of https://www.toptal.com/developers/gitignore/api/unity,csharp
+
+# OS junk files
+.DS_Store
+Thumbs.db
