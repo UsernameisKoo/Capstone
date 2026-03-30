@@ -75,7 +75,7 @@ TextureImporter:
       213: -437512049089211425
     second: cynthia_11
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -92,9 +92,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -104,8 +107,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -126,10 +129,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -141,6 +149,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -153,6 +162,46 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -174,7 +223,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: aa48f7048ac4e42c0800000000000000
-      internalID: -4445531496647785302
+      internalID: 9130429235513691357
       vertices: []
       indices: 
       edges: []
@@ -195,7 +244,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b50b31d533294ee10800000000000000
-      internalID: 2226064865130426459
+      internalID: -4211477584100364505
       vertices: []
       indices: 
       edges: []
@@ -216,7 +265,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 895180f03644ceeb0800000000000000
-      internalID: -4689297919754889832
+      internalID: -7463961240675718848
       vertices: []
       indices: 
       edges: []
@@ -237,7 +286,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cb1885376c392f250800000000000000
-      internalID: 5977002136022057404
+      internalID: -7132938222949885549
       vertices: []
       indices: 
       edges: []
@@ -258,7 +307,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f3ee7aff68bc5a5b0800000000000000
-      internalID: -5357652401012085185
+      internalID: 4616398239249064294
       vertices: []
       indices: 
       edges: []
@@ -279,7 +328,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 10a7163a13dd27590800000000000000
-      internalID: -7677831209449063935
+      internalID: 6176371139865569867
       vertices: []
       indices: 
       edges: []
@@ -300,7 +349,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 8b491ca184f56f3f0800000000000000
-      internalID: -867401114931063624
+      internalID: -8999366389993535383
       vertices: []
       indices: 
       edges: []
@@ -321,7 +370,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 69952c858a02dd1a0800000000000000
-      internalID: -6783229556334372458
+      internalID: 4547698836454605085
       vertices: []
       indices: 
       edges: []
@@ -342,7 +391,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 55abee7cf0e36ac50800000000000000
-      internalID: 6676091735123081813
+      internalID: 6340990643664658116
       vertices: []
       indices: 
       edges: []
@@ -363,7 +412,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7d6bf9f65f55618f0800000000000000
-      internalID: -570173790187702569
+      internalID: -5093869613807676825
       vertices: []
       indices: 
       edges: []
@@ -384,7 +433,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 8edc430fa71dd8d10800000000000000
-      internalID: 2129588524762320360
+      internalID: 2447438542697605961
       vertices: []
       indices: 
       edges: []
@@ -405,7 +454,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fd395110c15ade9f0800000000000000
-      internalID: -437512049089211425
+      internalID: -1849065351709053820
       vertices: []
       indices: 
       edges: []
@@ -420,9 +469,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      cynthia_0: 9130429235513691357
+      cynthia_1: -4211477584100364505
+      cynthia_10: 2447438542697605961
+      cynthia_11: -1849065351709053820
+      cynthia_2: -7463961240675718848
+      cynthia_3: -7132938222949885549
+      cynthia_4: 4616398239249064294
+      cynthia_5: 6176371139865569867
+      cynthia_6: -8999366389993535383
+      cynthia_7: 4547698836454605085
+      cynthia_8: 6340990643664658116
+      cynthia_9: -5093869613807676825
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -183,7 +183,7 @@ TextureImporter:
       213: 2631666018325256313
     second: pokeballs_59
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -200,9 +200,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -212,8 +215,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -234,10 +237,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -249,6 +257,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -261,6 +270,46 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1536,9 +1585,69 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      pokeballs_0: -363452750061872001
+      pokeballs_1: 431726077838146222
+      pokeballs_10: 4612295619066494717
+      pokeballs_11: 253688557953110887
+      pokeballs_12: 4721627029363635315
+      pokeballs_13: -742996597651847164
+      pokeballs_14: -8765034763677059212
+      pokeballs_15: -1836377811830329326
+      pokeballs_16: 1487232508436738266
+      pokeballs_17: 7704190231453260751
+      pokeballs_18: -3638331489938370453
+      pokeballs_19: 3592329628424294313
+      pokeballs_2: 1204840687590335596
+      pokeballs_20: -348986196033694622
+      pokeballs_21: 5256709773137317618
+      pokeballs_22: -4954556017776164181
+      pokeballs_23: 4344758364656290626
+      pokeballs_24: -2428992586541781756
+      pokeballs_25: -5740995327018153185
+      pokeballs_26: 4671125074274768236
+      pokeballs_27: 2050565709778681148
+      pokeballs_28: 6709840419932240035
+      pokeballs_29: 6308905097137448933
+      pokeballs_3: 463560621499270203
+      pokeballs_30: 2266506745220559548
+      pokeballs_31: -3264552003290868471
+      pokeballs_32: -1195219837868715745
+      pokeballs_33: -5003825538382491269
+      pokeballs_34: -3672462672631347286
+      pokeballs_35: -9010010142506669912
+      pokeballs_36: -2597622558477534801
+      pokeballs_37: 5623222410232371198
+      pokeballs_38: 4864866676828841043
+      pokeballs_39: 5357869090828856903
+      pokeballs_4: 9213597247844433185
+      pokeballs_40: -2193148412536608088
+      pokeballs_41: 623385260551250906
+      pokeballs_42: -3141671749312932079
+      pokeballs_43: -6400882733043418344
+      pokeballs_44: -5834798309287623373
+      pokeballs_45: 8091673324584062697
+      pokeballs_46: -2823626134520352492
+      pokeballs_47: 4360560842607559374
+      pokeballs_48: 4579469178376810094
+      pokeballs_49: -5729323217189597781
+      pokeballs_5: -4352441188959800909
+      pokeballs_50: 6481332831205571799
+      pokeballs_51: -4497931127384645249
+      pokeballs_52: -1973619356782459163
+      pokeballs_53: 6980552448185673251
+      pokeballs_54: -7565970307903360901
+      pokeballs_55: 5793696525462053121
+      pokeballs_56: 8453767516564327557
+      pokeballs_57: -5295342088484004684
+      pokeballs_58: 7239797919105010574
+      pokeballs_59: 2631666018325256313
+      pokeballs_6: 6274299095939586124
+      pokeballs_7: -6598258542863156232
+      pokeballs_8: -3898548366990325881
+      pokeballs_9: -8090201877133055360
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
