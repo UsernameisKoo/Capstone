@@ -1,13 +1,10 @@
 
-=== Sat Aug  1 14:48:30 2020
+=== Fri Apr  3 23:58:54 2026
 
 Packages were changed.
 Update Mode: mergeDefaultDependencies
 
 The following packages were added:
-  com.unity.collab-proxy@1.2.16
-  com.unity.ide.rider@1.1.4
-  com.unity.ide.vscode@1.2.1
   com.unity.modules.ai@1.0.0
   com.unity.modules.androidjni@1.0.0
   com.unity.modules.animation@1.0.0
@@ -39,30 +36,7 @@ The following packages were added:
   com.unity.modules.vr@1.0.0
   com.unity.modules.wind@1.0.0
   com.unity.modules.xr@1.0.0
-  com.unity.test-framework@1.1.14
-  com.unity.textmeshpro@2.0.1
-  com.unity.timeline@1.2.15
-  com.unity.ugui@1.0.0
 The following packages were updated:
-  com.unity.2d.animation from version 3.2.2 to 3.2.3
-  com.unity.2d.spriteshape from version 3.0.11 to 3.0.12
-
-=== Wed Mar 18 04:41:06 2026
-
-Packages were changed.
-Update Mode: updateDependencies
-
-The following packages were added:
-  com.unity.ide.visualstudio@2.0.22
-  com.unity.ai.navigation@1.1.5
-The following packages were updated:
-  com.unity.2d.animation from version 3.2.3 to 9.1.0
-  com.unity.2d.pixel-perfect from version 2.0.4 to 5.0.3
-  com.unity.2d.psdimporter from version 2.1.4 to 8.0.4
-  com.unity.2d.spriteshape from version 3.0.12 to 9.0.2
-  com.unity.collab-proxy from version 1.2.16 to 2.3.1
-  com.unity.ide.rider from version 1.1.4 to 3.0.28
-  com.unity.ide.vscode from version 1.2.1 to 1.2.5
-  com.unity.test-framework from version 1.1.14 to 1.1.33
-  com.unity.textmeshpro from version 2.0.1 to 3.0.6
-  com.unity.timeline from version 1.2.15 to 1.7.6
+  com.unity.collab-proxy from version 1.13.5 to 2.3.1
+  com.unity.timeline from version 1.6.2 to 1.7.6
+  com.unity.visualscripting from version 1.7.6 to 1.9.2
