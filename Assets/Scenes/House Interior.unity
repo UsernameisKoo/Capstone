@@ -1036,6 +1036,7 @@ MonoBehaviour:
   nextIcon: {fileID: 514980010}
   typingSpeed: 0.03
   daughterLookAt: {fileID: 2053330912}
+  playerController: {fileID: 2053330914}
 --- !u!114 &1103725000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1717,6 +1718,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 2072837844}
   rotateSpeed: 8
+--- !u!114 &2053330914 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2862281721307370746, guid: 3a6dc2d554dbb48c892cb6690d97beb9,
+    type: 3}
+  m_PrefabInstance: {fileID: 8979845486337092854}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053330907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553c8058ebfbf451ab5f8f70c7ab5226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2072837838 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8798113314919531519, guid: 04f97845abb19db42a95f48d8ccf6a71,

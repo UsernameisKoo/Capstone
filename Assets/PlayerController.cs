@@ -4,12 +4,13 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed = 5f;
-    [SerializeField] float jumpForce = 5f; // 점프 힘
+    [SerializeField] float jumpForce = 5f;
     Rigidbody rb;
     Vector3 moveDir;
     Animator animator;
     Camera mainCamera;
-    bool isGrounded = true; // 땅에 있는지 확인
+    bool isGrounded = true;
+    public bool canMove = true;
 
     void Awake()
     {
@@ -26,20 +27,34 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = spawn.transform.position;
         }
+
         mainCamera = Camera.main;
 
-        // 씬별 캐릭터 크기 설정
         if (scene.name == "House Interior")
         {
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
         else if (scene.name == "Town")
         {
-            transform.localScale = new Vector3(0.4f, 0.4f, 0.4f); // 0.3 - 0.2 = 0.1
+            transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
         }
     }
+
     void Update()
     {
+        // 대화 중 등 플레이어 조작 불가 상태
+        if (!canMove)
+        {
+            moveDir = Vector3.zero;
+
+            if (animator != null)
+            {
+                animator.SetBool("isWalking", false);
+            }
+
+            return;
+        }
+
         float h = 0f;
         float v = 0f;
 
@@ -47,8 +62,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) h = 1f;
         if (Input.GetKey(KeyCode.W)) v = 1f;
         if (Input.GetKey(KeyCode.S)) v = -1f;
-
-
 
         if (mainCamera != null)
         {
@@ -65,7 +78,6 @@ public class PlayerController : MonoBehaviour
             moveDir = new Vector3(h, 0f, v).normalized;
         }
 
-        // 스페이스바로 점프
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -80,6 +92,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove) return;
+
         Vector3 newPos = rb.position + moveDir * speed * Time.fixedDeltaTime;
         rb.MovePosition(newPos);
 
@@ -90,7 +104,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 땅에 닿으면 다시 점프 가능
     void OnCollisionEnter(Collision collision)
     {
         isGrounded = true;

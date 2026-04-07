@@ -48,7 +48,8 @@ public class CameraController : MonoBehaviour
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
 
         // ESC로 마우스 커서 표시/숨기기 토글
-        if (Input.GetKeyDown(KeyCode.Escape))
+        
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Cursor.lockState == CursorLockMode.Locked)
             {
@@ -60,7 +61,10 @@ public class CameraController : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
-        }
+        }*/
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     void LateUpdate()

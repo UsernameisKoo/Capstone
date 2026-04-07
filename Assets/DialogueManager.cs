@@ -15,6 +15,9 @@ public class DialogueManager : MonoBehaviour
     [Header("Look")]
     [SerializeField] LookAtTarget daughterLookAt;
 
+    [SerializeField] PlayerController playerController;
+
+
     string[] lines;
     int currentLine = 0;
     bool isDialogueActive = false;
@@ -27,11 +30,13 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isDialogueActive) return;
 
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (IsNextInputPressed())
         {
             if (isTyping)
             {
                 StopCoroutine(typingCoroutine);
+                typingCoroutine = null;
+
                 dialogueText.text = currentText;
                 isTyping = false;
                 nextIcon.SetActive(true);
@@ -41,6 +46,15 @@ public class DialogueManager : MonoBehaviour
                 NextLine();
             }
         }
+    }
+
+    bool IsNextInputPressed()
+    {
+        return Input.GetKeyDown(KeyCode.Return)
+            || Input.GetKeyDown(KeyCode.KeypadEnter)
+            || Input.GetKeyDown(KeyCode.Space)
+            || Input.GetKeyDown(KeyCode.RightArrow)
+            || Input.GetMouseButtonDown(0); // 좌클릭
     }
 
     public void StartDialogue(string[] dialogueLines)
@@ -53,6 +67,10 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = true;
 
         dialogueBox.SetActive(true);
+
+        // 대화 시작시 플레이어 움직임 정지
+        if (playerController != null)
+            playerController.canMove = false;
 
         if (daughterLookAt != null)
             daughterLookAt.StartLooking();
@@ -88,6 +106,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         isTyping = false;
+        typingCoroutine = null;
         nextIcon.SetActive(true);
     }
 
@@ -115,6 +134,10 @@ public class DialogueManager : MonoBehaviour
 
         if (daughterLookAt != null)
             daughterLookAt.StopLooking();
+
+        // 대화 끝나면 플레이어 움직일 수 있음
+        if (playerController != null)
+            playerController.canMove = true;
 
         isDialogueActive = false;
         isTyping = false;

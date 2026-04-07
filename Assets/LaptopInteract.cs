@@ -13,34 +13,76 @@ public class LaptopInteract : MonoBehaviour
     void Start()
     {
         cameraController = FindObjectOfType<CameraController>();
-        laptopCanvas.SetActive(false); // 처음엔 꺼두기
+        laptopCanvas.SetActive(false);
     }
 
     void Update()
     {
-        if (playerNearby && Input.GetKeyDown(KeyCode.E))
+        // 근처에서 E / Space / Enter / RightArrow 누르면 토글
+        if (playerNearby && IsZoomInputPressed())
         {
-            if (!isZoomed)
+            ToggleZoom();
+        }
+
+        // 근처에 있고, 우클릭으로 이 노트북 오브젝트를 클릭하면 줌인
+        if (playerNearby && Input.GetMouseButtonDown(1))
+        {
+            TryZoomInByRightClick();
+        }
+    }
+
+    bool IsZoomInputPressed()
+    {
+        return Input.GetKeyDown(KeyCode.E)
+            || Input.GetKeyDown(KeyCode.Space)
+            || Input.GetKeyDown(KeyCode.Return)      // 엔터
+            || Input.GetKeyDown(KeyCode.KeypadEnter) // 키패드 엔터
+            || Input.GetKeyDown(KeyCode.RightArrow);
+    }
+
+    void ToggleZoom()
+    {
+        if (!isZoomed)
+        {
+            ZoomIn();
+        }
+        else
+        {
+            ZoomOut();
+        }
+    }
+
+    void TryZoomInByRightClick()
+    {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            // 클릭한 오브젝트가 이 노트북 자신이거나 자식 오브젝트면 줌인
+            if (hit.transform == transform || hit.transform.IsChildOf(transform))
             {
-                ZoomIn();
-            }
-            else
-            {
-                ZoomOut();
+                if (!isZoomed)
+                {
+                    ZoomIn();
+                }
             }
         }
     }
 
     void ZoomIn()
     {
-        isZoomed = true; // 추가!
+        isZoomed = true;
         laptopCanvas.SetActive(true);
         Debug.Log("ZoomIn 실행!");
     }
 
     void ZoomOut()
     {
-        isZoomed = false; // 추가!
+        isZoomed = false;
         laptopCanvas.SetActive(false);
         Debug.Log("ZoomOut 실행!");
     }
