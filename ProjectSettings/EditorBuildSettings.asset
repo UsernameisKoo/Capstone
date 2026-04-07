@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Town.unity
     guid: 0fb0a4b6349711d458ee3f30b6119d6f
+  - enabled: 1
+    path: Assets/Scenes/School.unity
+    guid: 7dc1f92a4d12484429dd2db9a518a1b3
   m_configObjects: {}

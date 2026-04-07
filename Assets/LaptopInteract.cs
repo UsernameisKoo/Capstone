@@ -9,6 +9,7 @@ public class LaptopInteract : MonoBehaviour
     CameraController cameraController;
     bool playerNearby = false;
     bool isZoomed = false;
+    bool isStoryLocked = false;
 
     void Start()
     {
@@ -23,14 +24,13 @@ public class LaptopInteract : MonoBehaviour
         {
             ToggleZoom();
         }
-
         // 근처에 있고, 우클릭으로 이 노트북 오브젝트를 클릭하면 줌인
-        if (playerNearby && Input.GetMouseButtonDown(1))
+        if (playerNearby && Input.GetMouseButtonDown(0))
         {
-            TryZoomInByRightClick();
+            TryZoomInByLeftClick();
         }
+        if (isStoryLocked) return;
     }
-
     bool IsZoomInputPressed()
     {
         return Input.GetKeyDown(KeyCode.E)
@@ -52,24 +52,38 @@ public class LaptopInteract : MonoBehaviour
         }
     }
 
-    void TryZoomInByRightClick()
+    void TryZoomInByLeftClick()
     {
         Camera cam = Camera.main;
-        if (cam == null) return;
+        if (cam == null)
+        {
+            Debug.Log("카메라 없음");
+            return;
+        }
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
+
         if (Physics.Raycast(ray, out hit))
         {
-            // 클릭한 오브젝트가 이 노트북 자신이거나 자식 오브젝트면 줌인
-            if (hit.transform == transform || hit.transform.IsChildOf(transform))
+            Debug.Log("맞은 오브젝트: " + hit.transform.name);
+
+            LaptopInteract clickedLaptop = hit.transform.GetComponentInParent<LaptopInteract>();
+
+            if (clickedLaptop == this)
             {
+                Debug.Log("노트북 클릭 성공!");
                 if (!isZoomed)
                 {
                     ZoomIn();
                 }
             }
+        }
+        else
+        {
+            Debug.Log("Raycast 아무것도 안 맞음");
         }
     }
 
@@ -77,7 +91,17 @@ public class LaptopInteract : MonoBehaviour
     {
         isZoomed = true;
         laptopCanvas.SetActive(true);
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         Debug.Log("ZoomIn 실행!");
+
+        LaptopStorySequence sequence = GetComponent<LaptopStorySequence>();
+        if (sequence != null && !sequence.IsPlaying())
+        {
+            sequence.StartSequence();
+        }
     }
 
     void ZoomOut()
@@ -104,4 +128,10 @@ public class LaptopInteract : MonoBehaviour
             if (isZoomed) ZoomOut();
         }
     }
+
+    public void SetStoryLock(bool locked)
+    {
+        isStoryLocked = locked;
+    }
+
 }

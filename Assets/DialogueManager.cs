@@ -70,7 +70,11 @@ public class DialogueManager : MonoBehaviour
 
         // 대화 시작시 플레이어 움직임 정지
         if (playerController != null)
+        {
             playerController.canMove = false;
+            playerController.canJump = false;
+        }
+            
 
         if (daughterLookAt != null)
             daughterLookAt.StartLooking();
@@ -145,5 +149,50 @@ public class DialogueManager : MonoBehaviour
         nextIcon.SetActive(false);
         currentLine = 0;
         currentText = "";
+    }
+    public IEnumerator ShowAutoDialogue(string[] dialogueLines, float duration)
+    {
+        StartDialogue(dialogueLines);
+        yield return new WaitForSeconds(duration);
+        CloseDialogue();
+    }
+    public IEnumerator ShowAutoDialogueInstant(string line, float duration)
+    {
+        Debug.Log("ShowAutoDialogueInstant 호출됨: " + line);
+
+        if (dialogueBox == null || dialogueText == null)
+        {
+            Debug.Log("dialogueBox 또는 dialogueText가 null");
+            yield break;
+        }
+
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        isDialogueActive = true;
+        isTyping = false;
+        currentText = line;
+
+        dialogueBox.SetActive(true);
+        dialogueText.text = line;
+        nextIcon.SetActive(false);
+
+        Debug.Log("대화창 켬, 텍스트 설정 완료: " + line);
+
+        if (daughterLookAt != null)
+            daughterLookAt.StartLooking();
+
+        if (playerController != null)
+        {
+            playerController.canMove = false;
+            playerController.canJump = false;
+        }
+
+        yield return new WaitForSeconds(duration);
+        dialogueText.text = "";
+        CloseDialogue();
     }
 }

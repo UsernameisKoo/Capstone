@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     Camera mainCamera;
     bool isGrounded = true;
     public bool canMove = true;
-
+    public bool canJump = true;
+    public bool isGameCleared = false;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
