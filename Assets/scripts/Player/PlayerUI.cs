@@ -21,6 +21,7 @@ public class PlayerUI : MonoBehaviour
     public AudioSource wildBattleMusic;
     public AudioSource areaExitSound;
     public OverworldDialog chatbox;
+    public GameObject miniMapRoot;
 
     public Image RouteHeader { get; set; }
     public Text RouteName { get; set; }
@@ -46,25 +47,40 @@ public class PlayerUI : MonoBehaviour
 
     public IEnumerator EnterSceneTransition(Overworld overworld)
     {
+        miniMapRoot.SetActive(false); // 🔴 미니맵 끄기
+
         transition.gameObject.SetActive(true);
         transition.transform.position = mainCamera.ScreenToWorldPoint(new Vector3(
             transform.position.x + Screen.width / 2,
             transform.position.y + Screen.height / 2,
             transform.position.z
         ));
+
         MakeVisible(transition);
         yield return FadeOut(transition, 20);
+
         transition.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.275f); // ⏱ 1초 대기
+
+        miniMapRoot.SetActive(true); // 🟢 미니맵 켜기
+
         EnterAreaOnSpawn(overworld);
     }
 
     public IEnumerator ExitAreaTransition()
     {
-        areaExitSound.Play();
+        if (areaExitSound != null && areaExitSound.isActiveAndEnabled)
+            areaExitSound.Play();
+
         transition.gameObject.SetActive(true);
         transition.transform.position = transform.position;
+
         yield return FadeIn(transition, 10);
         yield return Stall(10);
+
+        yield return new WaitForSeconds(1f);
+        miniMapRoot.SetActive(true);
     }
 
     public IEnumerator TrainerBattleTransition(PlayerLogic playerLogic, AudioClip music)
@@ -122,19 +138,25 @@ public class PlayerUI : MonoBehaviour
 
     private IEnumerator PerformScreenTransition(ITransitionable oldScreenScript, ITransitionable newScreenScript)
     {
+        miniMapRoot.SetActive(false); // 🔴
+
         oldScreenScript.IsBusy = true;
         transition.gameObject.SetActive(true);
         transition.transform.position = transform.position;
+
         yield return FadeIn(transition, 10);
 
         oldScreenScript.GameObject.SetActive(false);
         newScreenScript.GameObject.SetActive(true);
         newScreenScript.IsBusy = true;
         newScreenScript.Init();
+
         yield return FadeOut(transition, 10);
 
         newScreenScript.IsBusy = false;
         transition.gameObject.SetActive(false);
+
+        miniMapRoot.SetActive(true); // 🟢
     }
 
     /// <summary>
