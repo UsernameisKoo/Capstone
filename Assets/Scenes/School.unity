@@ -597,6 +597,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 70780173}
+  - component: {fileID: 70780174}
   m_Layer: 0
   m_Name: Overworlds
   m_TagString: Untagged
@@ -630,6 +631,20 @@ Transform:
   - {fileID: 539656422}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &70780174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70780172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d02a6d3c656584fbc4104fe9c299ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customTMPFont: {fileID: 0}
+  customUIFont: {fileID: 0}
 --- !u!1 &98984379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,7 +2082,7 @@ GameObject:
   - component: {fileID: 117556630}
   - component: {fileID: 117556631}
   m_Layer: 0
-  m_Name: Small Town
+  m_Name: Univeristy Town
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2082,7 +2097,7 @@ Transform:
   m_GameObject: {fileID: 117556629}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.1677475, y: -14.962444, z: 987.74506}
+  m_LocalPosition: {x: 90.1, y: -34.99, z: 987.74506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2100,8 +2115,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a56a3b2e353374aa3e8ea0237cb826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationName: Small Town
-  locationMusic: {fileID: 1617558170}
+  locationName: "\uAC15\uB0A8\uB300\uD559\uAD50"
+  locationMusic: {fileID: 1941071576}
   wildPokemonChance: 0
   weather: 4
   player: {fileID: 161115116}
@@ -2426,7 +2441,7 @@ Transform:
   m_GameObject: {fileID: 161115113}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 102.8, y: -17.2, z: 2}
+  m_LocalPosition: {x: 102.8, y: -60, z: 2}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3298,7 +3313,7 @@ GameObject:
   - component: {fileID: 240979563}
   - component: {fileID: 240979564}
   m_Layer: 0
-  m_Name: Initial Town
+  m_Name: Town
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3313,7 +3328,7 @@ Transform:
   m_GameObject: {fileID: 240979562}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.1677475, y: -14.962444, z: 987.74506}
+  m_LocalPosition: {x: 91.8, y: -73.7, z: 987.74506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3331,7 +3346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a56a3b2e353374aa3e8ea0237cb826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationName: Initial Town
+  locationName: "\uAC15\uB0A8\uB300\uC5ED"
   locationMusic: {fileID: 1617558170}
   wildPokemonChance: 0
   weather: 4
@@ -5632,7 +5647,7 @@ Transform:
   m_GameObject: {fileID: 539656421}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.65, y: 52, z: 35.3584}
+  m_LocalPosition: {x: 116.29, y: 44.23, z: 35.3584}
   m_LocalScale: {x: 3.9, y: 0.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6125,7 +6140,7 @@ GameObject:
   - component: {fileID: 603555175}
   - component: {fileID: 603555174}
   m_Layer: 0
-  m_Name: Area Border
+  m_Name: 'Area Border_University '
   m_TagString: Area Border
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6140,8 +6155,8 @@ Transform:
   m_GameObject: {fileID: 603555172}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.65, y: 31, z: 35.3584}
-  m_LocalScale: {x: 6.9, y: 0.3, z: 0}
+  m_LocalPosition: {x: 96.06, y: -35.15, z: 35.3584}
+  m_LocalScale: {x: 12, y: 0.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 70780173}
@@ -39507,7 +39522,7 @@ GameObject:
   - component: {fileID: 821286176}
   - component: {fileID: 821286175}
   m_Layer: 0
-  m_Name: Area Border
+  m_Name: Area Border_Town
   m_TagString: Area Border
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39607,8 +39622,8 @@ Transform:
   m_GameObject: {fileID: 821286174}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2122984, y: -0.9958069, z: 35.3584}
-  m_LocalScale: {x: 4, y: 0.3, z: 0}
+  m_LocalPosition: {x: 96.34, y: -71.46, z: 35.3584}
+  m_LocalScale: {x: 12, y: 0.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 70780173}
@@ -39778,6 +39793,7 @@ GameObject:
   - component: {fileID: 837655381}
   - component: {fileID: 837655383}
   - component: {fileID: 837655382}
+  - component: {fileID: 837655384}
   m_Layer: 0
   m_Name: Route
   m_TagString: Untagged
@@ -39844,6 +39860,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837655380}
   m_CullTransparentMesh: 0
+--- !u!114 &837655384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837655380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d02a6d3c656584fbc4104fe9c299ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customTMPFont: {fileID: 11400000, guid: a7a03898dbc0af640b8599ec7cefc129, type: 2}
+  customUIFont: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
 --- !u!1 &859132106
 GameObject:
   m_ObjectHideFlags: 0
@@ -70241,7 +70271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a56a3b2e353374aa3e8ea0237cb826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationName: Route 1001
+  locationName: Route 0001
   locationMusic: {fileID: 1106378084}
   wildPokemonChance: 100
   weather: 4
@@ -319683,7 +319713,7 @@ Transform:
   m_GameObject: {fileID: 1502288288}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.65, y: 30, z: 35.3584}
+  m_LocalPosition: {x: 116.6, y: 40, z: 35.3584}
   m_LocalScale: {x: 6.9, y: 0.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -320852,7 +320882,7 @@ GameObject:
   - component: {fileID: 1617558169}
   - component: {fileID: 1617558170}
   m_Layer: 0
-  m_Name: Initial Town Music
+  m_Name: Town Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320867,7 +320897,7 @@ Transform:
   m_GameObject: {fileID: 1617558168}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8847904, y: -2.2596912, z: 33.3584}
+  m_LocalPosition: {x: 90.59, y: -69.65, z: 33.3584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -351226,6 +351256,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 0, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 110
+      m_TileSpriteIndex: 59
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 1, y: 0, z: 0}
     second:
       serializedVersion: 2
@@ -379698,7 +379738,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 220
+  - m_RefCount: 221
     m_Data: {fileID: 11400000, guid: 6310c2ca1f37b2e47bed9705dfd1607f, type: 2}
   - m_RefCount: 151
     m_Data: {fileID: 11400000, guid: 9e2e475b20aa93b42a9e490d747c640e, type: 2}
@@ -380188,7 +380228,7 @@ Tilemap:
       type: 3}
   - m_RefCount: 9
     m_Data: {fileID: 378669193200710441, guid: e08408c69eee7cb4cb8df7ed6d5d8d57, type: 3}
-  - m_RefCount: 220
+  - m_RefCount: 221
     m_Data: {fileID: -1906693592, guid: df1d4dc7a4e708248a70ead356817c90, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: -9091959585119129878, guid: e08408c69eee7cb4cb8df7ed6d5d8d57,
@@ -380715,7 +380755,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: -182028258, guid: df1d4dc7a4e708248a70ead356817c90, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 5823
+  - m_RefCount: 5824
     m_Data:
       e00: 1
       e01: 0
@@ -380734,7 +380774,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 5823
+  - m_RefCount: 5824
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   - m_RefCount: 0
     m_Data: {r: 0, g: 0, b: 0, a: 0}
@@ -410353,7 +410393,7 @@ GameObject:
   - component: {fileID: 1941071575}
   - component: {fileID: 1941071576}
   m_Layer: 0
-  m_Name: Small Town Music
+  m_Name: University Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410368,7 +410408,7 @@ Transform:
   m_GameObject: {fileID: 1941071574}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8847904, y: -2.2596912, z: 33.3584}
+  m_LocalPosition: {x: 92.4, y: -34.55, z: 33.3584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -410384,7 +410424,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8e314656501cd39438521c7e92bbefd1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: de8479592d625e645a970a3def2a26ae, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -413671,12 +413711,12 @@ SceneRoots:
   - {fileID: 382634435}
   - {fileID: 1714369247}
   - {fileID: 161115115}
-  - {fileID: 1745248445}
-  - {fileID: 1834552836}
-  - {fileID: 1887683765}
   - {fileID: 1598712896}
   - {fileID: 2055281013}
   - {fileID: 117032648}
   - {fileID: 1535934862}
   - {fileID: 496185148}
   - {fileID: 1495980127}
+  - {fileID: 1745248445}
+  - {fileID: 1887683765}
+  - {fileID: 1834552836}
