@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject dialogueBox;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject nextIcon;
+    [SerializeField] GameObject skipButton;
 
     [Header("Typing")]
     [SerializeField] float typingSpeed = 0.05f;
@@ -16,7 +18,6 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] LookAtTarget daughterLookAt;
 
     [SerializeField] PlayerController playerController;
-
 
     string[] lines;
     int currentLine = 0;
@@ -54,7 +55,7 @@ public class DialogueManager : MonoBehaviour
             || Input.GetKeyDown(KeyCode.KeypadEnter)
             || Input.GetKeyDown(KeyCode.Space)
             || Input.GetKeyDown(KeyCode.RightArrow)
-            || Input.GetMouseButtonDown(0); // ¡¬≈¨∏Ø
+            || Input.GetMouseButtonDown(0);
     }
 
     public void StartDialogue(string[] dialogueLines)
@@ -68,13 +69,14 @@ public class DialogueManager : MonoBehaviour
 
         dialogueBox.SetActive(true);
 
-        // ¥Î»≠ Ω√¿€Ω√ «√∑π¿ÃæÓ øÚ¡˜¿” ¡§¡ˆ
+        if (skipButton != null)
+            skipButton.SetActive(true);
+
         if (playerController != null)
         {
             playerController.canMove = false;
             playerController.canJump = false;
         }
-            
 
         if (daughterLookAt != null)
             daughterLookAt.StartLooking();
@@ -128,6 +130,13 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void SkipDialogue()
+    {
+        Debug.Log("Ïä§ÌÇµ Î≤ÑÌäº ÎàåÎ¶º");
+        if (!isDialogueActive) return;
+        CloseDialogue();
+    }
+
     public void CloseDialogue()
     {
         if (typingCoroutine != null)
@@ -139,30 +148,38 @@ public class DialogueManager : MonoBehaviour
         if (daughterLookAt != null)
             daughterLookAt.StopLooking();
 
-        // ¥Î»≠ ≥°≥™∏È «√∑π¿ÃæÓ øÚ¡˜¿œ ºˆ ¿÷¿Ω
         if (playerController != null)
+        {
             playerController.canMove = true;
+            playerController.canJump = true;
+        }
 
         isDialogueActive = false;
         isTyping = false;
         dialogueBox.SetActive(false);
         nextIcon.SetActive(false);
+
+        if (skipButton != null)
+            skipButton.SetActive(false);
+
         currentLine = 0;
         currentText = "";
     }
+
     public IEnumerator ShowAutoDialogue(string[] dialogueLines, float duration)
     {
         StartDialogue(dialogueLines);
         yield return new WaitForSeconds(duration);
         CloseDialogue();
     }
+
     public IEnumerator ShowAutoDialogueInstant(string line, float duration)
     {
-        Debug.Log("ShowAutoDialogueInstant »£√‚µ : " + line);
+        Debug.Log("ShowAutoDialogueInstant Ìò∏Ï∂ú: " + line);
 
         if (dialogueBox == null || dialogueText == null)
         {
-            Debug.Log("dialogueBox ∂«¥¬ dialogueText∞° null");
+            Debug.Log("dialogueBox ÎòêÎäî dialogueTextÍ∞Ä null");
             yield break;
         }
 
@@ -177,10 +194,14 @@ public class DialogueManager : MonoBehaviour
         currentText = line;
 
         dialogueBox.SetActive(true);
+
+        if (skipButton != null)
+            skipButton.SetActive(true);
+
         dialogueText.text = line;
         nextIcon.SetActive(false);
 
-        Debug.Log("¥Î»≠√¢ ƒ‘, ≈ÿΩ∫∆Æ º≥¡§ øœ∑·: " + line);
+        Debug.Log("ÎåÄÌôîÏ∞Ω Ïò®, ÌÖçÏä§Ìä∏ ÌëúÏãú ÏôÑÎ£å: " + line);
 
         if (daughterLookAt != null)
             daughterLookAt.StartLooking();
