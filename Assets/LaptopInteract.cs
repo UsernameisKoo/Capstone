@@ -5,6 +5,7 @@ public class LaptopInteract : MonoBehaviour
     [SerializeField] Transform laptopScreen;
     [SerializeField] float zoomSpeed = 2f;
     [SerializeField] GameObject laptopCanvas;
+    [SerializeField] GameObject arrowIndicator;
 
     CameraController cameraController;
     bool playerNearby = false;
@@ -15,6 +16,8 @@ public class LaptopInteract : MonoBehaviour
     {
         cameraController = FindObjectOfType<CameraController>();
         laptopCanvas.SetActive(false);
+        if (arrowIndicator != null)
+            arrowIndicator.SetActive(false);
     }
 
     void Update()
@@ -116,6 +119,10 @@ public class LaptopInteract : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearby = true;
+
+            if (arrowIndicator != null)
+                arrowIndicator.SetActive(true);
+
             Debug.Log("노트북 근처!");
         }
     }
@@ -125,6 +132,10 @@ public class LaptopInteract : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearby = false;
+
+            if (arrowIndicator != null)
+                arrowIndicator.SetActive(false);
+
             if (isZoomed) ZoomOut();
         }
     }

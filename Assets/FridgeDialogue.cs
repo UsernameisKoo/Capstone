@@ -5,11 +5,9 @@ public class FridgeDialogue : MonoBehaviour
     DialogueManager dialogueManager;
 
     string[] myLines = {
-        "me : ...empty.",
-        "me : Not even leftovers.",
-        "me : A college student who can't graduate...",
-        "me : and now can't even eat.",
-        "me : What a life."
+        "비어있다.",
+        "배고프면 편의점에서 뭐 사면 되니까.",
+        "다른 곳이나 둘러볼까...",
     };
 
     void Start()
