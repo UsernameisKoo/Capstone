@@ -25,10 +25,10 @@ public class BattleBag : MonoBehaviour
 
     private IBattle Battle;
     private readonly BagSlot[] slots = new BagSlot[6];
-    private int selectionIndex; // UI selection index (up/down)
-    private int bagTypeIndex; // UI selection index (left/right)
-    private int itemIndex; // actual bag list index of selected item
-    private int confirmationIndex; // confirmation box selection index
+    private int selectionIndex;
+    private int bagTypeIndex;
+    private int itemIndex;
+    private int confirmationIndex;
     private bool askingConfirmation;
 
     public bool IsBusy { get; set; }
@@ -36,7 +36,6 @@ public class BattleBag : MonoBehaviour
     public int ItemToUseIndex { get; set; }
     public GameObject GameObject { get { return gameObject; } }
 
-    // Start is called before the first frame update
     void Start()
     {
         for (var i = 0; i < 6; i++)
@@ -48,7 +47,6 @@ public class BattleBag : MonoBehaviour
         IsBusy = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!IsBusy)
@@ -83,17 +81,15 @@ public class BattleBag : MonoBehaviour
             else chatbox.ConfirmationBox.CursorNo();
         }
 
-        // back to bag
         if (Input.GetKeyDown(KeyCode.X))
         {
             ReturnToItemSelection();
             return;
         }
 
-        // use or cancel
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (confirmationIndex == 0) // yes
+            if (confirmationIndex == 0)
             {
                 if (ItemToUse.Usage == ItemUsage.TargetsEnemy)
                 {
@@ -111,7 +107,7 @@ public class BattleBag : MonoBehaviour
                     StartCoroutine(GoToParty());
                 }
             }
-            else // no
+            else
             {
                 ReturnToItemSelection();
             }
@@ -142,6 +138,7 @@ public class BattleBag : MonoBehaviour
             else if (selectionIndex > 0)
                 selectionIndex--;
         }
+
         if (Input.GetKeyDown(KeyCode.DownArrow) && list.Count >= 1)
         {
             if (selectionIndex < list.Count - 1)
@@ -152,10 +149,10 @@ public class BattleBag : MonoBehaviour
             else if (selectionIndex < list.Count - 1)
                 selectionIndex++;
         }
+
         if (Input.GetKeyDown(KeyCode.LeftArrow)) bagTypeIndex = bagTypeIndex == 0 ? 2 : bagTypeIndex - 1;
         if (Input.GetKeyDown(KeyCode.RightArrow)) bagTypeIndex = (bagTypeIndex + 1) % 3;
 
-        // up/down
         if (oldSelectionIndex != selectionIndex)
         {
             chatSound.Play();
@@ -163,17 +160,14 @@ public class BattleBag : MonoBehaviour
             RemoveHighlight(slots[oldSelectionIndex]);
         }
 
-        // left/down
         if (oldBagTypeIndex != bagTypeIndex)
         {
             var newList = GetEntryList();
-            // try to transfer indexes to next list
             selectionIndex = Limit(0, selectionIndex, newList.Count - 1);
             itemIndex = Limit(0, itemIndex, newList.Count - 1);
             Init(Battle);
         }
 
-        // back to menu
         if (Input.GetKeyDown(KeyCode.X))
         {
             ItemToUse = null;
@@ -188,10 +182,11 @@ public class BattleBag : MonoBehaviour
             var item = list[selectionIndex].item;
 
             chatSound.Play();
+
             if (item.Usage == ItemUsage.TargetsEnemy && Battle.BattleInfo.IsTrainerBattle)
-                StartCoroutine(PrintAndAwait("This can't be used during a trainer battle!"));
+                StartCoroutine(PrintAndAwait("트레이너 배틀 중에는 사용할 수 없다!"));
             else if (item.Usage == ItemUsage.TargetsPlayer)
-                StartCoroutine(PrintAndAwait("This can't be used right now."));
+                StartCoroutine(PrintAndAwait("지금은 사용할 수 없다."));
             else
             {
                 ItemToUse = item;
@@ -216,7 +211,7 @@ public class BattleBag : MonoBehaviour
     {
         IsBusy = true;
         chatbox.gameObject.SetActive(true);
-        yield return chatbox.Print($"Use the {ItemToUse.Name}?");
+        yield return chatbox.Print($"{ItemToUse.Name}을(를) 사용할까?");
         chatbox.confirmationObject.SetActive(true);
         confirmationIndex = 0;
         chatbox.ConfirmationBox.CursorYes();
@@ -258,7 +253,6 @@ public class BattleBag : MonoBehaviour
         slot.background.sprite = itemUnselected;
     }
 
-    // item index reflects true position in item list
     private void FocusListOnSelection()
     {
         var list = GetEntryList();
@@ -266,6 +260,7 @@ public class BattleBag : MonoBehaviour
         for (var i = 0; i < 6; i++)
         {
             var entry = i + itemIndex - selectionIndex < list.Count ? list[i + itemIndex - selectionIndex] : null;
+
             if (entry != null)
                 FillSlot(slots[i], entry, i == selectionIndex);
             else
@@ -281,6 +276,7 @@ public class BattleBag : MonoBehaviour
         slot.itemName.text = entry.item.Name;
         slot.itemAmount.text = $"x{entry.amount.ToString()}" ?? "";
         slot.background.enabled = true;
+
         if (isSelected) AddHighlight(slot, entry.item);
         else RemoveHighlight(slot);
     }
@@ -296,9 +292,9 @@ public class BattleBag : MonoBehaviour
     {
         switch (bagTypeIndex)
         {
-            case 0: return "Items";
-            case 1: return "Pokeballs";
-            case 2: return "Key Items";
+            case 0: return "도구";
+            case 1: return "몬스터볼";
+            case 2: return "중요한 물건";
             default: return "";
         }
     }

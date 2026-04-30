@@ -50,14 +50,11 @@ public class SingleBattle : MonoBehaviour, IBattle
         if (delay) yield return new WaitForSeconds(1f);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Get init data
         BattleInfo = SceneInfo.GetBattleInfo();
         PlayerInfo = SceneInfo.GetPlayerInfo();
 
-        // Logic setup
         EnsureAllLeadingPokemonAlive(BattleInfo);
         Logic = new BattleLogic(this, BattleInfo, anims);
         pendingMoves = new Dictionary<Pokemon, MoveCommand>();
@@ -65,7 +62,6 @@ public class SingleBattle : MonoBehaviour, IBattle
         usedItems = new Dictionary<Pokemon, bool>();
         order = Logic.SortBySpeed();
 
-        // UI setup
         Application.targetFrameRate = 60;
         playerUnit.Setup(Logic.ActiveAllies[0], true);
         enemyUnit.Setup(Logic.ActiveEnemies[0], BattleInfo.IsTrainerBattle);
@@ -76,12 +72,10 @@ public class SingleBattle : MonoBehaviour, IBattle
         if (BattleInfo.IsTrainerBattle) anims.SetupNPCIntro(BattleInfo.Trainer);
         else anims.DisableNPCIntro();
 
-        // Battle intro
         BattleState = BattleState.Intro;
         StartCoroutine(BattleIntro());
     }
 
-    // Update is called once per frame
     void Update()
     {
         switch (BattleState)
@@ -116,9 +110,9 @@ public class SingleBattle : MonoBehaviour, IBattle
         chatbox.SetState(ChatState.ChatOnly);
         hud.ShowEnemyHUD();
         enemyUnit.PlayCry();
-        yield return Print($"Wild {enemyUnit.Name} appeared!");
+        yield return Print($"야생의 {enemyUnit.Name}이(가) 나타났다!");
 
-        yield return Print($"Go, {playerUnit.Pokemon.Name}!");
+        yield return Print($"가라! {playerUnit.Pokemon.Name}!");
         hud.ShowAllyHUD();
         playerUnit.PlayEnterCry();
         yield return anims.SwitchInPokemon(playerUnit.Pokemon);
@@ -130,23 +124,20 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         yield return anims.PlayNPCIntro();
         chatbox.SetState(ChatState.ChatOnly);
-        yield return Print($"{trainer.skeleton.className} {trainer.Name} wants to fight!");
+        yield return Print($"{trainer.skeleton.className} {trainer.Name}이(가) 승부를 걸어왔다!");
         yield return anims.PlayNPCSlideOut();
 
-        yield return Print($"{trainer.skeleton.className} {trainer.Name} sent out {enemyUnit.Name}!");
+        yield return Print($"{trainer.skeleton.className} {trainer.Name}은(는) {enemyUnit.Name}을(를) 내보냈다!");
         hud.ShowEnemyHUD();
         enemyUnit.PlayEnterCry();
         yield return anims.SwitchInPokemon(enemyUnit.Pokemon);
 
-        yield return Print($"Go, {playerUnit.Pokemon.Name}!");
+        yield return Print($"가라! {playerUnit.Pokemon.Name}!");
         hud.ShowAllyHUD();
         playerUnit.PlayEnterCry();
         yield return anims.SwitchInPokemon(playerUnit.Pokemon);
     }
 
-    /// <summary>
-    /// Makes sure the player does not deploy a fainted Pokemon at the beginning of the fight.
-    /// </summary>
     private void EnsureAllLeadingPokemonAlive(BattleInfo info)
     {
         for (var i = 0; i < info.BattleSize && i < info.Allies.Count; i++)
@@ -161,30 +152,27 @@ public class SingleBattle : MonoBehaviour, IBattle
         }
     }
 
-    /// <summary>
-    /// Seek the next mandatory replacement of a Pokemon (because it fainted and more are available), if any.
-    /// </summary>
     private IEnumerator MoveToNextForcedSwitch()
     {
         var actives = Logic.ActivePokemons();
         while (forcedSwitchIndex < actives.Count && actives[forcedSwitchIndex].Health > 0)
             forcedSwitchIndex++;
 
-        if (forcedSwitchIndex < actives.Count) // begin a forced switch
+        if (forcedSwitchIndex < actives.Count)
         {
-            if (actives[forcedSwitchIndex].IsAlly) // prompt a switch
+            if (actives[forcedSwitchIndex].IsAlly)
             {
                 isForcedSwitch = true;
                 StartCoroutine(BeginSwitch());
             }
-            else // AI's decision
+            else
             {
                 var switchedIn = RandomElement(Logic.PartyEnemies.FindAll(pkmn => pkmn.Health > 0));
                 yield return Logic.SwitchPokemonImmediate(Logic.ActivePokemons()[forcedSwitchIndex], switchedIn);
                 yield return MoveToNextForcedSwitch();
             }
         }
-        else // all forced switches done, proceed with the game
+        else
         {
             order = Logic.SortBySpeed();
             BeginPlayerAction();
@@ -242,14 +230,13 @@ public class SingleBattle : MonoBehaviour, IBattle
             yield return anims.PlayNPCSlideIn();
             yield return Print(dialogue[0], false);
 
-            // say defeat dialogue + money reward
             while (index < dialogue.Length + 2)
             {
                 if (Input.GetKeyDown(KeyCode.Z))
                 {
                     chatSound.Play();
                     if (index < dialogue.Length) yield return Print(dialogue[index], false);
-                    else if (index == dialogue.Length) yield return Print($"{PlayerInfo.Player.Name} got {BattleInfo.Trainer.money}€ for winning!", false);
+                    else if (index == dialogue.Length) yield return Print($"{PlayerInfo.Player.Name}은(는) 승리하여 {BattleInfo.Trainer.money}원을 얻었다!", false);
                     else
                     {
                         BattleState = BattleState.Idle;
@@ -258,7 +245,7 @@ public class SingleBattle : MonoBehaviour, IBattle
                     index++;
                 }
                 else yield return null;
-            } 
+            }
         }
         else
         {
@@ -275,9 +262,8 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         PlayerInfo.Player.Money -= moneyLoss;
 
-        yield return Print($"{PlayerInfo.Player.Name} has no Pokemons left!", false);
+        yield return Print($"{PlayerInfo.Player.Name}은(는) 더 이상 싸울 포켓몬이 없다!", false);
 
-        // say defeat dialogue
         while (index <= 3)
         {
             if (Input.GetKeyDown(KeyCode.Z))
@@ -286,14 +272,14 @@ public class SingleBattle : MonoBehaviour, IBattle
                 switch (index++)
                 {
                     case 0:
-                        if (isTrainerBattle) yield return Print($"{PlayerInfo.Player.Name} had to pay {moneyLoss}€...", false);
-                        else yield return Print($"{PlayerInfo.Player.Name} lost {moneyLoss}€ on the way out...", false);
+                        if (isTrainerBattle) yield return Print($"{PlayerInfo.Player.Name}은(는) {moneyLoss}원을 지불했다...", false);
+                        else yield return Print($"{PlayerInfo.Player.Name}은(는) 도망치다 {moneyLoss}원을 잃었다...", false);
                         break;
                     case 1:
                         yield return Print("...", false);
                         break;
                     case 2:
-                        yield return Print($"{PlayerInfo.Player.Name} blacked out!", false);
+                        yield return Print($"{PlayerInfo.Player.Name}은(는) 눈앞이 깜깜해졌다!", false);
                         break;
                     case 3:
                         BattleState = BattleState.Idle;
@@ -307,7 +293,7 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     private IEnumerator OnEscape()
     {
-        yield return Print("Got away safely!", false);
+        yield return Print("무사히 도망쳤다!", false);
 
         while (true)
         {
@@ -327,7 +313,7 @@ public class SingleBattle : MonoBehaviour, IBattle
         var index = 0;
 
         pokemonsInParty.Add(enemyUnit.Pokemon);
-        yield return Print($"{enemyUnit.Pokemon.Name} was caught!", false);
+        yield return Print($"{enemyUnit.Pokemon.Name}을(를) 잡았다!", false);
         if (pokemonsInParty.Count < 6) index++;
 
         while (index <= 2)
@@ -338,10 +324,10 @@ public class SingleBattle : MonoBehaviour, IBattle
                 switch (index++)
                 {
                     case 0:
-                        yield return Print("<pokemon sent to PC (soon)>", false);
+                        yield return Print("<포켓몬은 PC로 전송됩니다. 준비 중>", false);
                         break;
                     case 1:
-                        yield return Print("<pokedex data here soon>", false);
+                        yield return Print("<도감 데이터 준비 중>", false);
                         break;
                     case 2:
                         BattleState = BattleState.Idle;
@@ -358,15 +344,16 @@ public class SingleBattle : MonoBehaviour, IBattle
         var originalState = BattleState;
         BattleState = BattleState.Idle;
 
-        if (switchedIn.IsAlly) yield return Print($"Go, {switchedIn.Name}!");
+        if (switchedIn.IsAlly) yield return Print($"가라! {switchedIn.Name}!");
         else
         {
-            yield return Print($"{BattleInfo.Trainer.skeleton.className} {BattleInfo.Trainer.Name} sent out {switchedIn.Name}!");
+            yield return Print($"{BattleInfo.Trainer.skeleton.className} {BattleInfo.Trainer.Name}은(는) {switchedIn.Name}을(를) 내보냈다!");
             hud.NotifySwitch(switchedIn);
         }
+
         anims.GetUnit(switchedIn).PlayEnterCry();
         yield return anims.SwitchInPokemon(switchedIn);
-        
+
         BattleState = originalState;
     }
 
@@ -390,14 +377,12 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     public IEnumerator NotifySwitchPerformed(Pokemon selection)
     {
-        // cancelled
         if (selection == null)
         {
             BeginPlayerAction();
             yield break;
         }
 
-        // switch without ending turn
         if (isForcedSwitch)
         {
             yield return Logic.SwitchPokemonImmediate(Logic.ActivePokemons()[forcedSwitchIndex], selection);
@@ -405,17 +390,16 @@ public class SingleBattle : MonoBehaviour, IBattle
             yield break;
         }
 
-        // switch instead of using a move
         AddSwitchCommand(selection);
     }
-    
+
     public void NotifyItemUsed(Item item)
     {
-        if (item == null) // cancelled
+        if (item == null)
             BeginPlayerAction();
-        else if (item.Usage == ItemUsage.TargetsAlly) // already used, done
+        else if (item.Usage == ItemUsage.TargetsAlly)
             AddItemCommand();
-        else // going to use
+        else
             StartCoroutine(UseItemOnEnemy(item));
     }
 
@@ -423,13 +407,13 @@ public class SingleBattle : MonoBehaviour, IBattle
     {
         chatbox.SetState(ChatState.ChatOnly);
         bag.chatbox.confirmationObject.SetActive(false);
-        var target = Logic.ActiveEnemies[0]; // for now, can only use enemy-targeting items in 1v1
+        var target = Logic.ActiveEnemies[0];
 
         if (!bag.ItemToUse.Functions.CanBeUsed(bag.ItemToUse, target))
         {
-            yield return chatbox.Print($"This item can't be used on {target.Name} right now.");
+            yield return chatbox.Print($"지금은 {target.Name}에게 이 아이템을 사용할 수 없다.");
             while (!Input.GetKeyDown(KeyCode.Z)) yield return null;
-            bag.Init(this); // back to bag
+            bag.Init(this);
             yield break;
         }
 
@@ -437,7 +421,7 @@ public class SingleBattle : MonoBehaviour, IBattle
         bagCanvas.SetActive(false);
         battleCanvas.SetActive(true);
         yield return hud.FadeOutTransition();
-        
+
         PlayerInfo.Player.Bag.TakeItem(bag.ItemToUse, bag.ItemToUseIndex, 1);
         yield return bag.ItemToUse.Functions.Use(bag.ItemToUse, target, chatbox, anims);
         yield return NotifyUpdateHealth();
@@ -447,45 +431,30 @@ public class SingleBattle : MonoBehaviour, IBattle
         AddItemCommand();
     }
 
-    /// <summary>
-    /// This Pokemon will be switched out.
-    /// </summary>
     public void AddSwitchCommand(Pokemon switchedIn)
     {
         pendingSwitches[order[orderIndex]] = new SwitchCommand(switchedIn, order[orderIndex]);
         MoveToNextInOrder();
     }
 
-    /// <summary>
-    /// This Pokemon will use a move.
-    /// </summary>
     public void AddMoveCommand(Move move, Pokemon target)
     {
         pendingMoves[order[orderIndex]] = new MoveCommand(move, order[orderIndex], target);
         MoveToNextInOrder();
     }
 
-    /// <summary>
-    /// This Pokemon will use a move.
-    /// </summary>
     public void AddMoveCommand(Move move)
     {
         pendingMoves[order[orderIndex]] = new MoveCommand(move, order[orderIndex]);
         MoveToNextInOrder();
     }
 
-    /// <summary>
-    /// This Pokemon spent its turn using an item.
-    /// </summary>
     public void AddItemCommand()
     {
         usedItems[order[orderIndex]] = true;
         MoveToNextInOrder();
     }
 
-    /// <summary>
-    /// Moves directed at the Pokemon switched out will now be directed at the Pokemon switched in.
-    /// </summary>
     public void UpdateMoveTargets(SwitchCommand cmd)
     {
         foreach (var key in pendingMoves.Keys)
@@ -511,13 +480,12 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     private void BeginPlayerAction(bool immediate = false)
     {
-        //AI placeholder
         if (!order[orderIndex].IsAlly)
             AddMoveCommand(RandomNonNullElement(order[orderIndex].Moves), playerUnit.Pokemon);
         else
         {
             chatbox.SetState(ChatState.SelectAction);
-            StartCoroutine(chatbox.Print($"What will {order[orderIndex].Name} do?", immediate));
+            StartCoroutine(chatbox.Print($"{order[orderIndex].Name}은(는) 무엇을 할까?", immediate));
             BattleState = BattleState.SelectingAction;
         }
     }
@@ -561,21 +529,17 @@ public class SingleBattle : MonoBehaviour, IBattle
         yield return hud.FadeOutTransition();
     }
 
-    /// <summary>
-    /// Moves to the next Pokemon in the order. If it was the final Pokemon, begins the turn.
-    /// </summary>
     private void MoveToNextInOrder()
     {
-        // reset pointers
         chatbox.actions[actionIndex].color = Color.black;
         chatbox.moves[moveIndex].color = Color.black;
         moveIndex = 0;
 
-        if (orderIndex + 1 >= order.Count) // all choices made, begin turn
+        if (orderIndex + 1 >= order.Count)
         {
             BeginTurn();
         }
-        else // move to next
+        else
         {
             orderIndex++;
             BeginPlayerAction();
@@ -622,7 +586,6 @@ public class SingleBattle : MonoBehaviour, IBattle
             else chatbox.ConfirmationBox.CursorNo();
         }
 
-        // don't learn move
         if (Input.GetKeyDown(KeyCode.X))
         {
             Logic.Confirmation = false;
@@ -631,18 +594,9 @@ public class SingleBattle : MonoBehaviour, IBattle
             return;
         }
 
-        // use or cancel
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (confirmationIndex == 0) // yes
-            {
-                Logic.Confirmation = true;
-            }
-            else // no
-            {
-                Logic.Confirmation = false;
-            }
-
+            Logic.Confirmation = confirmationIndex == 0;
             BattleState = BattleState.Idle;
             chatbox.confirmationObject.SetActive(false);
         }
@@ -698,7 +652,6 @@ public class SingleBattle : MonoBehaviour, IBattle
         if (Input.GetKeyDown(KeyCode.LeftArrow)) moveIndex = moveIndex % 2 == 0 ? moveIndex + 1 : moveIndex - 1;
         if (Input.GetKeyDown(KeyCode.RightArrow)) moveIndex = moveIndex % 2 != 0 ? moveIndex - 1 : moveIndex + 1;
 
-        // reset selection
         if (chatbox.moves[moveIndex].text == "-") moveIndex = oldIndex;
 
         chatbox.moves[moveIndex].color = Color.blue;
@@ -706,7 +659,6 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         if (oldIndex != moveIndex) chatSound.Play();
 
-        // back to actions
         if (Input.GetKeyDown(KeyCode.X))
         {
             if (chatbox.IsBusy) return;
@@ -723,7 +675,6 @@ public class SingleBattle : MonoBehaviour, IBattle
             return;
         }
 
-        // perform move
         if (Input.GetKeyDown(KeyCode.Z))
         {
             if (chatbox.IsBusy) return;
