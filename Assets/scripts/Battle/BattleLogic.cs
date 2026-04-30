@@ -26,7 +26,6 @@ public class MoveCommand
 {
     public Move Move { get; set; }
     public Pokemon User { get; set; }
-    /// <summary> This value may be null. </summary>
     public Pokemon Target { get; set; }
     public MoveCommand(Move move, Pokemon user) { Move = move; User = user; }
     public MoveCommand(Move move, Pokemon user, Pokemon target) { Move = move; User = user; Target = target; }
@@ -49,7 +48,7 @@ public class ItemCommand
 public class BattleLogic
 {
     private IBattle battleUI;
-    private List<EffectCommand> effectQueue; // some elements may be null
+    private List<EffectCommand> effectQueue;
     private int orderIndex;
     private List<Pokemon> order;
 
@@ -86,7 +85,6 @@ public class BattleLogic
 
         foreach (var pkmn in ActivePokemons())
         {
-            // only allies can get exp
             if (!pkmn.IsAlly) pkmn.ExpCandidates = new List<Pokemon>(ActiveAllies);
         }
     }
@@ -120,9 +118,9 @@ public class BattleLogic
     public bool EffectExists(Effect effect, Pokemon user, Pokemon target)
     {
         return effectQueue.Any(
-            cmd => cmd != null && 
-            cmd.Effect.Logic == effect.Logic && 
-            (user == null || cmd.User == user) && 
+            cmd => cmd != null &&
+            cmd.Effect.Logic == effect.Logic &&
+            (user == null || cmd.User == user) &&
             (target == null || cmd.Target == target)
         );
     }
@@ -152,25 +150,22 @@ public class BattleLogic
         return EffectExists(new Effect(logic), null, target);
     }
 
-    public void TryEscape() //todo
+    public void TryEscape()
     {
         SceneInfo.SetForcedOutcome(Outcome.Escaped);
     }
 
-    /// <summary>
-    /// Immediately switches out a Pokemon, doing so outside of the turn loop.
-    /// </summary>
     public IEnumerator SwitchPokemonImmediate(Pokemon switchedOut, Pokemon switchedIn)
     {
-        // swap spots between field and party
         var activeList = switchedIn.IsAlly ? ActiveAllies : ActiveEnemies;
         var partyList = switchedIn.IsAlly ? PartyAllies : PartyEnemies;
+
         activeList[activeList.FindIndex(pkmn => pkmn == switchedOut)] = switchedIn;
         partyList[partyList.FindIndex(pkmn => pkmn == switchedIn)] = switchedOut;
+
         yield return battleUI.RegisterSwitch(switchedIn);
         switchedIn.WasForcedSwitch = true;
 
-        // update exp candidates - new ally gets xp for all active enemies
         if (switchedIn.IsAlly)
         {
             foreach (var enemy in ActiveEnemies)
@@ -179,7 +174,6 @@ public class BattleLogic
                     enemy.ExpCandidates.Add(switchedIn);
             }
         }
-        // update exp candidates - active allies get xp for new enemy, xp candidates reset for an enemy switched out
         else
         {
             switchedIn.ExpCandidates = new List<Pokemon>(ActiveAllies);
@@ -200,29 +194,15 @@ public class BattleLogic
         battleUI.NotifyTurnFinished();
     }
 
-    /// <summary>
-    /// Performs a full turn of the battle. The queues can have null elements. 
-    /// <para/>
-    /// For every index, either the move, switch or item queue should include an action to perform (can't both be null at that index).
-    /// <para/>
-    /// The order of commands in the list should match the order in which Pokemons will act in the turn (sorted by speed).
-    /// </summary>
-    /// <param name="pendingMoves"> Dictionary of move commands, which can have null entries. </param>
-    /// <param name="pendingSwitches"> Dictionary of switch commands, which can have null entries. </param>
-    /// <param name="usedItems"> Dictionary of Pokémons that spent their turn using an item, which can have null entries. </param>
-    /// <returns></returns>
-    public IEnumerator Turn(Dictionary<Pokemon, MoveCommand> pendingMoves, 
+    public IEnumerator Turn(Dictionary<Pokemon, MoveCommand> pendingMoves,
                             Dictionary<Pokemon, SwitchCommand> pendingSwitches,
                             Dictionary<Pokemon, bool> usedItems)
     {
-        // reset attack flags
         foreach (var user in ActivePokemons())
             user.HasActedThisTurn = false;
 
-        // inform player of weather
         if (Weather != Weather.None) yield return Print(WeatherToString());
 
-        // possible early exit (already won/lost)
         if (CheckVictory() != Outcome.Undecided)
         {
             battleUI.NotifyTurnFinished();
@@ -231,21 +211,17 @@ public class BattleLogic
 
         order = RecalculateOrder();
 
-        // item usage means they've acted
         foreach (var user in order)
             user.HasActedThisTurn = GetValue(usedItems, user);
 
-        // manage forced switches
         for (var i = 0; i < order.Count; i++)
         {
             var user = order[i];
             if (!user.WasForcedSwitch) continue;
 
-            // apply abilities
             yield return user.Ability.Functions.OnSwitchIn(user.Ability, user, battleUI);
             yield return battleUI.NotifyUpdateHealth();
 
-            // apply effects
             for (var e = 0; e < effectQueue.Count; e++)
             {
                 var cmd = effectQueue[e];
@@ -253,15 +229,13 @@ public class BattleLogic
                     yield return ApplyEffect(cmd, e, user);
             }
 
-            // reset flags
             user.HasActedThisTurn = false;
             user.WasForcedSwitch = false;
         }
 
         order = RecalculateOrder();
 
-        // perform non-forced switches and item usages
-        for (var i=0; i<order.Count; i++)
+        for (var i = 0; i < order.Count; i++)
         {
             var user = order[i];
             var cmd = GetValue(pendingSwitches, user);
@@ -273,7 +247,6 @@ public class BattleLogic
             }
         }
 
-        // possible early exit (already won/lost)
         if (CheckVictory() != Outcome.Undecided)
         {
             battleUI.NotifyTurnFinished();
@@ -282,15 +255,13 @@ public class BattleLogic
 
         order = RecalculateOrder();
 
-        // apply abilities (start of turn)
         foreach (var user in order)
         {
             yield return user.Ability.Functions.OnTurnBeginning(user.Ability, user, battleUI);
             yield return battleUI.NotifyUpdateHealth();
         }
 
-        // apply effects (start of turn)
-        for (var i=0; i<effectQueue.Count; i++)
+        for (var i = 0; i < effectQueue.Count; i++)
         {
             var cmd = effectQueue[i];
             if (cmd != null && cmd.Effect.Trigger == Trigger.StartOfTurn)
@@ -299,64 +270,72 @@ public class BattleLogic
 
         order = RecalculateOrder();
 
-        // begin turn
         while (!EveryoneHasActed())
         {
             var user = order[orderIndex];
+
             if (user.Health <= 0 || user.HasActedThisTurn)
             {
                 orderIndex++;
-                continue; // continue does not increment here
+                continue;
             }
 
-            // possible early exit (already won/lost)
             if (CheckVictory() != Outcome.Undecided)
             {
                 battleUI.NotifyTurnFinished();
                 yield break;
             }
 
-            // attempt to perform a move
             var cmd = GetValue(pendingMoves, user);
+
             if (user.CanAttack && cmd != null)
             {
                 user.HasActedThisTurn = true;
 
                 var move = cmd.Move;
-                // 0 max points = infinite max points
                 if (move.MaxPoints > 0) move.Points--;
-                yield return Print($"{user.Name} used {move.Name}!");
+
+                yield return Print($"{user.Name}은(는) {move.Name}을(를) 사용했다!");
                 yield return user.Ability.Functions.OnMoveUse(user.Ability, user, move, battleUI);
 
-                // based on move targeting, apply move to all targets
                 var targetList = GetMoveTargets(cmd);
 
-                // all targets are invalid
-                if (targetList.Count == 0) yield return Print("But it failed!");
-                else foreach (var target in targetList)
+                if (targetList.Count == 0)
                 {
-                    yield return move.Functions.OnUse(move, user, target, battleUI, targetList.Count);
-                    yield return battleUI.NotifyUpdateHealth();
-                    if (IsHit(move, user, target)) // is a hit
+                    yield return Print("하지만 실패했다!");
+                }
+                else
+                {
+                    foreach (var target in targetList)
                     {
-                        if (target.Health > 0) // target is valid
-                        {
-                            LastMoveWasCrit = false; // clear the global crit flag
-                            PlayEffectivenessSound(move, target);
-                            yield return move.Functions.Execute(move, user, target, battleUI, targetList.Count);
-                            yield return battleUI.NotifyUpdateHealth();
-                            target.LastHitByMove = move;
-                            target.LastHitByUser = user;
-                            if (LastMoveWasCrit) yield return Print("Critical hit!");
-                            yield return PrintEffectiveness(move, target);
-                            yield return move.Functions.OnHit(move, user, target, battleUI, targetList.Count);
-                        }
-                    }
-                    else // is a miss
-                    {
-                        Print("But it missed!");
-                        yield return move.Functions.OnMiss(move, user, target, battleUI, targetList.Count);
+                        yield return move.Functions.OnUse(move, user, target, battleUI, targetList.Count);
                         yield return battleUI.NotifyUpdateHealth();
+
+                        if (IsHit(move, user, target))
+                        {
+                            if (target.Health > 0)
+                            {
+                                LastMoveWasCrit = false;
+                                PlayEffectivenessSound(move, target);
+
+                                yield return move.Functions.Execute(move, user, target, battleUI, targetList.Count);
+                                yield return battleUI.NotifyUpdateHealth();
+
+                                target.LastHitByMove = move;
+                                target.LastHitByUser = user;
+
+                                if (LastMoveWasCrit) yield return Print("급소에 맞았다!");
+
+                                yield return PrintEffectiveness(move, target);
+                                yield return move.Functions.OnHit(move, user, target, battleUI, targetList.Count);
+                            }
+                        }
+                        else
+                        {
+                            yield return Print("하지만 빗나갔다!");
+                            yield return move.Functions.OnMiss(move, user, target, battleUI, targetList.Count);
+                            yield return battleUI.NotifyUpdateHealth();
+                        }
                     }
                 }
 
@@ -364,7 +343,6 @@ public class BattleLogic
                 yield return CheckDeath();
                 yield return battleUI.NotifyUpdateHealth();
 
-                // possible early exit (already won/lost)
                 if (CheckVictory() != Outcome.Undecided)
                 {
                     battleUI.NotifyTurnFinished();
@@ -375,13 +353,13 @@ public class BattleLogic
             order = RecalculateOrder();
         }
 
-        // apply effects (end of turn)
         for (var i = 0; i < effectQueue.Count; i++)
         {
             var cmd = effectQueue[i];
             if (cmd == null) continue;
 
             var effect = effectQueue[i].Effect;
+
             if (effect.Trigger == Trigger.EndOfTurn)
                 yield return ApplyEffect(cmd, i);
 
@@ -391,7 +369,6 @@ public class BattleLogic
 
         order = RecalculateOrder();
 
-        // apply abilities (end of turn)
         foreach (var user in order)
         {
             if (user.Health > 0)
@@ -402,23 +379,16 @@ public class BattleLogic
             }
         }
 
-        // end the turn, updating battle state
         TurnNumber++;
         CheckVictory();
         battleUI.NotifyTurnFinished();
     }
 
-    /// <summary>
-    /// Prints to the battle's chatbox.
-    /// </summary>
     private IEnumerator Print(string message, bool delay = true)
     {
         yield return battleUI.Print(message, delay);
     }
 
-    /// <summary>
-    /// Checks if everyone who can act during the current turn has done so.
-    /// </summary>
     private bool EveryoneHasActed()
     {
         return order.All(pokemon => pokemon.HasActedThisTurn || pokemon.Health <= 0);
@@ -435,6 +405,7 @@ public class BattleLogic
         if (move.Category == MoveCategory.Status) return;
 
         var multiplier = Types.Affinity(move, target);
+
         if (multiplier == 0f) return;
         else if (multiplier < 1f) battleUI.PlayNotVeryEffectiveHitSound();
         else if (multiplier >= 2f) battleUI.PlaySuperEffectiveHitSound();
@@ -446,32 +417,28 @@ public class BattleLogic
         if (move.Category == MoveCategory.Status) yield break;
 
         var multiplier = Types.Affinity(move, target);
-        if (multiplier == 0f) yield return Print("But it had no effect!");
-        else if (multiplier < 1f) yield return Print("It's not very effective...");
-        else if (multiplier >= 2f) yield return Print("It's super effective!");
+
+        if (multiplier == 0f) yield return Print("효과가 없는 것 같다...");
+        else if (multiplier < 1f) yield return Print("효과가 별로인 듯하다...");
+        else if (multiplier >= 2f) yield return Print("효과가 굉장했다!");
     }
 
     private IEnumerator SwitchPokemon(SwitchCommand cmd, List<Pokemon> order)
     {
-        // apply ability (on switch out)
         cmd.SwitchedOut.Ability.Functions.OnSwitchOut(cmd.SwitchedOut.Ability, cmd.SwitchedOut, battleUI);
 
-        // apply effects (on switch out)
         for (var i = 0; i < effectQueue.Count; i++)
         {
             var effectCommand = effectQueue[i];
             if (effectCommand == null) continue;
 
-            // run life cycle method
             if (effectCommand.Target == cmd.SwitchedOut)
                 effectCommand.Effect.Functions.OnSwitchOut(effectCommand.Effect, effectCommand.User, effectCommand.Target, battleUI);
 
-            // run OnSwitchOut triggers
             if (effectCommand.Effect.Trigger == Trigger.OnSwitchOut && effectCommand.Target == cmd.SwitchedOut)
             {
-                // first apply the effect
                 yield return ApplyEffect(effectCommand, i);
-                // remove whatever should be removed on switching out
+
                 if (effectCommand.Effect.EndOnSwitch)
                     effectQueue[i] = null;
             }
@@ -479,15 +446,15 @@ public class BattleLogic
 
         yield return CheckDeath();
 
-        // swap spots between field and party
         var activeList = cmd.SwitchedIn.IsAlly ? ActiveAllies : ActiveEnemies;
         var partyList = cmd.SwitchedIn.IsAlly ? PartyAllies : PartyEnemies;
+
         activeList[activeList.FindIndex(pkmn => pkmn == cmd.SwitchedOut)] = cmd.SwitchedIn;
         partyList[partyList.FindIndex(pkmn => pkmn == cmd.SwitchedIn)] = cmd.SwitchedOut;
         order[order.FindIndex(pkmn => pkmn == cmd.SwitchedOut)] = cmd.SwitchedIn;
+
         yield return battleUI.RegisterSwitch(cmd.SwitchedIn);
 
-        // update exp candidates - new ally gets xp for all active enemies
         if (cmd.SwitchedIn.IsAlly)
         {
             foreach (var enemy in ActiveEnemies)
@@ -496,33 +463,31 @@ public class BattleLogic
                     enemy.ExpCandidates.Add(cmd.SwitchedIn);
             }
         }
-        // update exp candidates - active allies get xp for new enemy, xp candidates reset for an enemy switched out
         else
         {
             cmd.SwitchedIn.ExpCandidates = new List<Pokemon>(ActiveAllies);
             cmd.SwitchedOut.ExpCandidates = null;
         }
 
-        // apply ability (on switch in)
         cmd.SwitchedIn.Ability.Functions.OnSwitchIn(cmd.SwitchedIn.Ability, cmd.SwitchedIn, battleUI);
 
-        // apply effects (on switch in)
         for (var i = 0; i < effectQueue.Count; i++)
         {
             var effectCommand = effectQueue[i];
+
             if (effectCommand != null && effectCommand.Effect.Trigger == Trigger.OnSwitchIn)
                 yield return ApplyEffect(effectCommand, i, cmd.SwitchedIn);
         }
 
         yield return CheckDeath();
 
-        // update move targets so they do not fail
         battleUI.UpdateMoveTargets(cmd);
     }
 
     private List<Pokemon> GetMoveTargets(MoveCommand cmd)
     {
         if (cmd == null) return new List<Pokemon>();
+
         List<Pokemon> targets = null;
         var targeting = cmd.Move.Targeting;
 
@@ -531,24 +496,31 @@ public class BattleLogic
             case Targeting.Self:
                 targets = new List<Pokemon>() { cmd.User };
                 break;
+
             case Targeting.Single:
                 targets = IsActive(cmd.Target) ? new List<Pokemon>() { cmd.Target } : new List<Pokemon>();
                 break;
+
             case Targeting.Adjacent:
                 var primaryTarget = cmd.Target;
                 var targetList = primaryTarget.IsAlly ? ActiveAllies : ActiveEnemies;
                 var index = targetList.FindIndex(pkmn => pkmn == primaryTarget);
+
                 targets = new List<Pokemon>();
+
                 if (index - 1 >= 0) targets.Add(targetList[index - 1]);
                 targets.Add(targetList[index]);
                 if (index + 1 < targetList.Count) targets.Add(targetList[index + 1]);
                 break;
+
             case Targeting.Allies:
                 targets = cmd.User.IsAlly ? ActiveAllies : ActiveEnemies;
                 break;
+
             case Targeting.Enemies:
                 targets = cmd.User.IsAlly ? ActiveEnemies : ActiveAllies;
                 break;
+
             case Targeting.All:
                 targets = ActivePokemons();
                 break;
@@ -557,30 +529,32 @@ public class BattleLogic
         return targeting == Targeting.Self ? targets : targets.FindAll(pkmn => pkmn.Health > 0);
     }
 
-    /// <summary>
-    /// "Specific target" ignores whatever target may be assigned to the command.
-    /// </summary>
     private IEnumerator ApplyEffect(EffectCommand cmd, int index, Pokemon specificTarget)
     {
         if (cmd == null) yield break;
+
         var target = specificTarget ?? cmd.Target;
-        if (target.IsAlly ? !ActiveAllies.Contains(target) : !ActiveEnemies.Contains(target)) yield break;
+
+        if (target.IsAlly ? !ActiveAllies.Contains(target) : !ActiveEnemies.Contains(target))
+            yield break;
 
         if (cmd.Effect.Turn > cmd.Effect.Duration)
         {
-            if (target.Health > 0) yield return cmd.Effect.Functions.OnDeletion(cmd.Effect, cmd.User, cmd.Target, battleUI);
-            effectQueue[index] = null; // clear effect
+            if (target.Health > 0)
+                yield return cmd.Effect.Functions.OnDeletion(cmd.Effect, cmd.User, cmd.Target, battleUI);
+
+            effectQueue[index] = null;
             yield return battleUI.NotifyUpdateHealth();
         }
         else
         {
-            if (target.Health > 0) yield return cmd.Effect.Functions.Execute(cmd.Effect, cmd.User, cmd.Target, battleUI);
+            if (target.Health > 0)
+                yield return cmd.Effect.Functions.Execute(cmd.Effect, cmd.User, cmd.Target, battleUI);
+
             yield return battleUI.NotifyUpdateHealth();
         }
 
         yield return CheckDeath();
-
-        //if (target.Health > 0) yield return Print($"<{cmd.Effect.Name} on {target.Name}>");
     }
 
     private IEnumerator ApplyEffect(EffectCommand cmd, int index)
@@ -592,31 +566,31 @@ public class BattleLogic
     {
         foreach (var user in order)
         {
-            // if 0 hp but not fainted, we haven't yet processed onDeath events for them
             if (user.Health <= 0 && user.Status != Status.Fainted)
             {
                 yield return battleUI.NotifyUpdateHealth();
+
                 Animations.GetUnit(user).PlayFaintCry();
-                yield return Print($"{user.Name} fainted!");
+                yield return Print($"{user.Name}은(는) 쓰러졌다!");
                 yield return Animations.Faint(user);
+
                 user.Status = Status.Fainted;
 
-                // apply effects (on death)
-                for (var i=0; i<effectQueue.Count; i++)
+                for (var i = 0; i < effectQueue.Count; i++)
                 {
                     var cmd = effectQueue[i];
+
                     if (cmd != null && cmd.User == user && cmd.Effect.Trigger == Trigger.OnDeath)
                         yield return ApplyEffect(cmd, i);
                 }
 
-                // apply abilities (on death)
                 yield return user.Ability.Functions.OnDeath(user.Ability, user, battleUI);
                 yield return battleUI.NotifyUpdateHealth();
 
-                // give exp to others if it was an enemy dying
                 if (!user.IsAlly)
                 {
                     var expList = user.ExpCandidates.FindAll(pkmn => pkmn.Health > 0);
+
                     foreach (var candidate in expList)
                     {
                         var expReward = GetExpForKill(candidate, user, expList.Count, IsTrainerBattle);
@@ -632,23 +606,29 @@ public class BattleLogic
     private IEnumerator HandleExpGain(Pokemon receiver, int expGained)
     {
         receiver.Experience += expGained;
-        yield return Print($"{receiver.Name} gained {expGained} exp. points!");
+        yield return Print($"{receiver.Name}은(는) 경험치를 {expGained} 얻었다!");
 
         var hasPendingEvolution = false;
         var targetLevel = GetLevelFromExp(receiver.Experience, receiver.ExpGroup);
-        while (targetLevel > receiver.Level) // skipping levels
+
+        while (targetLevel > receiver.Level)
         {
             receiver.LevelUp();
-            if (ActiveAllies.Contains(receiver)) // otherwise level up offscreen
+
+            if (ActiveAllies.Contains(receiver))
             {
                 yield return battleUI.NotifyUpdateExp(true);
                 yield return battleUI.NotifyUpdateHealth(true);
             }
+
             battleUI.PlayLevelUpSound();
-            yield return Print($"{receiver.Name} reached level {receiver.Level}!");
+
+            yield return Print($"{receiver.Name}은(는) 레벨 {receiver.Level}이 되었다!");
             yield return HandleMoveLearning(receiver);
 
-            if (receiver.Skeleton.levelEvolution != null && receiver.Level >= receiver.Skeleton.levelEvolution.level && !hasPendingEvolution)
+            if (receiver.Skeleton.levelEvolution != null &&
+                receiver.Level >= receiver.Skeleton.levelEvolution.level &&
+                !hasPendingEvolution)
             {
                 hasPendingEvolution = true;
                 SceneInfo.AddPendingEvolution(receiver, receiver.Skeleton.levelEvolution.evolution);
@@ -663,55 +643,65 @@ public class BattleLogic
     {
         foreach (var moveSkeleton in learner.NewMovesFromLevelUp())
         {
-            // clear the flags
             Confirmation = null;
             MoveLearningSelection = null;
 
-            // there's room, automatically learn
             var usedSlots = learner.GetFilledMoveSlots();
+
             if (usedSlots < 4)
             {
                 learner.Moves[usedSlots] = new Move(moveSkeleton);
-                yield return Print($"{learner.Name} learned {moveSkeleton.moveName}!");
+                yield return Print($"{learner.Name}은(는) {moveSkeleton.moveName}을(를) 배웠다!");
                 continue;
             }
 
-            // no room, replace a move
-            yield return Print($"{learner.Name} is trying to learn {moveSkeleton.moveName}.");
-            yield return Print("Should it do so?", false);
+            yield return Print($"{learner.Name}은(는) {moveSkeleton.moveName}을(를) 배우려 한다.");
+            yield return Print("배우게 할까?", false);
 
             battleUI.RequestConfirmationBox();
             yield return Await(() => Confirmation != null);
-            
-            if (Confirmation == false) // rejected learning move
+
+            if (Confirmation == false)
                 continue;
 
-            yield return Print("Which move should be replaced?");
+            yield return Print("어떤 기술을 잊게 할까?");
+
             battleUI.RequestMoveReplacement(learner);
             yield return Await(() => MoveLearningSelection != null);
             battleUI.GoIdle();
 
-            if (MoveLearningSelection < 0) // rejected learning move
+            if (MoveLearningSelection < 0)
             {
-                yield return Print($"{learner.Name} did not learn {moveSkeleton.moveName}.");
+                yield return Print($"{learner.Name}은(는) {moveSkeleton.moveName}을(를) 배우지 않았다.");
                 continue;
             }
 
             learner.Moves[MoveLearningSelection.Value] = new Move(moveSkeleton);
-            yield return Print($"{learner.Name} learned {moveSkeleton.moveName}!");
-            if (ActiveAllies.Contains(learner)) battleUI.RefreshMoves(learner);
+            yield return Print($"{learner.Name}은(는) {moveSkeleton.moveName}을(를) 배웠다!");
+
+            if (ActiveAllies.Contains(learner))
+                battleUI.RefreshMoves(learner);
         }
     }
-    
+
     private string WeatherToString()
     {
         switch (Weather)
         {
-            case Weather.Hail: return "It's hailing.";
-            case Weather.Rain: return "It's raining.";
-            case Weather.Sandstorm: return "A sandstorm rages.";
-            case Weather.Sunny: return "It's very sunny.";
-            default: return null;
+            case Weather.Hail:
+                return "싸라기눈이 내리고 있다.";
+
+            case Weather.Rain:
+                return "비가 내리고 있다.";
+
+            case Weather.Sandstorm:
+                return "모래바람이 몰아치고 있다.";
+
+            case Weather.Sunny:
+                return "햇살이 강하다.";
+
+            default:
+                return null;
         }
     }
 
@@ -720,21 +710,23 @@ public class BattleLogic
         return pokemon.Health > 0 && ActivePokemons().Contains(pokemon);
     }
 
-    /// <summary>
-    /// Sets the outcome value based on the state of all Pokemon, also returning that value.
-    /// </summary>
     private Outcome CheckVictory()
     {
         var forcedOutcome = SceneInfo.ConsumeForcedOutcome();
+
         if (forcedOutcome != Outcome.Undecided)
         {
             Outcome = forcedOutcome;
             return Outcome;
         }
 
-        if (PartyAllies.Concat(ActiveAllies).All(pkmn => pkmn.Health <= 0)) Outcome = Outcome.Loss;
-        else if (PartyEnemies.Concat(ActiveEnemies).All(pkmn => pkmn.Health <= 0)) Outcome = Outcome.Win;
-        else Outcome = Outcome.Undecided;
+        if (PartyAllies.Concat(ActiveAllies).All(pkmn => pkmn.Health <= 0))
+            Outcome = Outcome.Loss;
+        else if (PartyEnemies.Concat(ActiveEnemies).All(pkmn => pkmn.Health <= 0))
+            Outcome = Outcome.Win;
+        else
+            Outcome = Outcome.Undecided;
+
         return Outcome;
     }
 }
