@@ -47,7 +47,7 @@ public class PlayerLogic : MonoBehaviour
         {
             FaceDirection(playerInfo.Direction);
             Player = new Player(playerInfo.Player);
-            overworld = GameObject.Find(playerInfo.OverworldKey).GetComponent<Overworld>();
+            overworld =FindObjectOfType<Overworld>();
 
             var targetCoordinates = SceneInfo.GetTargetCoordinates();
             transform.position = new Vector3(
