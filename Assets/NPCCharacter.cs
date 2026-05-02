@@ -32,6 +32,9 @@ public class NPCCharacter : MonoBehaviour
     public AudioSource detectedPlayer;
     public Animator animator;
     public BoxCollider2D boxCollider2D;
+    private Camera mainCamera;
+
+    Renderer rend;
 
     [Header("Layers")]
     public LayerMask solidLayer;
@@ -46,6 +49,7 @@ public class NPCCharacter : MonoBehaviour
     {
         originalPosition = transform.position;
         currentDirection = startingDirection;
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
 
         if (playerLogic == null)
             playerLogic = FindObjectOfType<PlayerLogic>();
@@ -59,8 +63,10 @@ public class NPCCharacter : MonoBehaviour
         if (boxCollider2D == null)
             boxCollider2D = GetComponent<BoxCollider2D>();
 
+        rend = GetComponent<Renderer>();
         FaceDirection(currentDirection);
         StartCoroutine(RoamRoutine());
+        
     }
 
     void Update()
@@ -70,6 +76,17 @@ public class NPCCharacter : MonoBehaviour
 
         if (IsTalkInputPressed())
             TryTalk();
+    }
+
+    bool IsVisibleFromMainCamera()
+    {
+        if (mainCamera == null) return true;
+
+        Vector3 viewPos = mainCamera.WorldToViewportPoint(transform.position);
+
+        return viewPos.z > 0 &&
+               viewPos.x >= 0f && viewPos.x <= 1f &&
+               viewPos.y >= 0f && viewPos.y <= 1f;
     }
 
     bool IsTalkInputPressed()
@@ -84,6 +101,14 @@ public class NPCCharacter : MonoBehaviour
     {
         while (true)
         {
+            // 화면에 안 보이면 아무것도 안 함
+            if (!IsVisibleFromMainCamera())
+            {
+                StopMoving();
+                yield return null;
+                continue;
+            }
+
             if (isTalking || (dialogueManager != null && dialogueManager.IsDialogueActive()))
             {
                 StopMoving();
@@ -93,7 +118,6 @@ public class NPCCharacter : MonoBehaviour
 
             yield return new WaitForSeconds(Random.Range(idleTimeMin, idleTimeMax));
 
-            // 대기하는 동안 대화가 시작됐으면 여기서 중단
             if (isTalking || (dialogueManager != null && dialogueManager.IsDialogueActive()))
             {
                 StopMoving();
@@ -119,6 +143,13 @@ public class NPCCharacter : MonoBehaviour
 
         while ((target - transform.position).sqrMagnitude > 0.001f)
         {
+            // 이동 중에도 화면 벗어나면 즉시 멈춤
+            if (!IsVisibleFromMainCamera())
+            {
+                StopMoving();
+                yield break;
+            }
+
             if (isTalking || (dialogueManager != null && dialogueManager.IsDialogueActive()))
             {
                 StopMoving();
