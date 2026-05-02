@@ -15,19 +15,37 @@ public class Unit : MonoBehaviour
     public Vector3 OriginalScale { get; set; }
     public Pokemon Pokemon { get; set; }
 
+    [Header("👉 직접 사용할 스프라이트")]
+    public Sprite customSprite;   // 🔥 이거 추가
+
     public void Setup(Pokemon pokemon, bool switchedIn = false)
     {
         Pokemon = pokemon;
+
         Animator = animatable.GetComponent<Animator>();
         Renderer = animatable.GetComponent<SpriteRenderer>();
         RectTransform = animatable.GetComponent<RectTransform>();
         OriginalScale = RectTransform.localScale;
+
         switchPokeball.enabled = false;
-        
-        if (switchedIn) RectTransform.localScale = new Vector3(0, 0, RectTransform.localScale.z);
+
+        if (switchedIn)
+            RectTransform.localScale = new Vector3(0, 0, RectTransform.localScale.z);
 
         audioSource.clip = pokemon.Skeleton.cry;
-        Animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>(GetAnimationPath());
+
+        // ❗ Animator 끄기 (덮어쓰기 방지)
+        if (Animator != null)
+        {
+            Animator.enabled = false;
+        }
+
+        // 🔥 Sprite 직접 적용
+        if (customSprite != null)
+        {
+            Renderer.sprite = customSprite;
+        }
+
         Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 1f);
     }
 
@@ -58,11 +76,6 @@ public class Unit : MonoBehaviour
         audioSource.Play();
     }
 
-    private string GetAnimationPath()
-    {
-        return string.Format("Images/{0}{1}/ctrl", Pokemon.Skeleton.dexNumber, Pokemon.IsAlly ? "b" : "");
-    }
-    
     public string Name { get { return Pokemon.Skeleton.pokemonName; } }
     public Move[] Moves { get { return Pokemon.Moves; } }
 }

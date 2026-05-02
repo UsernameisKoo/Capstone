@@ -415322,7 +415322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatbox: {fileID: 305174665}
   boxCollider2D: {fileID: 2115287316}
-  trainerName: "\uAD50\uC218\uB2D8"
+  trainerName: 
   skeleton: {fileID: 11400000, guid: 0b9aebde489a352458c74b685a971833, type: 2}
   playerDetectionRadius: 2
   roamRadius: 1
@@ -415330,9 +415330,9 @@ MonoBehaviour:
   dialogue:
   - "\uD639\uC2DC\u2026 \uB0B4\uAC00 \uAE38\uC744 \uC783\uC740 \uAC78\uAE4C? "
   defeatDialogue:
-  - Oh dear...
+  - "\uC624 \uC774\uB7F0...."
   postDialogue:
-  - ok back to unemployment
+  - "\uC774\uB7F0\u2026 \uB2E4\uC2DC \uCC98\uC74C\uBD80\uD130\uC778\uAC00."
   weather: 4
   difficulty: 0
   money: 1000

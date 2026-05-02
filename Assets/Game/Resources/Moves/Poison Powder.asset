@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Poison Powder
   m_EditorClassIdentifier: 
-  moveName: Poison Powder
-  description: Scatters a toxic powder that may poison the foe.
-  type: 9
+  moveName: "\uAF2C\uB9AC\uCE58\uAE30"
+  description: "\uAE30\uAF2C\uB9AC\uB85C \uCCD0\uC11C \uC57D\uD55C \uD53C\uD574\uB97C
+    \uC900\uB2E4."
+  type: 1
   category: 2
   targeting: 0
-  points: 35
-  accuracy: 75
+  points: 15
+  accuracy: 90
   power: 0
   logic: 12

@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Sleep Powder
   m_EditorClassIdentifier: 
-  moveName: Sleep Powder
-  description: Scatters a powder that may cause the foe to sleep.
+  moveName: "\uC5F0\uC18D\uCE58\uAE30"
+  description: "\uAE30\uC5EC\uB7EC \uBC88 \uC5F0\uC18D\uC73C\uB85C \uACF5\uACA9\uD574
+    \uD53C\uD574\uB97C \uC900\uB2E4."
   type: 1
   category: 2
   targeting: 0
-  points: 15
+  points: 35
   accuracy: 75
   power: 0
   logic: 13

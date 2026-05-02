@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177d2a6b275cce74d93b3872cf06afef, type: 3}
   m_Name: Charmander
   m_EditorClassIdentifier: 
-  pokemonName: Charmander
+  pokemonName: "\uC9ED\uBE0C"
   dexNumber: 4
-  icon: {fileID: 21300000, guid: 1db8c546a02d2f846bc632f0c44fa9db, type: 3}
+  icon: {fileID: 21300000, guid: 1e340ef1b580a48f7aa351f0ee10186d, type: 3}
   primaryType: 3
   secondaryType: 12
   hpStat: 39
@@ -28,6 +28,10 @@ MonoBehaviour:
   expStat: 62
   maleChance: 87.5
   cry: {fileID: 8300000, guid: 0a36bae10fcd5af4aab499e34d70cf8b, type: 3}
+  levelEvolution:
+    evolution: {fileID: 0}
+    level: 0
+  itemEvolutions: []
   learnableAbilities:
   - {fileID: 11400000, guid: ed31c51450bda3a43b09acba758aebfb, type: 2}
   learnableMoves:

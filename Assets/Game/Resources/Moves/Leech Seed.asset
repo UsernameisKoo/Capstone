@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Leech Seed
   m_EditorClassIdentifier: 
-  moveName: Leech Seed
-  description: Plants a seed on the foe to steal HP on every turn.
+  moveName: "\uBC15\uCE58\uAE30"
+  description: "\uBA38\uB9AC\uB85C \uB4E4\uC774\uBC1B\uC544 \uD53C\uD574\uB97C \uC900\uB2E4."
   type: 1
   category: 2
   targeting: 0
