@@ -5,7 +5,9 @@ public class CarCharacter : MonoBehaviour
     public enum MoveDirection
     {
         Left,
-        Right
+        Right,
+        Up,
+        Down
     }
 
     [Header("Movement")]
@@ -29,6 +31,11 @@ public class CarCharacter : MonoBehaviour
     [Header("Respawn")]
     public float respawnDelay = 3f;
 
+    [Header("Collision")]
+    public LayerMask solidLayer;
+
+    private bool isStoppedBySolid;
+
 
     private float respawnTimer;
     private bool isWaitingRespawn;
@@ -48,51 +55,65 @@ public class CarCharacter : MonoBehaviour
     }
 
     void FixedUpdate()
+{
+    if (reachedEnd)
     {
-        if (reachedEnd)
+        if (!IsVisibleFromMainCamera())
         {
-            if (!IsVisibleFromMainCamera())
+            if (!isWaitingRespawn)
             {
-                if (!isWaitingRespawn)
-                {
-                    isWaitingRespawn = true;
-                    respawnTimer = respawnDelay;
-                }
-
-                respawnTimer -= Time.fixedDeltaTime;
-
-                if (respawnTimer <= 0f)
-                    RespawnCar();
+                isWaitingRespawn = true;
+                respawnTimer = respawnDelay;
             }
 
-            return;
+            respawnTimer -= Time.fixedDeltaTime;
+
+            if (respawnTimer <= 0f)
+                RespawnCar();
         }
 
-        if (!IsVisibleFromMainCamera())
-            return;
+        return;
+    }
 
-        if (isStoppedByPlayer)
-            return;
+    if (isStoppedByPlayer)
+        return;
+
+     if (isStoppedBySolid)
+         return;
 
         if (endCrosswalk != null)
+    {
+        float distToEnd = Vector2.Distance(rb.position, endCrosswalk.position);
+
+        if (distToEnd <= endStopDistance)
         {
-            float distToEnd = Vector2.Distance(rb.position, endCrosswalk.position);
-
-            if (distToEnd <= endStopDistance)
-            {
-                reachedEnd = true;
-                return;
-            }
+            reachedEnd = true;
+            return;
         }
-
-        MoveCar();
     }
+
+    MoveCar();
+}
 
     void MoveCar()
     {
-        Vector2 dir = moveDirection == MoveDirection.Right
-            ? Vector2.right
-            : Vector2.left;
+        Vector2 dir = Vector2.zero;
+
+        switch (moveDirection)
+        {
+            case MoveDirection.Right:
+                dir = Vector2.right;
+                break;
+            case MoveDirection.Left:
+                dir = Vector2.left;
+                break;
+            case MoveDirection.Up:
+                dir = Vector2.up;
+                break;
+            case MoveDirection.Down:
+                dir = Vector2.down;
+                break;
+        }
 
         rb.MovePosition(rb.position + dir * moveSpeed * Time.fixedDeltaTime);
     }
