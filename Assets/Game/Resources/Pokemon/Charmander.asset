@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pokemonName: "\uC9ED\uBE0C"
   dexNumber: 4
-  icon: {fileID: 21300000, guid: 1e340ef1b580a48f7aa351f0ee10186d, type: 3}
-  primaryType: 3
+  icon: {fileID: 21300000, guid: fe76e4653a3634448835b7e1ec46ee40, type: 3}
+  primaryType: 2
   secondaryType: 12
   hpStat: 39
   atkStat: 52

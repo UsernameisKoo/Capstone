@@ -2206,7 +2206,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -2441,7 +2441,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -2520,7 +2520,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -2797,7 +2797,7 @@ Transform:
   m_GameObject: {fileID: 429045527}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 215, y: 84, z: 7960.8228}
+  m_LocalPosition: {x: 223, y: 90, z: 7960.8228}
   m_LocalScale: {x: 45.00935, y: 45.00935, z: 1.0009998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3687,7 +3687,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -3999,7 +3999,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -4392,7 +4392,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -4868,7 +4868,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -5491,7 +5491,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -5645,7 +5645,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -5962,7 +5962,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -5974,7 +5974,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.1
-  m_Text: Yes
+  m_Text: "\uB124 "
 --- !u!222 &1017102897
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6921,14 +6921,14 @@ RectTransform:
   m_GameObject: {fileID: 1102158035}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3999.9998}
-  m_LocalScale: {x: 225.04675, y: 225.04675, z: 45.009346}
+  m_LocalScale: {x: 260, y: 260, z: 45.009346}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195600827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -196, y: -70}
+  m_AnchoredPosition: {x: -196, y: -60}
   m_SizeDelta: {x: 0.96, y: 0.96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1102158039
@@ -7241,7 +7241,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -7724,14 +7724,14 @@ RectTransform:
   m_GameObject: {fileID: 1205345811}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3999.9998}
-  m_LocalScale: {x: 225.04675, y: 225.04675, z: 45.009346}
+  m_LocalScale: {x: 210, y: 210, z: 45.009346}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195600827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 215, y: 84}
+  m_AnchoredPosition: {x: 223, y: 90}
   m_SizeDelta: {x: 0.96, y: 0.96}
   m_Pivot: {x: 0.49999994, y: 0.5}
 --- !u!212 &1205345813
@@ -7775,7 +7775,7 @@ SpriteRenderer:
   m_SortingLayerID: 1513595187
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1e340ef1b580a48f7aa351f0ee10186d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe76e4653a3634448835b7e1ec46ee40, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -8078,7 +8078,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -8506,7 +8506,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -8817,7 +8817,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -11569,14 +11569,14 @@ RectTransform:
   m_GameObject: {fileID: 1839126722}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3999.9998}
-  m_LocalScale: {x: 225.04675, y: 225.04675, z: 45.009346}
+  m_LocalScale: {x: 210, y: 210, z: 45.009346}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1195600827}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 215, y: 84}
+  m_AnchoredPosition: {x: 223, y: 90}
   m_SizeDelta: {x: 0.96, y: 0.96}
   m_Pivot: {x: 0.49999994, y: 0.5}
 --- !u!212 &1839126724
@@ -11620,7 +11620,7 @@ SpriteRenderer:
   m_SortingLayerID: 1513595187
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1e340ef1b580a48f7aa351f0ee10186d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe76e4653a3634448835b7e1ec46ee40, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11718,7 +11718,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -11730,7 +11730,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.1
-  m_Text: Select your Pokemon.
+  m_Text: "\uB0B4\uBCF4\uB0BC \uD3EC\uCF13\uBAAC\uC744 \uC120\uD0DD\uD558\uC138\uC694. "
 --- !u!222 &1856339585
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11797,7 +11797,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -11876,7 +11876,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -12077,7 +12077,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
@@ -12363,7 +12363,7 @@ Transform:
   m_GameObject: {fileID: 1927307327}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -196, y: -70, z: -4050.8154}
+  m_LocalPosition: {x: -196, y: -60, z: -4050.8154}
   m_LocalScale: {x: 45.009056, y: 45.009056, z: 45.009346}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12480,7 +12480,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -12560,7 +12560,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: b28b7ecb182f6b84fbdc21bd93b8bb84, type: 3}
+    m_Font: {fileID: 12800000, guid: 68a0f1070293dc44ba8797ac2083f3f1, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -12572,7 +12572,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.1
-  m_Text: No
+  m_Text: "\uC544\uB2C8\uC694 "
 --- !u!222 &1979169921
 CanvasRenderer:
   m_ObjectHideFlags: 0

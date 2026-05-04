@@ -4,57 +4,22 @@ using UnityEngine;
 using static Utils;
 using System;
 
-/// <summary>
-/// The actual logic of the move, holding all life cycle functions.
-/// </summary>
 public abstract class MoveFunctions
 {
-    /// <summary>
-    /// Use a move.
-    /// </summary>
     public abstract IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount);
-    /// <summary>
-    /// (Optional) On move being used.
-    /// </summary>
+
     public virtual IEnumerator OnUse(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount) { yield break; }
-    /// <summary>
-    /// (Optional) On move hitting.
-    /// </summary>
     public virtual IEnumerator OnHit(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount) { yield break; }
-    /// <summary>
-    /// (Optional) On move missing.
-    /// </summary>
     public virtual IEnumerator OnMiss(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount) { yield break; }
-    /// <summary>
-    /// (Optional) When move is used in the overworld.
-    /// </summary>
     public virtual IEnumerator OnOverworld() { yield break; }
 }
 
-/// <summary>
-/// Used to select the adequate move logic for a move instance.
-/// </summary>
 public enum MoveLogic
 {
     Struggle, Scratch, Tackle, VineWhip, BlazeKick, Blizzard, Ember, Growl, TailWhip, SandAttack, Growth, RazorLeaf, PoisonPowder, SleepPowder, StunSpore,
     LeechSeed
 }
 
-/// <summary>
-/// Single - targets someone. "target" should be determined on effect creation.
-/// Requires user and target.
-/// <para />
-/// Self - targets self. "target" is equal to "user". Requires user.
-/// <para />
-/// Adjacent - targets all enemies or allies around the primary "target",
-/// excluding self ("user"). Requires user and target.
-/// <para />
-/// Allies - targets active allies. "target" is an active ally. Requires user.
-/// <para />
-/// Enemies - targets active enemies. "target" is an active foe. Requires user.
-/// <para />
-/// All - targets all actives. "target" is an active entity.
-/// </summary>
 public enum Targeting
 {
     Single, Self, Adjacent, Allies, Enemies, All
@@ -73,13 +38,13 @@ public class Struggle : MoveFunctions
 
     public override IEnumerator OnHit(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
-        yield return battle.Print($"{user.Name} received some recoil damage.");
+        yield return battle.Print($"{user.Name}은(는) 반동으로 데미지를 입었다!");
         var recoil = Mathf.FloorToInt(damage * 0.25f);
         user.Health -= recoil < 1 ? 1 : recoil;
     }
 }
 
-public class Scratch : MoveFunctions
+public class Scratch : MoveFunctions // 할퀴기
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
@@ -88,7 +53,7 @@ public class Scratch : MoveFunctions
     }
 }
 
-public class Tackle : MoveFunctions
+public class Tackle : MoveFunctions // 몸통박치기
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
@@ -141,21 +106,21 @@ public class Ember : MoveFunctions
     }
 }
 
-public class Growl : MoveFunctions
+public class Growl : MoveFunctions // 울음소리
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
         target.AttackStage--;
-        yield return battle.Print($"{target.Name}'s attack fell!");
+        yield return battle.Print($"{target.Name}의 공격이 떨어졌다!");
     }
 }
 
-public class TailWhip : MoveFunctions
+public class TailWhip : MoveFunctions // 꼬리치기
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
         target.DefenseStage--;
-        yield return battle.Print($"{target.Name}'s defense fell!");
+        yield return battle.Print($"{target.Name}의 방어가 떨어졌다!");
     }
 }
 
@@ -164,7 +129,7 @@ public class SandAttack : MoveFunctions
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
         target.AccuracyStage--;
-        yield return battle.Print($"{target.Name}'s accuracy fell!");
+        yield return battle.Print($"{target.Name}의 명중률이 떨어졌다!");
     }
 }
 
@@ -176,18 +141,18 @@ public class Growth : MoveFunctions
         {
             user.AttackStage += 2;
             user.SpAttackStage += 2;
-            yield return battle.Print($"{user.Name} grew much stronger!");
+            yield return battle.Print($"{user.Name}의 힘이 크게 상승했다!");
         }
         else
         {
             user.AttackStage++;
             user.SpAttackStage++;
-            yield return battle.Print($"{user.Name} grew stronger!");
+            yield return battle.Print($"{user.Name}의 힘이 상승했다!");
         }
     }
 }
 
-public class RazorLeaf : MoveFunctions
+public class RazorLeaf : MoveFunctions // 할퀴기 (변경 반영)
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
@@ -198,25 +163,30 @@ public class RazorLeaf : MoveFunctions
     }
 }
 
-public class PoisonPowder : MoveFunctions
+public class PoisonPowder : MoveFunctions // 꼬리치기 (변경 반영)
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
-        if (target.Status == Status.None && !target.IsType(Type.Grass) && !target.IsType(Type.Poison) && !target.IsType(Type.Steel))
-            yield return battle.Logic.AddEffect(EffectLogic.Poison, user, target);
-        else
-            yield return battle.Print("But it failed!");
+        target.DefenseStage--;
+        yield return battle.Print($"{target.Name}의 방어가 떨어졌다!");
     }
 }
 
-public class SleepPowder : MoveFunctions
+public class SleepPowder : MoveFunctions // 연속치기 (변경 반영)
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
-        if (target.Status == Status.None && !target.IsType(Type.Grass))
-            yield return battle.Logic.AddEffect(EffectLogic.Sleep, user, target);
-        else
-            yield return battle.Print("But it failed!");
+        int hits = UnityEngine.Random.Range(2, 5);
+        int totalDamage = 0;
+
+        for (int i = 0; i < hits; i++)
+        {
+            int damage = CalcDamage(move, user, target, battle, targetCount);
+            target.Health -= damage;
+            totalDamage += damage;
+        }
+
+        yield return battle.Print($"{hits}번 연속으로 공격했다!");
     }
 }
 
@@ -227,19 +197,15 @@ public class StunSpore : MoveFunctions
         if (target.Status == Status.None && !target.IsType(Type.Grass) && !target.IsType(Type.Electric))
             yield return battle.Logic.AddEffect(EffectLogic.Paralysis, user, target);
         else
-            yield return battle.Print("But it failed!");
+            yield return battle.Print("하지만 실패했다!");
     }
 }
 
-public class LeechSeed : MoveFunctions
+public class LeechSeed : MoveFunctions // 박치기 (변경 반영)
 {
     public override IEnumerator Execute(Move move, Pokemon user, Pokemon target, IBattle battle, int targetCount)
     {
-        if (!battle.Logic.EffectExistsOnTarget(EffectLogic.LeechSeeded, target) && !target.IsType(Type.Grass))
-        {
-            yield return battle.Logic.AddEffect(EffectLogic.LeechSeeded, user, target);
-        }
-        else
-            yield return battle.Print("But it failed!");
+        target.Health -= CalcDamage(move, user, target, battle, targetCount);
+        yield break;
     }
 }
