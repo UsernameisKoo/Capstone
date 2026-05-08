@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Ember
   m_EditorClassIdentifier: 
-  moveName: Ember
-  description: A weak fire attack that may inflict a burn.
-  type: 3
+  moveName: "\uD138\uB0A0\uB9AC\uAE30"
+  description: "\uD480\uC78E\uC744 \uB764 \uD138\uC744 \uB0A0\uB824 \uACF5\uACA9\uD55C\uB2E4.
+    \uC77C\uC815 \uD655\uB960\uB85C \uC0C1\uB300\uB97C \uC911\uB3C5\uC2DC\uD0A8\uB2E4. "
+  type: 1
   category: 1
   targeting: 0
   points: 25
