@@ -6059,7 +6059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatbox: {fileID: 305174665}
   boxCollider2D: {fileID: 354207833}
-  trainerName: "\uAD50\uC218\uB2D8"
+  trainerName: Lady
   skeleton: {fileID: 11400000, guid: 0b9aebde489a352458c74b685a971833, type: 2}
   playerDetectionRadius: 2
   roamRadius: 1
@@ -420214,7 +420214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatbox: {fileID: 305174665}
   boxCollider2D: {fileID: 2115287316}
-  trainerName: 
+  trainerName: Lady
   skeleton: {fileID: 11400000, guid: 0b9aebde489a352458c74b685a971833, type: 2}
   playerDetectionRadius: 2
   roamRadius: 1
