@@ -32,6 +32,17 @@ public class Trainer : NPC
     public LayerMask jumpLayer;
     public AudioSource detectedPlayer;
 
+
+    public Sprite battleBackground;
+    public Sprite battleBackgroundBottom;
+    public Color allyNameColor = Color.black;
+    public Color enemyNameColor = Color.black;
+    public bool useCustomPokemonNameColor;
+    public Color allyLevelColor = Color.black;
+    public Color enemyLevelColor = Color.black;
+    public bool useCustomPokemonLevelColor;
+
+
     private List<Pokemon> party;
     private readonly float maxIgnorableDistance = 0.5f; // used in NPC collision calculations
     private SpriteRenderer exclamation;

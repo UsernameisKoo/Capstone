@@ -38,6 +38,8 @@ public static class SceneInfo
     /// </summary>
     public static void BeginTrainerBattle(PlayerLogic playerLogic, Trainer trainer, List<Pokemon> enemies, int battleSize = 1, Weather weather = Weather.None)
     {
+        Debug.Log($"[SceneInfo] BeginTrainerBattle: {trainer.trainerName}");
+
         battleInfo = new BattleInfo
         {
             Trainer = trainer,
@@ -45,7 +47,15 @@ public static class SceneInfo
             Enemies = enemies,
             BattleSize = battleSize,
             Weather = weather,
-            IsTrainerBattle = true
+            IsTrainerBattle = true,
+            UseCustomPokemonNameColor = trainer.useCustomPokemonNameColor,
+            AllyNameColor = trainer.allyNameColor,
+            EnemyNameColor = trainer.enemyNameColor,
+            AllyLevelColor = trainer.allyLevelColor,
+            EnemyLevelColor = trainer.enemyLevelColor,
+
+            BattleBackground = trainer.battleBackground,
+            BattleBackgroundBottom = trainer.battleBackgroundBottom
         };
 
         SetOverworldInfo(playerLogic);
@@ -263,6 +273,14 @@ public class BattleInfo
     public bool IsTrainerBattle { get; set; }
     public AudioSource Music { get; set; } //unused for now
     public Image Background { get; set; } //unused for now
+    public Sprite BattleBackground { get; set; }
+    public Sprite BattleBackgroundBottom { get; set; }
+    public bool UseCustomPokemonNameColor { get; set; }
+    public Color AllyNameColor { get; set; }
+    public Color EnemyNameColor { get; set; }
+    public Color AllyLevelColor { get; set; }
+    public Color EnemyLevelColor { get; set; }
+
 }
 
 public class OverworldInfo

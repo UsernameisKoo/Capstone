@@ -2818,6 +2818,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   detectedPlayer: {fileID: 1903467665}
+  battleBackground: {fileID: -81430405, guid: f1753708b729f476d8fa6812a0712735, type: 3}
+  battleBackgroundBottom: {fileID: 1286014239169217356, guid: 7cb9625845b34c54f94c3b4f10b3ad4d,
+    type: 3}
+  allyNameColor: {r: 0, g: 0, b: 0, a: 1}
+  enemyNameColor: {r: 0, g: 0, b: 0, a: 1}
+  useCustomPokemonNameColor: 0
+  allyLevelColor: {r: 0, g: 0, b: 0, a: 1}
+  enemyLevelColor: {r: 0, g: 0, b: 0, a: 1}
+  useCustomPokemonLevelColor: 0
 --- !u!61 &133420540
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6089,6 +6098,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   detectedPlayer: {fileID: 1903467665}
+  battleBackground: {fileID: -1862795770, guid: f1753708b729f476d8fa6812a0712735,
+    type: 3}
+  battleBackgroundBottom: {fileID: 1286014239169217356, guid: 7cb9625845b34c54f94c3b4f10b3ad4d,
+    type: 3}
+  allyNameColor: {r: 0, g: 0, b: 0, a: 1}
+  enemyNameColor: {r: 0, g: 0, b: 0, a: 1}
+  useCustomPokemonNameColor: 0
+  allyLevelColor: {r: 0, g: 0, b: 0, a: 1}
+  enemyLevelColor: {r: 0, g: 0, b: 0, a: 1}
+  useCustomPokemonLevelColor: 0
 --- !u!95 &354207835
 Animator:
   serializedVersion: 5
@@ -420244,6 +420263,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   detectedPlayer: {fileID: 1903467665}
+  battleBackground: {fileID: -1862795770, guid: f1753708b729f476d8fa6812a0712735,
+    type: 3}
+  battleBackgroundBottom: {fileID: 1286014239169217356, guid: 7cb9625845b34c54f94c3b4f10b3ad4d,
+    type: 3}
+  allyNameColor: {r: 0, g: 0, b: 0, a: 1}
+  enemyNameColor: {r: 0, g: 0, b: 0, a: 1}
+  useCustomPokemonNameColor: 1
+  allyLevelColor: {r: 1, g: 0, b: 0, a: 1}
+  enemyLevelColor: {r: 1, g: 0, b: 0, a: 1}
+  useCustomPokemonLevelColor: 1
 --- !u!95 &2115287318
 Animator:
   serializedVersion: 5

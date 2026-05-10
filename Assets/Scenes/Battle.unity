@@ -902,8 +902,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f1753708b729f476d8fa6812a0712735, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: -1908381754, guid: f1753708b729f476d8fa6812a0712735, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -10725,6 +10725,7 @@ GameObject:
   - component: {fileID: 1736434637}
   - component: {fileID: 1736434639}
   - component: {fileID: 1736434640}
+  - component: {fileID: 1736434641}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -10760,6 +10761,7 @@ MonoBehaviour:
   notVeryEffectiveSound: {fileID: 12897951}
   superEffectiveSound: {fileID: 440259227}
   levelUpSound: {fileID: 1334855246}
+  backgroundManager: {fileID: 1736434641}
 --- !u!4 &1736434636
 Transform:
   m_ObjectHideFlags: 0
@@ -10890,6 +10892,20 @@ MonoBehaviour:
   audioPlayer: {fileID: 868196584}
   exitPokeball: {fileID: 8300000, guid: e92ef3542114b5f4aa3dee55dc80d97c, type: 3}
   faint: {fileID: 8300000, guid: e242df621ab73444e9b495892440c16a, type: 3}
+--- !u!114 &1736434641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736434634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83462205c2e5b2d41a9492bcf5dce276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 167716304}
+  backgroundBottom: {fileID: 1654424770}
 --- !u!1 &1753046387
 GameObject:
   m_ObjectHideFlags: 0

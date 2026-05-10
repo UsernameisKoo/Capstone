@@ -68,8 +68,8 @@ public class HUD : MonoBehaviour
     private void InitAlly(Pokemon ally)
     {
         this.ally = ally;
-        allyName.text = Bold(GetGenderedName(ally));
-        allyLevel.text = Bold(ally.Level.ToString());
+        allyName.text = Bold(GetGenderedName(ally, true));
+        allyLevel.text = Bold(GetColoredLevel(ally.Level, true));
 
         lastAllyHealth = ally.Health;
         lastAllyHealthBar = ((float)ally.Health) / ally.MaxHealth;
@@ -86,18 +86,43 @@ public class HUD : MonoBehaviour
     private void InitEnemy(Pokemon enemy)
     {
         this.enemy = enemy;
-        enemyName.text = Bold(GetGenderedName(enemy));
-        enemyLevel.text = Bold(enemy.Level.ToString());
+        enemyName.text = Bold(GetGenderedName(enemy, false));
+        enemyLevel.text = Bold(GetColoredLevel(enemy.Level, false));
 
         lastEnemyHealthBar = ((float)enemy.Health) / enemy.MaxHealth;
 
         StartCoroutine(UpdateEnemyHealth(true));
         UpdateStatus(enemy, enemyStatus);
     }
-
-    private string GetGenderedName(Pokemon pokemon)
+    private string GetColoredLevel(int level, bool isAlly)
     {
-        var genderChar = pokemon.Gender == Gender.Male ? "<color=blue>♂</color>" : pokemon.Gender == Gender.Female ? "<color=magenta>♀</color>" : "";
+        var info = SceneInfo.GetBattleInfo();
+
+        if (info != null && info.IsTrainerBattle && info.UseCustomPokemonNameColor)
+        {
+            var color = isAlly ? info.AllyLevelColor : info.EnemyLevelColor;
+            return $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{level}</color>";
+        }
+
+        return level.ToString();
+    }
+
+    private string GetGenderedName(Pokemon pokemon, bool isAlly)
+    {
+        var genderChar = pokemon.Gender == Gender.Male
+            ? "<color=blue>♂</color>"
+            : pokemon.Gender == Gender.Female
+                ? "<color=magenta>♀</color>"
+                : "";
+
+        var info = SceneInfo.GetBattleInfo();
+
+        if (info != null && info.IsTrainerBattle && info.UseCustomPokemonNameColor)
+        {
+            var color = isAlly ? info.AllyNameColor : info.EnemyNameColor;
+            return $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{pokemon.Name}</color>{genderChar}";
+        }
+
         return $"{pokemon.Name}{genderChar}";
     }
 
@@ -177,7 +202,7 @@ public class HUD : MonoBehaviour
         expUpSound.Play();
         yield return UpdateBar(allyExpBar, 1, 1, lastAllyExpBar, immediate);
         expUpSound.Stop();
-        allyLevel.text = Bold(ally.Level.ToString());
+        allyLevel.text = Bold(GetColoredLevel(ally.Level, true));
         yield return null;
         lastAllyExpBar = 0f;
     }

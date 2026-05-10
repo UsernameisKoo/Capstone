@@ -25,7 +25,8 @@ public class SingleBattle : MonoBehaviour, IBattle
     public AudioSource hitSound;
     public AudioSource notVeryEffectiveSound;
     public AudioSource superEffectiveSound;
-    public AudioSource levelUpSound;
+    public AudioSource levelUpSound; 
+    public BattleBackgroundManager backgroundManager;
 
     private int orderIndex;
     private int actionIndex;
@@ -53,6 +54,7 @@ public class SingleBattle : MonoBehaviour, IBattle
     void Start()
     {
         BattleInfo = SceneInfo.GetBattleInfo();
+        backgroundManager.Apply();
         PlayerInfo = SceneInfo.GetPlayerInfo();
 
         EnsureAllLeadingPokemonAlive(BattleInfo);
