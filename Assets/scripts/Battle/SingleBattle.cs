@@ -25,7 +25,7 @@ public class SingleBattle : MonoBehaviour, IBattle
     public AudioSource hitSound;
     public AudioSource notVeryEffectiveSound;
     public AudioSource superEffectiveSound;
-    public AudioSource levelUpSound; 
+    public AudioSource levelUpSound;
     public BattleBackgroundManager backgroundManager;
 
     private int orderIndex;
@@ -34,6 +34,7 @@ public class SingleBattle : MonoBehaviour, IBattle
     private int confirmationIndex;
     private int forcedSwitchIndex;
     private bool isForcedSwitch;
+
     private List<Pokemon> order;
     private Dictionary<Pokemon, SwitchCommand> pendingSwitches;
     private Dictionary<Pokemon, MoveCommand> pendingMoves;
@@ -54,10 +55,14 @@ public class SingleBattle : MonoBehaviour, IBattle
     void Start()
     {
         BattleInfo = SceneInfo.GetBattleInfo();
-        backgroundManager.Apply();
+
+        if (backgroundManager != null)
+            backgroundManager.Apply();
+
         PlayerInfo = SceneInfo.GetPlayerInfo();
 
         EnsureAllLeadingPokemonAlive(BattleInfo);
+
         Logic = new BattleLogic(this, BattleInfo, anims);
         pendingMoves = new Dictionary<Pokemon, MoveCommand>();
         pendingSwitches = new Dictionary<Pokemon, SwitchCommand>();
@@ -65,17 +70,37 @@ public class SingleBattle : MonoBehaviour, IBattle
         order = Logic.SortBySpeed();
 
         Application.targetFrameRate = 60;
+
         playerUnit.Setup(Logic.ActiveAllies[0], true);
         enemyUnit.Setup(Logic.ActiveEnemies[0], BattleInfo.IsTrainerBattle);
         hud.Init(playerUnit.Pokemon, enemyUnit.Pokemon);
+
         chatbox.RefreshMoves(playerUnit.Pokemon);
-        chatbox.confirmationObject.SetActive(false);
+
+        if (chatbox.confirmationObject != null)
+            chatbox.confirmationObject.SetActive(false);
 
         if (BattleInfo.IsTrainerBattle) anims.SetupNPCIntro(BattleInfo.Trainer);
         else anims.DisableNPCIntro();
 
         BattleState = BattleState.Intro;
         StartCoroutine(BattleIntro());
+    }
+
+    private bool PressedEnter()
+    {
+        return Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter);
+    }
+
+    private bool PressedEsc()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
+    }
+
+    private void PlayChatSound()
+    {
+        if (chatSound != null)
+            chatSound.Play();
     }
 
     void Update()
@@ -85,14 +110,182 @@ public class SingleBattle : MonoBehaviour, IBattle
             case BattleState.SelectingAction:
                 ActionPicker();
                 break;
+
             case BattleState.SelectingMove:
             case BattleState.SelectingReplacedMove:
                 MovePicker();
                 break;
+
             case BattleState.Confirming:
                 ConfirmationPicker();
                 break;
         }
+    }
+
+    // =========================
+    // 액션 버튼 색상 처리
+    // =========================
+
+    private void ResetActionTextColors()
+    {
+        for (int i = 0; i < chatbox.actions.Length; i++)
+        {
+            chatbox.actions[i].color = Color.black;
+        }
+    }
+
+    private void SetActionColor(int index, Color color)
+    {
+        ResetActionTextColors();
+
+        if (index >= 0 && index < chatbox.actions.Length)
+        {
+            chatbox.actions[index].color = color;
+        }
+    }
+
+    public void OnHoverAction0() { SetActionColor(0, Color.blue); }
+    public void OnHoverAction1() { SetActionColor(1, Color.blue); }
+    public void OnHoverAction2() { SetActionColor(2, Color.blue); }
+    public void OnHoverAction3() { SetActionColor(3, Color.blue); }
+
+    public void OnExitAction()
+    {
+        ResetActionTextColors();
+    }
+
+    // =========================
+    // 스킬 버튼 색상 처리
+    // =========================
+
+    private void ResetMoveTextColors()
+    {
+        for (int i = 0; i < chatbox.moves.Length; i++)
+        {
+            chatbox.moves[i].color = Color.black;
+        }
+    }
+
+    private void SetMoveColor(int index, Color color)
+    {
+        ResetMoveTextColors();
+
+        if (index >= 0 && index < chatbox.moves.Length)
+        {
+            if (chatbox.moves[index].text != "-")
+                chatbox.moves[index].color = color;
+        }
+    }
+
+    public void OnHoverMove0() { SetMoveColor(0, Color.blue); }
+    public void OnHoverMove1() { SetMoveColor(1, Color.blue); }
+    public void OnHoverMove2() { SetMoveColor(2, Color.blue); }
+    public void OnHoverMove3() { SetMoveColor(3, Color.blue); }
+
+    public void OnExitMove()
+    {
+        ResetMoveTextColors();
+    }
+
+    // =========================
+    // 액션 마우스 클릭
+    // =========================
+
+    public void OnClickFight()
+    {
+        if (BattleState != BattleState.SelectingAction) return;
+        if (chatbox.IsBusy) return;
+
+        actionIndex = 0;
+        SetActionColor(0, Color.blue);
+        PlayChatSound();
+        BeginPlayerMove();
+    }
+
+    public void OnClickBag()
+    {
+        if (BattleState != BattleState.SelectingAction) return;
+        if (chatbox.IsBusy) return;
+
+        actionIndex = 1;
+        SetActionColor(1, Color.blue);
+        PlayChatSound();
+        StartCoroutine(BeginOpenBag());
+    }
+
+    public void OnClickParty()
+    {
+        if (BattleState != BattleState.SelectingAction) return;
+        if (chatbox.IsBusy) return;
+
+        actionIndex = 2;
+        SetActionColor(2, Color.blue);
+        PlayChatSound();
+        isForcedSwitch = false;
+        StartCoroutine(BeginSwitch());
+    }
+
+    public void OnClickRun()
+    {
+        if (BattleState != BattleState.SelectingAction) return;
+        if (chatbox.IsBusy) return;
+
+        actionIndex = 3;
+        SetActionColor(3, Color.blue);
+        PlayChatSound();
+        Logic.TryEscape();
+        AddItemCommand();
+    }
+
+    // =========================
+    // 스킬 마우스 클릭
+    // =========================
+
+    public void OnClickMove0() { SelectMoveByMouse(0); }
+    public void OnClickMove1() { SelectMoveByMouse(1); }
+    public void OnClickMove2() { SelectMoveByMouse(2); }
+    public void OnClickMove3() { SelectMoveByMouse(3); }
+
+    public void OnClickBackFromMove()
+    {
+        BackFromMoveSelection();
+    }
+
+    private void SelectMoveByMouse(int index)
+    {
+        if (BattleState != BattleState.SelectingMove && BattleState != BattleState.SelectingReplacedMove) return;
+        if (chatbox.IsBusy) return;
+        if (index < 0 || index >= order[orderIndex].GetFilledMoveSlots()) return;
+        if (chatbox.moves[index].text == "-") return;
+
+        moveIndex = index;
+        SetMoveColor(index, Color.blue);
+        PlayChatSound();
+
+        if (BattleState == BattleState.SelectingReplacedMove)
+        {
+            Logic.MoveLearningSelection = moveIndex;
+            return;
+        }
+
+        AddMoveCommand(order[orderIndex].Moves[moveIndex], enemyUnit.Pokemon);
+    }
+
+    private void BackFromMoveSelection()
+    {
+        if (BattleState != BattleState.SelectingMove && BattleState != BattleState.SelectingReplacedMove) return;
+        if (chatbox.IsBusy) return;
+
+        ResetMoveTextColors();
+        PlayChatSound();
+
+        if (BattleState == BattleState.SelectingReplacedMove)
+        {
+            Logic.MoveLearningSelection = -1;
+            return;
+        }
+
+        BeginPlayerAction(true);
     }
 
     private IEnumerator BattleIntro()
@@ -157,6 +350,7 @@ public class SingleBattle : MonoBehaviour, IBattle
     private IEnumerator MoveToNextForcedSwitch()
     {
         var actives = Logic.ActivePokemons();
+
         while (forcedSwitchIndex < actives.Count && actives[forcedSwitchIndex].Health > 0)
             forcedSwitchIndex++;
 
@@ -199,15 +393,19 @@ public class SingleBattle : MonoBehaviour, IBattle
                 usedItems = new Dictionary<Pokemon, bool>();
                 StartCoroutine(PerformForcedSwitches());
                 break;
+
             case Outcome.Win:
                 StartCoroutine(OnWin());
                 break;
+
             case Outcome.Loss:
                 StartCoroutine(OnLoss());
                 break;
+
             case Outcome.Escaped:
                 StartCoroutine(OnEscape());
                 break;
+
             case Outcome.Caught:
                 StartCoroutine(OnCaught());
                 break;
@@ -228,22 +426,27 @@ public class SingleBattle : MonoBehaviour, IBattle
             audioPlayer.clip = BattleInfo.Trainer.skeleton.victoryMusic;
             audioPlayer.volume = 0.4f;
             audioPlayer.Play();
+
             hud.HideEnemyHUD();
             yield return anims.PlayNPCSlideIn();
             yield return Print(dialogue[0], false);
 
             while (index < dialogue.Length + 2)
             {
-                if (Input.GetKeyDown(KeyCode.Z))
+                if (PressedEnter())
                 {
-                    chatSound.Play();
-                    if (index < dialogue.Length) yield return Print(dialogue[index], false);
-                    else if (index == dialogue.Length) yield return Print($"{PlayerInfo.Player.Name}은(는) 승리하여 {BattleInfo.Trainer.money}원을 얻었다!", false);
+                    PlayChatSound();
+
+                    if (index < dialogue.Length)
+                        yield return Print(dialogue[index], false);
+                    else if (index == dialogue.Length)
+                        yield return Print($"{PlayerInfo.Player.Name}은(는) 승리하여 {BattleInfo.Trainer.money}원을 얻었다!", false);
                     else
                     {
                         BattleState = BattleState.Idle;
                         StartCoroutine(hud.ReturnToOverworld());
                     }
+
                     index++;
                 }
                 else yield return null;
@@ -268,21 +471,27 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         while (index <= 3)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (PressedEnter())
             {
-                chatSound.Play();
+                PlayChatSound();
+
                 switch (index++)
                 {
                     case 0:
-                        if (isTrainerBattle) yield return Print($"{PlayerInfo.Player.Name}은(는) {moneyLoss}원을 지불했다...", false);
-                        else yield return Print($"{PlayerInfo.Player.Name}은(는) 도망치다 {moneyLoss}원을 잃었다...", false);
+                        if (isTrainerBattle)
+                            yield return Print($"{PlayerInfo.Player.Name}은(는) {moneyLoss}원을 지불했다...", false);
+                        else
+                            yield return Print($"{PlayerInfo.Player.Name}은(는) 도망치다 {moneyLoss}원을 잃었다...", false);
                         break;
+
                     case 1:
                         yield return Print("...", false);
                         break;
+
                     case 2:
                         yield return Print($"{PlayerInfo.Player.Name}은(는) 눈앞이 깜깜해졌다!", false);
                         break;
+
                     case 3:
                         BattleState = BattleState.Idle;
                         StartCoroutine(hud.ReturnToOverworld());
@@ -299,7 +508,7 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         while (true)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (PressedEnter())
             {
                 BattleState = BattleState.Idle;
                 StartCoroutine(hud.ReturnToOverworld());
@@ -316,21 +525,25 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         pokemonsInParty.Add(enemyUnit.Pokemon);
         yield return Print($"{enemyUnit.Pokemon.Name}을(를) 잡았다!", false);
+
         if (pokemonsInParty.Count < 6) index++;
 
         while (index <= 2)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (PressedEnter())
             {
-                chatSound.Play();
+                PlayChatSound();
+
                 switch (index++)
                 {
                     case 0:
                         yield return Print("<포켓몬은 PC로 전송됩니다. 준비 중>", false);
                         break;
+
                     case 1:
                         yield return Print("<도감 데이터 준비 중>", false);
                         break;
+
                     case 2:
                         BattleState = BattleState.Idle;
                         StartCoroutine(hud.ReturnToOverworld());
@@ -346,7 +559,8 @@ public class SingleBattle : MonoBehaviour, IBattle
         var originalState = BattleState;
         BattleState = BattleState.Idle;
 
-        if (switchedIn.IsAlly) yield return Print($"가라! {switchedIn.Name}!");
+        if (switchedIn.IsAlly)
+            yield return Print($"가라! {switchedIn.Name}!");
         else
         {
             yield return Print($"{BattleInfo.Trainer.skeleton.className} {BattleInfo.Trainer.Name}은(는) {switchedIn.Name}을(를) 내보냈다!");
@@ -373,8 +587,10 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     public void SwitchUpdateUI(Pokemon switchedIn)
     {
-        if (switchedIn.IsAlly) playerUnit.Setup(switchedIn, true);
-        else enemyUnit.Setup(switchedIn, true);
+        if (switchedIn.IsAlly)
+            playerUnit.Setup(switchedIn, true);
+        else
+            enemyUnit.Setup(switchedIn, true);
     }
 
     public IEnumerator NotifySwitchPerformed(Pokemon selection)
@@ -408,13 +624,19 @@ public class SingleBattle : MonoBehaviour, IBattle
     private IEnumerator UseItemOnEnemy(Item item)
     {
         chatbox.SetState(ChatState.ChatOnly);
-        bag.chatbox.confirmationObject.SetActive(false);
+
+        if (bag.chatbox.confirmationObject != null)
+            bag.chatbox.confirmationObject.SetActive(false);
+
         var target = Logic.ActiveEnemies[0];
 
         if (!bag.ItemToUse.Functions.CanBeUsed(bag.ItemToUse, target))
         {
             yield return chatbox.Print($"지금은 {target.Name}에게 이 아이템을 사용할 수 없다.");
-            while (!Input.GetKeyDown(KeyCode.Z)) yield return null;
+
+            while (!PressedEnter())
+                yield return null;
+
             bag.Init(this);
             yield break;
         }
@@ -469,21 +691,22 @@ public class SingleBattle : MonoBehaviour, IBattle
     public IEnumerator RegisterSwitch(Pokemon switchedIn)
     {
         if (switchedIn.IsAlly)
-        {
             chatbox.RefreshMoves(switchedIn);
-        }
         else
-        {
             enemyUnit.Setup(switchedIn, true);
-        }
 
         yield return PresentSwitch(switchedIn);
     }
 
     private void BeginPlayerAction(bool immediate = false)
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         if (!order[orderIndex].IsAlly)
+        {
             AddMoveCommand(RandomNonNullElement(order[orderIndex].Moves), playerUnit.Pokemon);
+        }
         else
         {
             chatbox.SetState(ChatState.SelectAction);
@@ -494,18 +717,24 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     private void BeginPlayerMove()
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         chatbox.SetState(ChatState.SelectMove);
         BattleState = BattleState.SelectingMove;
         chatbox.RefreshMoves(order[orderIndex]);
+
         if (moveIndex >= order[orderIndex].GetFilledMoveSlots())
-        {
-            chatbox.moves[moveIndex].color = Color.black;
             moveIndex = 0;
-        }
+
+        SetMoveColor(moveIndex, Color.blue);
     }
 
     private void BeginTurn()
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         chatbox.SetState(ChatState.ChatOnly);
         BattleState = BattleState.TurnHappening;
         StartCoroutine(Logic.Turn(pendingMoves, pendingSwitches, usedItems));
@@ -513,7 +742,11 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     private IEnumerator BeginSwitch()
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         BattleState = BattleState.Idle;
+
         yield return hud.FadeInTransition();
         battleCanvas.SetActive(false);
         partyCanvas.SetActive(true);
@@ -523,7 +756,11 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     private IEnumerator BeginOpenBag()
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         BattleState = BattleState.Idle;
+
         yield return hud.FadeInTransition();
         battleCanvas.SetActive(false);
         bagCanvas.SetActive(true);
@@ -533,8 +770,9 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     private void MoveToNextInOrder()
     {
-        chatbox.actions[actionIndex].color = Color.black;
-        chatbox.moves[moveIndex].color = Color.black;
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         moveIndex = 0;
 
         if (orderIndex + 1 >= order.Count)
@@ -551,13 +789,19 @@ public class SingleBattle : MonoBehaviour, IBattle
     public void RequestConfirmationBox()
     {
         BattleState = BattleState.Confirming;
-        chatbox.confirmationObject.SetActive(true);
+
+        if (chatbox.confirmationObject != null)
+            chatbox.confirmationObject.SetActive(true);
+
         chatbox.ConfirmationBox.CursorYes();
         confirmationIndex = 0;
     }
 
     public void RequestMoveReplacement(Pokemon learner)
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         chatbox.RefreshMoves(learner);
         chatbox.SetState(ChatState.SelectMove);
         BattleState = BattleState.SelectingReplacedMove;
@@ -565,6 +809,9 @@ public class SingleBattle : MonoBehaviour, IBattle
 
     public void GoIdle()
     {
+        ResetActionTextColors();
+        ResetMoveTextColors();
+
         chatbox.SetState(ChatState.ChatOnly);
         BattleState = BattleState.Idle;
     }
@@ -578,64 +825,87 @@ public class SingleBattle : MonoBehaviour, IBattle
     {
         var oldConfirmationIndex = confirmationIndex;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow)) confirmationIndex = confirmationIndex == 1 ? 0 : 1;
-        if (Input.GetKeyDown(KeyCode.DownArrow)) confirmationIndex = confirmationIndex == 0 ? 1 : 0;
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            confirmationIndex = confirmationIndex == 1 ? 0 : 1;
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+            confirmationIndex = confirmationIndex == 0 ? 1 : 0;
 
         if (oldConfirmationIndex != confirmationIndex)
         {
-            chatSound.Play();
-            if (confirmationIndex == 0) chatbox.ConfirmationBox.CursorYes();
-            else chatbox.ConfirmationBox.CursorNo();
+            PlayChatSound();
+
+            if (confirmationIndex == 0)
+                chatbox.ConfirmationBox.CursorYes();
+            else
+                chatbox.ConfirmationBox.CursorNo();
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (PressedEsc())
         {
             Logic.Confirmation = false;
             BattleState = BattleState.Idle;
-            chatbox.confirmationObject.SetActive(false);
+
+            if (chatbox.confirmationObject != null)
+                chatbox.confirmationObject.SetActive(false);
+
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (PressedEnter())
         {
             Logic.Confirmation = confirmationIndex == 0;
             BattleState = BattleState.Idle;
-            chatbox.confirmationObject.SetActive(false);
+
+            if (chatbox.confirmationObject != null)
+                chatbox.confirmationObject.SetActive(false);
         }
     }
 
     private void ActionPicker()
     {
         var oldIndex = actionIndex;
-        chatbox.actions[actionIndex].color = Color.black;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow)) actionIndex = actionIndex < 2 ? actionIndex + 2 : actionIndex - 2;
-        if (Input.GetKeyDown(KeyCode.DownArrow)) actionIndex = (actionIndex + 2) % 4;
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) actionIndex = actionIndex % 2 == 0 ? actionIndex + 1 : actionIndex - 1;
-        if (Input.GetKeyDown(KeyCode.RightArrow)) actionIndex = actionIndex % 2 != 0 ? actionIndex - 1 : actionIndex + 1;
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            actionIndex = actionIndex < 2 ? actionIndex + 2 : actionIndex - 2;
 
-        chatbox.actions[actionIndex].color = Color.blue;
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+            actionIndex = (actionIndex + 2) % 4;
 
-        if (oldIndex != actionIndex) chatSound.Play();
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            actionIndex = actionIndex % 2 == 0 ? actionIndex + 1 : actionIndex - 1;
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            actionIndex = actionIndex % 2 != 0 ? actionIndex - 1 : actionIndex + 1;
+
+        if (oldIndex != actionIndex)
+        {
+            PlayChatSound();
+            SetActionColor(actionIndex, Color.blue);
+        }
+
+        if (PressedEnter())
         {
             if (chatbox.IsBusy) return;
 
-            chatSound.Play();
+            SetActionColor(actionIndex, Color.blue);
+            PlayChatSound();
+
             switch (actionIndex)
             {
                 case 0:
                     BeginPlayerMove();
                     break;
+
                 case 1:
-                    chatSound.Play();
                     StartCoroutine(BeginOpenBag());
                     break;
+
                 case 2:
                     isForcedSwitch = false;
                     StartCoroutine(BeginSwitch());
                     break;
+
                 case 3:
                     Logic.TryEscape();
                     AddItemCommand();
@@ -647,41 +917,41 @@ public class SingleBattle : MonoBehaviour, IBattle
     private void MovePicker()
     {
         var oldIndex = moveIndex;
-        chatbox.moves[moveIndex].color = Color.black;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow)) moveIndex = moveIndex < 2 ? moveIndex + 2 : moveIndex - 2;
-        if (Input.GetKeyDown(KeyCode.DownArrow)) moveIndex = (moveIndex + 2) % 4;
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) moveIndex = moveIndex % 2 == 0 ? moveIndex + 1 : moveIndex - 1;
-        if (Input.GetKeyDown(KeyCode.RightArrow)) moveIndex = moveIndex % 2 != 0 ? moveIndex - 1 : moveIndex + 1;
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            moveIndex = moveIndex < 2 ? moveIndex + 2 : moveIndex - 2;
 
-        if (chatbox.moves[moveIndex].text == "-") moveIndex = oldIndex;
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+            moveIndex = (moveIndex + 2) % 4;
 
-        chatbox.moves[moveIndex].color = Color.blue;
-        chatbox.ShowMoveInfo(playerUnit.Moves[moveIndex]);
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            moveIndex = moveIndex % 2 == 0 ? moveIndex + 1 : moveIndex - 1;
 
-        if (oldIndex != moveIndex) chatSound.Play();
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            moveIndex = moveIndex % 2 != 0 ? moveIndex - 1 : moveIndex + 1;
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (chatbox.moves[moveIndex].text == "-")
+            moveIndex = oldIndex;
+
+        if (oldIndex != moveIndex)
         {
-            if (chatbox.IsBusy) return;
+            PlayChatSound();
+            SetMoveColor(moveIndex, Color.blue);
+            chatbox.ShowMoveInfo(playerUnit.Moves[moveIndex]);
+        }
 
-            chatSound.Play();
-
-            if (BattleState == BattleState.SelectingReplacedMove)
-            {
-                Logic.MoveLearningSelection = -1;
-                return;
-            }
-
-            BeginPlayerAction(true);
+        if (PressedEsc())
+        {
+            BackFromMoveSelection();
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (PressedEnter())
         {
             if (chatbox.IsBusy) return;
 
-            chatSound.Play();
+            PlayChatSound();
+            SetMoveColor(moveIndex, Color.blue);
 
             if (BattleState == BattleState.SelectingReplacedMove)
             {
@@ -693,11 +963,23 @@ public class SingleBattle : MonoBehaviour, IBattle
         }
     }
 
-    public void PlayHitSound() { hitSound.Play(); }
+    public void PlayHitSound()
+    {
+        if (hitSound != null) hitSound.Play();
+    }
 
-    public void PlayNotVeryEffectiveHitSound() { notVeryEffectiveSound.Play(); }
+    public void PlayNotVeryEffectiveHitSound()
+    {
+        if (notVeryEffectiveSound != null) notVeryEffectiveSound.Play();
+    }
 
-    public void PlaySuperEffectiveHitSound() { superEffectiveSound.Play(); }
+    public void PlaySuperEffectiveHitSound()
+    {
+        if (superEffectiveSound != null) superEffectiveSound.Play();
+    }
 
-    public void PlayLevelUpSound() { levelUpSound.Play(); }
+    public void PlayLevelUpSound()
+    {
+        if (levelUpSound != null) levelUpSound.Play();
+    }
 }
