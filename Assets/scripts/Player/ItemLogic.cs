@@ -87,7 +87,7 @@ public class PokeBall : ItemFunctions
         }
         else
         {
-            yield return chatbox.Print("Oh no! It broke free!");
+            yield return chatbox.Print("앗! 몬스터가 볼에서 튀어나왔다!");
             yield return new WaitForSeconds(1f);
         }
     }
@@ -139,7 +139,7 @@ public class Potion : ItemFunctions
 
     public override IEnumerator OnUse(Item item, Pokemon target, IDialog chatbox, BattleAnimations anims)
     {
-        yield return chatbox.Print($"{target.Name} recovered {healed} health!");
+        yield return chatbox.Print($"{target.Name}의 체력이 {healed} 회복되었다!");
     }
 }
 
@@ -159,7 +159,7 @@ public class Repel : ItemFunctions
 
     public override IEnumerator Use(Item item, PlayerLogic playerLogic, IDialog chatbox)
     {
-        yield return chatbox.Print("dont care didnt ask");
+        yield return chatbox.Print("아무 일도 일어나지 않았다...");
     }
 }
 
@@ -182,6 +182,6 @@ public class Revive : ItemFunctions
 
     public override IEnumerator OnUse(Item item, Pokemon target, IDialog chatbox, BattleAnimations anims)
     {
-        yield return chatbox.Print($"{target.Name} recovered {healed} health!");
+        yield return chatbox.Print($"{target.Name}의 체력이 {healed} 회복되었다!");
     }
 }
