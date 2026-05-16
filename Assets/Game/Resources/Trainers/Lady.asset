@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b721d13758cdc46418bf6d6b7a98e861, type: 3}
   m_Name: Lady
   m_EditorClassIdentifier: 
-  className: Lady
+  className: "\uC5EC\uC790"
   animationPrefix: lady
   introMusic: {fileID: 8300000, guid: 012a547a74b280845b536fd8b65caef3, type: 3}
   battleMusic: {fileID: 8300000, guid: 5ffcace1ce8c7df4bab8c52181156791, type: 3}

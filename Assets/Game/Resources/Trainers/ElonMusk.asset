@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b721d13758cdc46418bf6d6b7a98e861, type: 3}
   m_Name: ElonMusk
   m_EditorClassIdentifier: 
-  className: ElonMusk
+  className: "\uC77C\uB860\uBA38\uC2A4\uD06C"
   animationPrefix: ElonMusk
   introMusic: {fileID: 8300000, guid: 012a547a74b280845b536fd8b65caef3, type: 3}
   battleMusic: {fileID: 8300000, guid: 5ffcace1ce8c7df4bab8c52181156791, type: 3}

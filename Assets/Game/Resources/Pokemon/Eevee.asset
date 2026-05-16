@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177d2a6b275cce74d93b3872cf06afef, type: 3}
   m_Name: Eevee
   m_EditorClassIdentifier: 
-  pokemonName: Eevee
+  pokemonName: "\uC774\uBE0C\uC774"
   dexNumber: 133
   icon: {fileID: 21300000, guid: b466510f3407c3e45ba2126769c923ec, type: 3}
+  frontSprite: {fileID: 21300000, guid: 75c58c6301500194e8bfa1137116dcf8, type: 3}
+  backSprite: {fileID: 21300000, guid: 2bc4df370ef6d7447a07cd052a26346b, type: 3}
   primaryType: 0
   secondaryType: 12
   hpStat: 55
@@ -28,6 +30,10 @@ MonoBehaviour:
   expStat: 65
   maleChance: 87.5
   cry: {fileID: 8300000, guid: c0b3d99db501e4c43b6c75b515e6f5fc, type: 3}
+  levelEvolution:
+    evolution: {fileID: 0}
+    level: 0
+  itemEvolutions: []
   learnableAbilities:
   - {fileID: 11400000, guid: 58d5862666e786f4e8fbd245776d9382, type: 2}
   learnableMoves:

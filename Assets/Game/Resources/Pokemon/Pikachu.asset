@@ -15,6 +15,8 @@ MonoBehaviour:
   pokemonName: Pikachu
   dexNumber: 25
   icon: {fileID: 21300000, guid: 49c91b8568126a444a67fc0493c37620, type: 3}
+  frontSprite: {fileID: 21300000, guid: bb77ebfd3ef40c040b3b73dfa2ed14f9, type: 3}
+  backSprite: {fileID: 21300000, guid: e542aca76a236824f96143d35d43fd38, type: 3}
   primaryType: 4
   secondaryType: 12
   hpStat: 35
@@ -28,6 +30,10 @@ MonoBehaviour:
   expStat: 112
   maleChance: 50
   cry: {fileID: 8300000, guid: f26904aba00cbf74bb55ff4d97897c38, type: 3}
+  levelEvolution:
+    evolution: {fileID: 0}
+    level: 0
+  itemEvolutions: []
   learnableAbilities:
   - {fileID: 11400000, guid: 58d5862666e786f4e8fbd245776d9382, type: 2}
   learnableMoves:

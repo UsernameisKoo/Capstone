@@ -60,7 +60,7 @@ public class BattleParty : MonoBehaviour
         Battle = battle;
         chatbox.confirmationObject.SetActive(false);
         chatbox.SetState(ChatState.Party);
-        StartCoroutine(chatbox.Print("Select a Pokemon.", true));
+        StartCoroutine(chatbox.Print("내보낼 포켓몬을 선택하자!", true));
 
         // reset pointer
         selectionIndex = 0;
@@ -193,7 +193,7 @@ public class BattleParty : MonoBehaviour
     private void ReturnToPokemonSelection()
     {
         chatbox.confirmationObject.SetActive(false);
-        StartCoroutine(chatbox.Print("Select a Pokemon.", true));
+        StartCoroutine(chatbox.Print("내보낼 포켓몬을 선택하자!", true));
         SlotToUse = null;
         askingConfirmation = false;
     }
@@ -214,9 +214,10 @@ public class BattleParty : MonoBehaviour
     {
         IsBusy = true;
         chatbox.confirmationObject.SetActive(false);
+
         if (!bag.ItemToUse.Functions.CanBeUsed(bag.ItemToUse, SlotToUse.Pokemon))
         {
-            yield return chatbox.Print($"This item can't be used on {SlotToUse.Pokemon.Name} right now.");
+            yield return chatbox.Print($"지금은 {SlotToUse.Pokemon.Name}에게 {bag.ItemToUse.Name}을 사용할 수 없다!");
             while (!Input.GetKeyDown(KeyCode.Z)) yield return null;
             IsBusy = false;
             ReturnToPokemonSelection();
@@ -269,7 +270,7 @@ public class BattleParty : MonoBehaviour
             {
                 if (isForcedSwitch)
                 {
-                    StartCoroutine(chatbox.Print("You need to select a Pokemon!"));
+                    StartCoroutine(chatbox.Print("포켓몬을 선택해야 한다!"));
                     return;
                 }
 
@@ -294,13 +295,13 @@ public class BattleParty : MonoBehaviour
             {
                 if (slots[selectionIndex].Pokemon.Status == Status.Fainted)
                 {
-                    StartCoroutine(chatbox.Print($"{slots[selectionIndex].Pokemon.Name} is unable to fight!"));
+                    StartCoroutine(chatbox.Print($"{slots[selectionIndex].Pokemon.Name}은(는) 싸울 수 없다!"));
                     return;
                 }
 
                 if (Battle.Logic.ActiveAllies.Contains(slots[selectionIndex].Pokemon))
                 {
-                    StartCoroutine(chatbox.Print($"{slots[selectionIndex].Pokemon.Name} is already in the fight!"));
+                    StartCoroutine(chatbox.Print($"{slots[selectionIndex].Pokemon.Name}은(는) 이미 배틀에 나와 있다!"));
                     return;
                 }
 
@@ -314,7 +315,7 @@ public class BattleParty : MonoBehaviour
     {
         IsBusy = true;
         chatbox.gameObject.SetActive(true);
-        yield return chatbox.Print($"Use the {bag.ItemToUse.Name} on {SlotToUse.Pokemon.Name}?");
+        yield return chatbox.Print($"{SlotToUse.Pokemon.Name}에게 {bag.ItemToUse.Name}을 사용할까?");
         chatbox.confirmationObject.SetActive(true);
         confirmationIndex = 0;
         chatbox.ConfirmationBox.CursorYes();
@@ -350,7 +351,7 @@ public class BattleParty : MonoBehaviour
     {
         slot.Pokemon = pokemon;
         slot.Name.text = pokemon.Name;
-        slot.Sprite.sprite = pokemon.Skeleton.icon; //Resources.Load<Sprite>($"Images/{GetSpriteID(pokemon)}");
+        slot.Sprite.sprite = pokemon.Skeleton.icon; // Resources.Load<Sprite>($"Images/{GetSpriteID(pokemon)}");
         slot.Level.text = $"Lv. {pokemon.Level}";
         slot.Health.text = $"{pokemon.Health}<size=5> </size>/<size=5> </size>{pokemon.MaxHealth}";
 

@@ -2794,7 +2794,8 @@ MonoBehaviour:
   roamRadius: 1
   startingDirection: 1
   dialogue:
-  - "\uD639\uC2DC\u2026 \uB0B4\uAC00 \uAE38\uC744 \uC783\uC740 \uAC78\uAE4C? "
+  - "\uD559\uC0DD, \uC7A0\uAE50 \uAD1C\uCC2E\uACA0\uB098?\n\uC624\uB298\uC740 \uC911\uC694\uD55C
+    \uACFC\uC81C\uAC00 \uAE30\uB2E4\uB9AC\uACE0 \uC788\uB124. "
   defeatDialogue:
   - Oh dear...
   postDialogue:
@@ -2803,10 +2804,8 @@ MonoBehaviour:
   difficulty: 0
   money: 1000
   pokemons:
-  - speciesName: Charmander
-    level: 2
-  - speciesName: Charmander
-    level: 4
+  - speciesName: Eevee
+    level: 15
   playerLogic: {fileID: 161115116}
   solidLayer:
     serializedVersion: 2
@@ -2826,7 +2825,7 @@ MonoBehaviour:
   useCustomPokemonNameColor: 0
   allyLevelColor: {r: 0, g: 0, b: 0, a: 1}
   enemyLevelColor: {r: 0, g: 0, b: 0, a: 1}
-  useCustomPokemonLevelColor: 0
+  useCustomPokemonLevelColor: 1
 --- !u!61 &133420540
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -420233,7 +420232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatbox: {fileID: 305174665}
   boxCollider2D: {fileID: 2115287316}
-  trainerName: Lady
+  trainerName: 
   skeleton: {fileID: 11400000, guid: 0b9aebde489a352458c74b685a971833, type: 2}
   playerDetectionRadius: 2
   roamRadius: 1
@@ -420249,9 +420248,7 @@ MonoBehaviour:
   money: 1000
   pokemons:
   - speciesName: Charmander
-    level: 2
-  - speciesName: Charmander
-    level: 4
+    level: 5
   playerLogic: {fileID: 161115116}
   solidLayer:
     serializedVersion: 2
