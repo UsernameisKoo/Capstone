@@ -2794,12 +2794,12 @@ MonoBehaviour:
   roamRadius: 1
   startingDirection: 1
   dialogue:
-  - "\uD559\uC0DD, \uC7A0\uAE50 \uAD1C\uCC2E\uACA0\uB098?\n\uC624\uB298\uC740 \uC911\uC694\uD55C
-    \uACFC\uC81C\uAC00 \uAE30\uB2E4\uB9AC\uACE0 \uC788\uB124. "
+  - "\uD559\uC0DD, \uC7A0\uAE50 \uAD1C\uCC2E\uACA0\uB098? "
+  - "\uC790\uB124\uC5D0\uAC8C \uC904 \uC911\uC694\uD55C \uACFC\uC81C\uAC00 \uC788\uB124."
   defeatDialogue:
-  - Oh dear...
+  - "\uC624 \uC774\uB7F0......"
   postDialogue:
-  - ok back to unemployment
+  - "\uC88B\uB2E4. \uC774\uC81C \uBC24\uC0D8 \uACFC\uC81C\uC758 \uC2DC\uAC04\uC774\uB2E4! "
   weather: 4
   difficulty: 0
   money: 1000
