@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177d2a6b275cce74d93b3872cf06afef, type: 3}
   m_Name: Pikachu
   m_EditorClassIdentifier: 
-  pokemonName: Pikachu
+  pokemonName: "\uD53C\uCE74\uCE04"
   dexNumber: 25
   icon: {fileID: 21300000, guid: 49c91b8568126a444a67fc0493c37620, type: 3}
   frontSprite: {fileID: 21300000, guid: bb77ebfd3ef40c040b3b73dfa2ed14f9, type: 3}
