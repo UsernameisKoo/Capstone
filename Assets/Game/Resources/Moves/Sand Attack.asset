@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Sand Attack
   m_EditorClassIdentifier: 
-  moveName: Sand Attack
-  description: Reduces accuracy by throwing sand.
-  type: 5
+  moveName: "\uC9C8\uBB38 \uD3ED\uD0C4 "
+  description: "\uB05D\uC5C6\uB294 \uC9C8\uBB38\uC744 \uB358\uC838 \uC0C1\uB300\uB97C
+    \uB2F9\uD669\uD558\uAC8C \uB9CC\uB4E0\uB2E4."
+  type: 8
   category: 2
   targeting: 0
   points: 15
   accuracy: 100
-  power: 0
+  power: 3
   logic: 9

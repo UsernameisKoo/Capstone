@@ -37,11 +37,9 @@ MonoBehaviour:
   learnableAbilities:
   - {fileID: 11400000, guid: 58d5862666e786f4e8fbd245776d9382, type: 2}
   learnableMoves:
-  - skeleton: {fileID: 11400000, guid: 2404ff190a51bde4693561c0900ea5e3, type: 2}
-    level: 0
   - skeleton: {fileID: 11400000, guid: 4e039cda0cf8d4c438de995d420e27d8, type: 2}
     level: 0
-  - skeleton: {fileID: 11400000, guid: 26af9c37e47593c44a52eb5a0b30c1bd, type: 2}
-    level: 0
   - skeleton: {fileID: 11400000, guid: 001871ed496000d4795de249fbbab0c0, type: 2}
+    level: 0
+  - skeleton: {fileID: 11400000, guid: 40e9989a0ebe2dd49966d35bb09956ac, type: 2}
     level: 0

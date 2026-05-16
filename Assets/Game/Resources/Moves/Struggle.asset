@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Struggle
   m_EditorClassIdentifier: 
-  moveName: Struggle
-  description: An attack that is used only if there is no PP. It also hurts the user.
+  moveName: "\uD300\uD50C \uD68C\uD53C "
+  description: "\uC21C\uAC04\uC801\uC73C\uB85C \uBAB8\uC744 \uD53C\uD55C\uB2E4. \uC0C1\uB300\uC758
+    \uACF5\uACA9\uC744 \uD53C\uD558\uAE30 \uC26C\uC6CC\uC9C4\uB2E4."
   type: 10
   category: 0
   targeting: 0

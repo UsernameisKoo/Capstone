@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Vine Whip
   m_EditorClassIdentifier: 
-  moveName: Vine Whip
-  description: Strikes the foe with slender, whiplike vines.
-  type: 1
+  moveName: "\uBCBC\uB77D\uCE58\uAE30 "
+  description: "\uC2DC\uD5D8 \uC804\uB0A0 \uBC24\uC0C8 \uACF5\uBD80\uD55C \uAE30\uC138\uB85C
+    \uC0C1\uB300\uB97C \uACF5\uACA9\uD55C\uB2E4. "
+  type: 4
   category: 0
   targeting: 0
   points: 25

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Growl
   m_EditorClassIdentifier: 
-  moveName: Growl
-  description: Reduces the foe's Attack.
+  moveName: "\uACFC\uC81C \uD3ED\uD0C4"
+  description: "\uAD50\uC218\uB2D8\uC774 \uC8FC\uC2E0 \uACFC\uC81C. \uAE30\uAC04\uC740
+    \uB2E8 2\uC77C\uC774\uB2E4."
   type: 0
   category: 2
   targeting: 2

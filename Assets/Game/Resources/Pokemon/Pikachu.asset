@@ -35,7 +35,13 @@ MonoBehaviour:
     level: 0
   itemEvolutions: []
   learnableAbilities:
-  - {fileID: 11400000, guid: 58d5862666e786f4e8fbd245776d9382, type: 2}
+  - {fileID: 11400000, guid: ed31c51450bda3a43b09acba758aebfb, type: 2}
   learnableMoves:
+  - skeleton: {fileID: 11400000, guid: 001871ed496000d4795de249fbbab0c0, type: 2}
+    level: 1
+  - skeleton: {fileID: 11400000, guid: 64bb3c1765befcd4a861f188b7343072, type: 2}
+    level: 1
   - skeleton: {fileID: 11400000, guid: 2404ff190a51bde4693561c0900ea5e3, type: 2}
-    level: 0
+    level: 5
+  - skeleton: {fileID: 11400000, guid: 84b8dcc5cd1b7fd4db1ec2a9a40b255d, type: 2}
+    level: 5

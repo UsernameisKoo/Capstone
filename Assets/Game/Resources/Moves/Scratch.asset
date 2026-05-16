@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Scratch
   m_EditorClassIdentifier: 
-  moveName: Scratch
-  description: Scratches the foe with sharp claws.
-  type: 0
+  moveName: "\uD300\uD50C \uD3ED\uD0C4 "
+  description: "\uAD50\uC218\uB2D8\uC774 \uD300\uD50C \uACFC\uC81C\uB97C \uB358\uC9C4\uB2E4.
+    \uC5ED\uD560 \uBD84\uB2F4\uC758 \uC555\uBC15\uC73C\uB85C \uACF5\uACA9\uB825\uC774
+    \uB5A8\uC5B4\uC9C4\uB2E4. "
+  type: 8
   category: 0
   targeting: 0
   points: 35

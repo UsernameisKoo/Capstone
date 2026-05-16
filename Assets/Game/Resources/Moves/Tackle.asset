@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Tackle
   m_EditorClassIdentifier: 
-  moveName: Tackle
-  description: Charges the foe with a full-body tackle.
+  moveName: "\uB9C8\uAC10 \uB7EC\uC2DC"
+  description: "\uB9C8\uAC10 \uC9C1\uC804\uC758 \uC9D1\uC911\uB825\uC73C\uB85C \uBE60\uB974\uAC8C
+    \uB3CC\uC9C4\uD574 \uACF5\uACA9\uD55C\uB2E4. "
   type: 0
   category: 0
   targeting: 0
