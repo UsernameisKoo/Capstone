@@ -18,6 +18,6 @@ MonoBehaviour:
   category: 2
   targeting: 1
   points: 20
-  accuracy: 0
+  accuracy: 50
   power: 0
   logic: 10

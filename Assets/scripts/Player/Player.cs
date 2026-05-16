@@ -15,8 +15,8 @@ public class Player
         Name = "Player";
         Pokemons = new List<Pokemon>()
         {
-            CreatePokemon("Pikachu", 15),
-            CreatePokemon("Snorlax", 12)
+            CreatePokemon("Pikachu", 1),
+            CreatePokemon("Snorlax", 1)
         };
         Pokemons[0].Experience = Pokemons[0].NextLevelExp - 1;
         Pokemons[1].Health = 44;

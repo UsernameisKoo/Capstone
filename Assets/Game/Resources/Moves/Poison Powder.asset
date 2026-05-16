@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Poison Powder
   m_EditorClassIdentifier: 
   moveName: "\uAF2C\uB9AC\uCE58\uAE30"
-  description: "\uAE30\uAF2C\uB9AC\uB85C \uCCD0\uC11C \uC57D\uD55C \uD53C\uD574\uB97C
-    \uC900\uB2E4."
+  description: "\uAF2C\uB9AC\uB85C \uCCD0\uC11C \uC57D\uD55C \uD53C\uD574\uB97C \uC900\uB2E4. "
   type: 1
   category: 2
   targeting: 0
   points: 15
   accuracy: 90
-  power: 0
+  power: 20
   logic: 12
