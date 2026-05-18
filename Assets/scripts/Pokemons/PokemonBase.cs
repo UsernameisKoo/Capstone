@@ -13,7 +13,13 @@ public class PokemonBase : ScriptableObject
     public int dexNumber; // also used to find the correct animations for front and back
 
     [Header("기본 정보")]
-    public Sprite icon;
+    [SerializeField] public Sprite icon;
+    [SerializeField] Sprite[] iconFrames;
+    [SerializeField] float iconFrameRate = 12f;
+
+    public Sprite Icon => icon;
+    public Sprite[] IconFrames => iconFrames;
+    public float IconFrameRate => iconFrameRate;
 
     [Header("전투용 스프라이트")]
     public Sprite frontSprite;   // 상대 포켓몬용 앞모습

@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: cb660b32c24593e42a957fdab0e78a0e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - targetRenderer: {instanceID: 0}
+  - pokemon: {fileID: 11400000, guid: 5e3020574af7d194f9ed8f9d3aa6338d, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

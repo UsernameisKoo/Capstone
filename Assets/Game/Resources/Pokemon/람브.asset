@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177d2a6b275cce74d93b3872cf06afef, type: 3}
+  m_Name: "\uB78C\uBE0C"
+  m_EditorClassIdentifier: 
+  pokemonName: "\uB78C\uBE0C"
+  dexNumber: 100
+  icon: {fileID: 21300000, guid: d294e1361ea6aef48a7a50f488a79e25, type: 3}
+  iconFrames:
+  - {fileID: 21300000, guid: 7cef5c1c79f08a44198baea703c05212, type: 3}
+  - {fileID: 21300000, guid: d5ec2eab63cb3324faa79a92c459ccf1, type: 3}
+  - {fileID: 21300000, guid: 9947ca24add2e5c409e7fe244facdbdf, type: 3}
+  - {fileID: 21300000, guid: 03d9d0abf912d8749ab03b7b6a7f7446, type: 3}
+  - {fileID: 21300000, guid: 091e8e5ee2b0de041a3ac00557e6a966, type: 3}
+  - {fileID: 21300000, guid: 1abab0a3d5a53bc478900b65e4b287ac, type: 3}
+  - {fileID: 21300000, guid: e5a862b93ab3b384489fd647fea4cf87, type: 3}
+  - {fileID: 21300000, guid: cf6bc8e074e544c4687beff655d4a2af, type: 3}
+  - {fileID: 21300000, guid: c4ebb9bccb6e96842bfeea24b870bfb0, type: 3}
+  - {fileID: 21300000, guid: c4ebb9bccb6e96842bfeea24b870bfb0, type: 3}
+  - {fileID: 21300000, guid: f6af49a412852784fb45abdb2f2ba5d1, type: 3}
+  - {fileID: 21300000, guid: f6af49a412852784fb45abdb2f2ba5d1, type: 3}
+  - {fileID: 21300000, guid: 9ccbbe95e0bb29d41854b98c658e0954, type: 3}
+  - {fileID: 21300000, guid: 62fa6b9d99cdf9e49a3712c0ca82b4dc, type: 3}
+  - {fileID: 21300000, guid: 2f1476d18f4cdc749930466c287a6870, type: 3}
+  - {fileID: 21300000, guid: fdd72c418bff37543866c4ca3cd0325c, type: 3}
+  - {fileID: 21300000, guid: fdd72c418bff37543866c4ca3cd0325c, type: 3}
+  - {fileID: 21300000, guid: 89f0475000b953d488978ad802816558, type: 3}
+  - {fileID: 21300000, guid: 8a2d8ab233b803440a15ab01b26bcd06, type: 3}
+  - {fileID: 21300000, guid: fab6448add5362f4c8d1a911bba91204, type: 3}
+  - {fileID: 21300000, guid: 5442f309331a7a348a073130b27c478b, type: 3}
+  - {fileID: 21300000, guid: 8d01025ead7cb824792053d61f8e2063, type: 3}
+  - {fileID: 21300000, guid: a2a8c6d9e936d1347a4de5c06868ff01, type: 3}
+  - {fileID: 21300000, guid: 279f3a9dc6a35af488a3ac4f123811a5, type: 3}
+  - {fileID: 21300000, guid: 9cc07fd0482ac5b4a9233e73ad057479, type: 3}
+  - {fileID: 21300000, guid: 49fadffdc9ca32e45af80588a13d53ec, type: 3}
+  - {fileID: 21300000, guid: b2297005f2cd74640903db3d557fe95e, type: 3}
+  - {fileID: 21300000, guid: 01f3a70514123454e8ec97986dcbc2eb, type: 3}
+  iconFrameRate: 8
+  frontSprite: {fileID: 0}
+  backSprite: {fileID: 0}
+  primaryType: 9
+  secondaryType: 12
+  hpStat: 55
+  atkStat: 47
+  defStat: 52
+  spAtkStat: 40
+  spDefStat: 40
+  spdStat: 41
+  expGroup: 3
+  catchRate: 235
+  expStat: 55
+  maleChance: 0
+  cry: {fileID: 8300000, guid: 2ca114f198a1c48488e8bf806dddafd2, type: 3}
+  levelEvolution:
+    evolution: {fileID: 0}
+    level: 0
+  itemEvolutions: []
+  learnableAbilities:
+  - {fileID: 11400000, guid: ed31c51450bda3a43b09acba758aebfb, type: 2}
+  learnableMoves:
+  - skeleton: {fileID: 11400000, guid: 2404ff190a51bde4693561c0900ea5e3, type: 2}
+    level: 0

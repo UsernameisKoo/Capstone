@@ -13,12 +13,12 @@ public class Unit : MonoBehaviour
     public Vector3 OriginalScale { get; set; }
     public Pokemon Pokemon { get; set; }
 
-    [Header("전투 위치 설정")]
-    public bool isEnemyUnit; 
-    // 체크 ON  = 상대 포켓몬, frontSprite 사용
-    // 체크 OFF = 내 포켓몬, backSprite 사용
+    Coroutine iconAnimationCoroutine;
 
-    [Header("👉 직접 사용할 스프라이트")]
+    [Header("전투 위치 설정")]
+    public bool isEnemyUnit;
+
+    [Header("직접 사용할 스프라이트")]
     public bool useCustomSprite;
     public Sprite customSprite;
 
@@ -54,7 +54,6 @@ public class Unit : MonoBehaviour
         if (audioSource != null && pokemon != null && pokemon.Skeleton != null && pokemon.Skeleton.cry != null)
             audioSource.clip = pokemon.Skeleton.cry;
 
-        // 지금은 Sprite 직접 교체 방식으로 사용하므로 Animator는 끔
         if (Animator != null)
             Animator.enabled = false;
 
@@ -66,6 +65,12 @@ public class Unit : MonoBehaviour
 
     private void ApplyBattleSprite(Pokemon pokemon)
     {
+        if (iconAnimationCoroutine != null)
+        {
+            StopCoroutine(iconAnimationCoroutine);
+            iconAnimationCoroutine = null;
+        }
+
         if (pokemon == null || pokemon.Skeleton == null)
         {
             Debug.LogWarning("Pokemon 또는 Pokemon.Skeleton이 없습니다.");
@@ -74,7 +79,6 @@ public class Unit : MonoBehaviour
 
         PokemonBase skeleton = pokemon.Skeleton;
 
-        // 1. 직접 지정한 스프라이트가 있으면 우선 사용
         if (useCustomSprite && customSprite != null)
         {
             Renderer.sprite = customSprite;
@@ -82,7 +86,6 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        // 2. 상대 포켓몬이면 frontSprite 사용
         if (isEnemyUnit && skeleton.frontSprite != null)
         {
             Renderer.sprite = skeleton.frontSprite;
@@ -90,7 +93,6 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        // 3. 내 포켓몬이면 backSprite 사용
         if (!isEnemyUnit && skeleton.backSprite != null)
         {
             Renderer.sprite = skeleton.backSprite;
@@ -98,7 +100,6 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        // 4. backSprite가 없는데 아군이면 frontSprite라도 사용
         if (!isEnemyUnit && skeleton.frontSprite != null)
         {
             Renderer.sprite = skeleton.frontSprite;
@@ -106,15 +107,39 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        // 5. frontSprite가 없는데 상대면 icon이라도 사용
-        if (skeleton.icon != null)
+        if (skeleton.IconFrames != null && skeleton.IconFrames.Length > 0)
         {
-            Renderer.sprite = skeleton.icon;
+            iconAnimationCoroutine = StartCoroutine(PlayIconFrames(skeleton));
+            Debug.LogWarning("전투용 Sprite가 없어서 IconFrames 애니메이션 사용함: " + skeleton.pokemonName);
+            return;
+        }
+
+        if (skeleton.Icon != null)
+        {
+            Renderer.sprite = skeleton.Icon;
             Debug.LogWarning("전투용 Sprite가 없어서 Icon을 대신 사용함: " + skeleton.pokemonName);
             return;
         }
 
         Debug.LogWarning("적용할 스프라이트가 없습니다: " + skeleton.pokemonName);
+    }
+
+    private IEnumerator PlayIconFrames(PokemonBase skeleton)
+    {
+        for (int frame = 0; frame < skeleton.IconFrames.Length; frame++)
+        {
+            Renderer.sprite = skeleton.IconFrames[frame];
+
+            float frameRate =
+                skeleton.IconFrameRate <= 0
+                ? 12f
+                : skeleton.IconFrameRate;
+
+            yield return new WaitForSeconds(1f / frameRate);
+        }
+
+        Renderer.sprite =
+            skeleton.IconFrames[skeleton.IconFrames.Length - 1];
     }
 
     public void PlayCry()
@@ -123,7 +148,9 @@ public class Unit : MonoBehaviour
 
         audioSource.pitch = 1f;
         audioSource.volume = 0.8f;
-        audioSource.Play();
+
+        if (audioSource.enabled && audioSource.gameObject.activeInHierarchy)
+            audioSource.Play();
     }
 
     public void PlayEnterCry()
@@ -139,8 +166,12 @@ public class Unit : MonoBehaviour
     {
         yield return new WaitForSeconds(delaySeconds);
 
-        if (audioSource != null)
+        if (audioSource != null &&
+            audioSource.enabled &&
+            audioSource.gameObject.activeInHierarchy)
+        {
             audioSource.Play();
+        }
     }
 
     public void PlayFaintCry()
@@ -149,7 +180,9 @@ public class Unit : MonoBehaviour
 
         audioSource.pitch = 0.8f;
         audioSource.volume = 0.8f;
-        audioSource.Play();
+
+        if (audioSource.enabled && audioSource.gameObject.activeInHierarchy)
+            audioSource.Play();
     }
 
     public string Name
