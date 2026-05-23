@@ -12,7 +12,7 @@ public class LaptopStorySequence : MonoBehaviour
     [SerializeField] ScreenFader screenFader;
     [SerializeField] PlayerController playerController;
     [SerializeField] LaptopInteract laptopInteract;
-    [SerializeField] RectTransform shakeTarget; // LaptopCanvas 또는 흔들 UI
+    [SerializeField] RectTransform shakeTarget;
 
     [Header("Scene")]
     [SerializeField] string nextSceneName = "School";
@@ -30,25 +30,27 @@ public class LaptopStorySequence : MonoBehaviour
     [SerializeField] float cameraShakeDuration = 3f;
     [SerializeField] float cameraShakeMagnitude = 15f;
 
-    IEnumerator ShakeCamera(Transform target, float duration, float magnitude)
-    {
-        Vector3 originalPos = target.localPosition;
-        float elapsed = 0f;
+    [Header("Earthquake Sound")]
+    [SerializeField] AudioClip earthquakeSfx;
+    [SerializeField] float earthquakeVolume = 1f;
 
-        while (elapsed < duration)
-        {
-            float x = Random.Range(-magnitude, magnitude);
-            float y = Random.Range(-magnitude, magnitude);
+    [Header("Typing Voice Sound")]
+    [SerializeField] AudioClip typingVoiceSfx;
+    [SerializeField] float typingVoiceVolume = 0.8f;
 
-            target.localPosition = originalPos + new Vector3(x, y, 0f);
+    AudioSource audioSource;
+    AudioSource voiceSource;
 
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        target.localPosition = originalPos;
-    }
     bool isPlaying = false;
+
+    void Start()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+
+        voiceSource = gameObject.AddComponent<AudioSource>();
+        voiceSource.playOnAwake = false;
+    }
 
     public bool IsPlaying()
     {
@@ -84,7 +86,6 @@ public class LaptopStorySequence : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
 
-        // 1) 문자 도착 알림
         yield return StartCoroutine(
             ShowPopupText(
                 "[람브]에게서 문자가 도착했습니다.",
@@ -93,7 +94,6 @@ public class LaptopStorySequence : MonoBehaviour
             )
         );
 
-        // 2) "문자..?"
         if (dialogueManager != null)
         {
             yield return StartCoroutine(
@@ -103,8 +103,6 @@ public class LaptopStorySequence : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        // 3) 입력되는 것처럼 텍스트
-        // 중앙(위아래) + 왼쪽 정렬 = MidlineLeft
         yield return StartCoroutine(
             TypePopupText(
                 "안녕, 강남대생!\n난 람브다!\n드디어 네가 졸업을 한다지?? 내가 이 학교에 있게 된 지도 벌써 80년...\n날 그렇게 귀여워해놓고 다들 이렇게 날 떠나간다니 참을 수 없다...!\n\n\n전투다 강남대생..!\n졸업하려면 날 이길 각오는 되어 있어야 할 거야. 그럼 기다리겠다!",
@@ -113,11 +111,8 @@ public class LaptopStorySequence : MonoBehaviour
             )
         );
 
-        // 암전 전까지 계속 보이게 잠깐 유지
         yield return new WaitForSeconds(typedMessageStayDuration);
-        Debug.Log("shakeTarget null? " + (shakeTarget == null));
-        Debug.Log("shakeTarget name: " + (shakeTarget != null ? shakeTarget.name : "null"));
-        // 4) "어... 지진??" + 화면 흔들림
+
         if (dialogueManager != null)
         {
             StartCoroutine(
@@ -125,30 +120,94 @@ public class LaptopStorySequence : MonoBehaviour
             );
         }
 
-        // 5) 흔들림
+        if (earthquakeSfx != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(earthquakeSfx, earthquakeVolume);
+        }
+
         if (cameraTarget != null)
         {
             yield return StartCoroutine(
                 ShakeCamera(cameraTarget, cameraShakeDuration, cameraShakeMagnitude)
             );
-
         }
 
-        // 5) 암전
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+
         if (screenFader != null)
         {
             yield return StartCoroutine(screenFader.FadeOut(fadeOutDuration));
         }
 
-        // 암전 끝나고 나서 텍스트 끄기
         if (messagePopupText != null)
             messagePopupText.text = "";
 
         if (messagePopupObject != null)
             messagePopupObject.SetActive(false);
 
-        // 6) 다음 씬 이동
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    void PlayLineVoiceSound()
+    {
+        if (typingVoiceSfx == null || voiceSource == null)
+            return;
+
+        if (voiceSource.isPlaying)
+            return;
+
+        int mode = Random.Range(0, 5);
+
+        voiceSource.clip = typingVoiceSfx;
+        voiceSource.volume = typingVoiceVolume;
+        voiceSource.time = 0f;
+
+        switch (mode)
+        {
+            case 0:
+                voiceSource.pitch = 1f;
+                break;
+
+            case 1:
+                voiceSource.pitch = 0.75f;
+                break;
+
+            case 2:
+                voiceSource.pitch = 1.35f;
+                break;
+
+            case 3:
+                voiceSource.pitch = 0.55f;
+                break;
+
+            case 4:
+                voiceSource.pitch = 1.6f;
+                break;
+        }
+
+        voiceSource.Play();
+    }
+
+    IEnumerator ShakeCamera(Transform target, float duration, float magnitude)
+    {
+        Vector3 originalPos = target.localPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-magnitude, magnitude);
+            float y = Random.Range(-magnitude, magnitude);
+
+            target.localPosition = originalPos + new Vector3(x, y, 0f);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        target.localPosition = originalPos;
     }
 
     IEnumerator ShowPopupText(string text, float duration, TextAlignmentOptions alignment)
@@ -174,17 +233,28 @@ public class LaptopStorySequence : MonoBehaviour
         messagePopupText.alignment = alignment;
         messagePopupText.text = "";
 
+        PlayLineVoiceSound();
+
         foreach (char c in text)
         {
             messagePopupText.text += c;
+
+            if (c == '\n')
+            {
+                PlayLineVoiceSound();
+            }
+
             yield return new WaitForSeconds(speed);
+        }
+
+        if (voiceSource != null)
+        {
+            voiceSource.Stop();
         }
     }
 
     IEnumerator ShakeUI(RectTransform target, float duration, float magnitude)
     {
-        Debug.Log("ShakeUI 시작: " + target.name);
-
         Vector2 originalPos = target.anchoredPosition;
         float elapsed = 0f;
 
@@ -195,13 +265,10 @@ public class LaptopStorySequence : MonoBehaviour
 
             target.anchoredPosition = originalPos + new Vector2(x, y);
 
-            Debug.Log("현재 흔들림 위치: " + target.anchoredPosition);
-
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         target.anchoredPosition = originalPos;
-        Debug.Log("ShakeUI 끝");
     }
 }

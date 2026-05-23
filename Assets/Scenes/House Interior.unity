@@ -2982,6 +2982,9 @@ MonoBehaviour:
   nextIcon: {fileID: 514980010}
   skipButton: {fileID: 2049901447}
   typingSpeed: 0.03
+  clickSfx: {fileID: 8300000, guid: 62923f770a04e5343a6f4a0c2e155c5a, type: 3}
+  typingSfx: {fileID: 0}
+  typingSfxInterval: 1
   daughterLookAt: {fileID: 2053330912}
   playerController: {fileID: 2053330914}
 --- !u!114 &1103725000
@@ -3694,6 +3697,9 @@ MonoBehaviour:
   nextIcon: {fileID: 1145877428}
   skipButton: {fileID: 0}
   typingSpeed: 0.05
+  clickSfx: {fileID: 0}
+  typingSfx: {fileID: 8300000, guid: c0b3d99db501e4c43b6c75b515e6f5fc, type: 3}
+  typingSfxInterval: 0.04
   daughterLookAt: {fileID: 0}
   playerController: {fileID: 0}
 --- !u!1 &1421167438
@@ -9369,6 +9375,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetScene: Town
   dialogueManager: {fileID: 1103724999}
+  blockedSfx: {fileID: 8300000, guid: 62923f770a04e5343a6f4a0c2e155c5a, type: 3}
+  doorOpenSfx: {fileID: 8300000, guid: 62923f770a04e5343a6f4a0c2e155c5a, type: 3}
 --- !u!1 &3264832965150538063
 GameObject:
   m_ObjectHideFlags: 0
@@ -12201,6 +12209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dd12d9c714f43ab9f01a8494cb7047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueOpenSfx: {fileID: 8300000, guid: 62923f770a04e5343a6f4a0c2e155c5a, type: 3}
 --- !u!33 &5655431494957935390
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -16040,6 +16049,7 @@ MonoBehaviour:
   zoomSpeed: 2
   laptopCanvas: {fileID: 1403228447}
   arrowIndicator: {fileID: 920787013}
+  openSfx: {fileID: 8300000, guid: 62923f770a04e5343a6f4a0c2e155c5a, type: 3}
 --- !u!135 &8702249410611217809
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -16086,10 +16096,14 @@ MonoBehaviour:
   typedMessageSpeed: 0.05
   typedMessageStayDuration: 1.2
   secondDialogueDuration: 3.5
-  fadeOutDuration: 0.75
+  fadeOutDuration: 0.5
   cameraTarget: {fileID: 1974960250}
-  cameraShakeDuration: 3
+  cameraShakeDuration: 4
   cameraShakeMagnitude: 15
+  earthquakeSfx: {fileID: 8300000, guid: 542ae31bc0d23c84fb38b7c38760d36a, type: 3}
+  earthquakeVolume: 1
+  typingVoiceSfx: {fileID: 8300000, guid: c0b3d99db501e4c43b6c75b515e6f5fc, type: 3}
+  typingVoiceVolume: 0.5
 --- !u!23 &8715688886542651664
 MeshRenderer:
   m_ObjectHideFlags: 0

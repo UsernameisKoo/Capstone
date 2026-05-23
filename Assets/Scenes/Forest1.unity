@@ -43932,7 +43932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a56a3b2e353374aa3e8ea0237cb826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationName: Mysterious Woods
+  locationName: "\uB78C\uBE0C\uC758 \uC232"
   locationMusic: {fileID: 1106378084}
   wildPokemonChance: 15
   weather: 4

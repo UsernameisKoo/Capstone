@@ -6,6 +6,9 @@ public class LaptopInteract : MonoBehaviour
     [SerializeField] float zoomSpeed = 2f;
     [SerializeField] GameObject laptopCanvas;
     [SerializeField] GameObject arrowIndicator;
+    [SerializeField] AudioClip openSfx;
+
+    AudioSource sfxSource;
 
     CameraController cameraController;
     bool playerNearby = false;
@@ -15,6 +18,7 @@ public class LaptopInteract : MonoBehaviour
     void Start()
     {
         cameraController = FindObjectOfType<CameraController>();
+        sfxSource = gameObject.AddComponent<AudioSource>();
         laptopCanvas.SetActive(false);
         if (arrowIndicator != null)
             arrowIndicator.SetActive(false);
@@ -93,6 +97,13 @@ public class LaptopInteract : MonoBehaviour
     void ZoomIn()
     {
         isZoomed = true;
+
+        // 효과음 재생
+        if (openSfx != null)
+        {
+            sfxSource.PlayOneShot(openSfx);
+        }
+
         laptopCanvas.SetActive(true);
 
         Cursor.visible = false;

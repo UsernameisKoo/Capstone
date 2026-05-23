@@ -14,6 +14,14 @@ public class DialogueManager : MonoBehaviour
     [Header("Typing")]
     [SerializeField] float typingSpeed = 0.05f;
 
+    [Header("Sound")]
+    [SerializeField] AudioClip clickSfx;     // 클릭/스페이스 효과음
+    [SerializeField] AudioClip typingSfx;    // 대화 타이핑 소리
+    [SerializeField] float typingSfxInterval = 0.04f;
+
+    AudioSource sfxSource;
+    float lastTypingSfxTime;
+
     [Header("Look")]
     [SerializeField] LookAtTarget daughterLookAt;
 
@@ -27,12 +35,19 @@ public class DialogueManager : MonoBehaviour
     string currentText;
     Coroutine typingCoroutine;
 
+    void Start()
+    {
+        sfxSource = gameObject.AddComponent<AudioSource>();
+    }
+
     void Update()
     {
         if (!isDialogueActive) return;
 
         if (IsNextInputPressed())
         {
+            PlayClickSfx();
+
             if (isTyping)
             {
                 StopCoroutine(typingCoroutine);
@@ -56,6 +71,23 @@ public class DialogueManager : MonoBehaviour
             || Input.GetKeyDown(KeyCode.Space)
             || Input.GetKeyDown(KeyCode.RightArrow)
             || Input.GetMouseButtonDown(0);
+    }
+
+    void PlayClickSfx()
+    {
+        if (clickSfx != null)
+            sfxSource.PlayOneShot(clickSfx);
+    }
+
+    void PlayTypingSfx()
+    {
+        if (typingSfx == null) return;
+
+        if (Time.time - lastTypingSfxTime >= typingSfxInterval)
+        {
+            sfxSource.PlayOneShot(typingSfx);
+            lastTypingSfxTime = Time.time;
+        }
     }
 
     public void StartDialogue(string[] dialogueLines)
@@ -108,6 +140,10 @@ public class DialogueManager : MonoBehaviour
         foreach (char c in text)
         {
             dialogueText.text += c;
+
+            if (c != ' ')
+                PlayTypingSfx();
+
             yield return new WaitForSeconds(typingSpeed);
         }
 
@@ -132,8 +168,10 @@ public class DialogueManager : MonoBehaviour
 
     public void SkipDialogue()
     {
-        Debug.Log("스킵 버튼 눌림");
+        PlayClickSfx();
+
         if (!isDialogueActive) return;
+
         CloseDialogue();
     }
 
@@ -156,6 +194,7 @@ public class DialogueManager : MonoBehaviour
 
         isDialogueActive = false;
         isTyping = false;
+
         dialogueBox.SetActive(false);
         nextIcon.SetActive(false);
 
@@ -169,7 +208,9 @@ public class DialogueManager : MonoBehaviour
     public IEnumerator ShowAutoDialogue(string[] dialogueLines, float duration)
     {
         StartDialogue(dialogueLines);
+
         yield return new WaitForSeconds(duration);
+
         CloseDialogue();
     }
 
@@ -213,6 +254,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(duration);
+
         dialogueText.text = "";
         CloseDialogue();
     }
