@@ -124,7 +124,7 @@ public class PlayerLogic : MonoBehaviour
         }
 
         //only run while pressing key
-        IsRunning = Input.GetKey(KeyCode.X);
+        IsRunning = Input.GetKey(KeyCode.Space);
 
         Animator.SetBool("isMoving", IsMoving);
         Animator.SetBool("isRunning", IsRunning);
