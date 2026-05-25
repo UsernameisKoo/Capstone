@@ -36,6 +36,11 @@ public class PokemonBase : ScriptableObject
     public int spDefStat;
     public int spdStat;
 
+    [Header("Battle Position Offset")]
+    public Vector2 enemyBattleOffset;
+    public Vector2 allyBattleOffset;
+    public Vector3 battleScale = Vector3.one;
+
     public ExpGroup expGroup;
     public int catchRate;
     public int expStat; // the base xp yield

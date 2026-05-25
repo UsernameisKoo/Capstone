@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pokemonName: "\uB78C\uBE0C"
   dexNumber: 100
-  icon: {fileID: 21300000, guid: d294e1361ea6aef48a7a50f488a79e25, type: 3}
+  icon: {fileID: 21300000, guid: 7cef5c1c79f08a44198baea703c05212, type: 3}
   iconFrames:
   - {fileID: 21300000, guid: 7cef5c1c79f08a44198baea703c05212, type: 3}
   - {fileID: 21300000, guid: d5ec2eab63cb3324faa79a92c459ccf1, type: 3}
@@ -45,7 +45,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b2297005f2cd74640903db3d557fe95e, type: 3}
   - {fileID: 21300000, guid: 01f3a70514123454e8ec97986dcbc2eb, type: 3}
   iconFrameRate: 8
-  frontSprite: {fileID: 0}
+  frontSprite: {fileID: 21300000, guid: 7cef5c1c79f08a44198baea703c05212, type: 3}
   backSprite: {fileID: 0}
   primaryType: 9
   secondaryType: 12
@@ -67,5 +67,9 @@ MonoBehaviour:
   learnableAbilities:
   - {fileID: 11400000, guid: ed31c51450bda3a43b09acba758aebfb, type: 2}
   learnableMoves:
-  - skeleton: {fileID: 11400000, guid: 2404ff190a51bde4693561c0900ea5e3, type: 2}
+  - skeleton: {fileID: 11400000, guid: d9e095f2a4ce01e4fae9fbf9e5ab4a34, type: 2}
+    level: 0
+  - skeleton: {fileID: 11400000, guid: e0cdc3c7c3082ae4cbc5d9048d37e456, type: 2}
+    level: 0
+  - skeleton: {fileID: 11400000, guid: eb5a008d73d9aab48879ca306f18b460, type: 2}
     level: 0

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Blizzard
   m_EditorClassIdentifier: 
-  moveName: Blizzard
-  description: Hits the foe with an icy storm that may freeze it.
+  moveName: "\uC560\uAD50\uBD80\uB9AC\uAE30"
+  description: "\u3131"
   type: 7
   category: 1
   targeting: 2
   points: 5
   accuracy: 100
-  power: 999
+  power: 30
   logic: 5

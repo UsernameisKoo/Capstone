@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177d2a6b275cce74d93b3872cf06afef, type: 3}
   m_Name: Pikachu
   m_EditorClassIdentifier: 
-  pokemonName: "\uD53C\uCE74\uCE04"
+  pokemonName: "\uB098 "
   dexNumber: 25
-  icon: {fileID: 21300000, guid: 49c91b8568126a444a67fc0493c37620, type: 3}
-  frontSprite: {fileID: 21300000, guid: bb77ebfd3ef40c040b3b73dfa2ed14f9, type: 3}
-  backSprite: {fileID: 21300000, guid: e542aca76a236824f96143d35d43fd38, type: 3}
+  icon: {fileID: -1133421101, guid: a7dae9cca8299bb48820f730d94c9731, type: 3}
+  iconFrames: []
+  iconFrameRate: 12
+  frontSprite: {fileID: -1133421101, guid: a7dae9cca8299bb48820f730d94c9731, type: 3}
+  backSprite: {fileID: -1172610170, guid: a7dae9cca8299bb48820f730d94c9731, type: 3}
   primaryType: 4
   secondaryType: 12
   hpStat: 35

@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63068473cd2589341ba5f6e2a552ab5d, type: 3}
   m_Name: Growth
   m_EditorClassIdentifier: 
-  moveName: Growth
-  description: Forces the body to grow and heightens Sp. Atk.
+  moveName: "\uC878\uC5C5\uC7A5 \uB0A0\uB9AC\uAE30 "
+  description: "\uC878\uC5C5\uC7A5\uC744 \uD798\uAECF \uB0A0\uB824 \uC0C1\uB300\uB97C
+    \uACF5\uACA9\uD55C\uB2E4. \uC77C\uC815 \uD655\uB960\uB85C \uC0C1\uB300\uB97C
+    \uB2F9\uD669\uD558\uAC8C \uB9CC\uB4E0\uB2E4."
   type: 0
   category: 2
   targeting: 1
   points: 20
   accuracy: 50
-  power: 0
+  power: 40
   logic: 10
