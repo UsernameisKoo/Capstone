@@ -4,10 +4,9 @@ using UnityEngine.UI;
 public class NPCMinimapMarker : MonoBehaviour
 {
     public Sprite markerSprite;
-
     public Camera miniMapCamera;
 
-    // 여기에 MiniMapMask 넣기
+    // MiniMapMask 넣기
     public RectTransform minimapRoot;
 
     public float markerSize = 12f;
@@ -15,13 +14,34 @@ public class NPCMinimapMarker : MonoBehaviour
     // 테두리에서 살짝 안쪽으로
     public float edgePadding = 6f;
 
+    [Header("마커 스프라이트")]
+    public Sprite normalSprite;
+    public Sprite defeatedSprite;
+
     private Image markerImage;
-    private NPC npc;
+    private Trainer trainer;
     private RectTransform markerRect;
+
+    private bool lastDefeatedState = false;
 
     private void Start()
     {
-        npc = GetComponent<NPC>();
+        // NPCMinimapMarker가 자식에 붙어 있으므로 부모에서 Trainer 찾기
+        trainer = GetComponentInParent<Trainer>();
+
+        if (trainer == null)
+        {
+            Debug.LogError("부모에서 Trainer를 찾지 못했습니다: " + gameObject.name);
+            return;
+        }
+
+        Debug.Log("미니맵 마커 연결됨: " + trainer.trainerName);
+
+        if (minimapRoot == null)
+        {
+            Debug.LogWarning("minimapRoot가 비어 있습니다.");
+            return;
+        }
 
         GameObject marker = new GameObject("MiniMapMarker");
         marker.transform.SetParent(minimapRoot, false);
@@ -31,18 +51,19 @@ public class NPCMinimapMarker : MonoBehaviour
         markerRect.anchoredPosition = Vector2.zero;
 
         markerImage = marker.AddComponent<Image>();
-        markerImage.sprite = markerSprite;
+        markerImage.sprite = normalSprite != null ? normalSprite : markerSprite;
         markerImage.raycastTarget = false;
 
-        UpdateMarkerColor();
+        UpdateMarkerVisual();
     }
 
     private void Update()
     {
-        if (miniMapCamera == null || minimapRoot == null) return;
+        if (miniMapCamera == null || minimapRoot == null || markerRect == null)
+            return;
 
         UpdateMarkerPosition();
-        UpdateMarkerColor();
+        UpdateMarkerVisual();
     }
 
     private void UpdateMarkerPosition()
@@ -72,9 +93,7 @@ public class NPCMinimapMarker : MonoBehaviour
             );
 
             if (markerPos.magnitude > radius)
-            {
                 markerPos = markerPos.normalized * radius;
-            }
         }
         else
         {
@@ -87,10 +106,35 @@ public class NPCMinimapMarker : MonoBehaviour
         markerRect.anchoredPosition = markerPos;
     }
 
-    private void UpdateMarkerColor()
+    private void UpdateMarkerVisual()
     {
-        if (npc == null || markerImage == null) return;
+        if (markerImage == null || trainer == null) return;
 
-        markerImage.color = npc.IsDefeated ? Color.blue : Color.red;
+        bool defeated = trainer.IsDefeated;
+
+        markerImage.color = defeated ? Color.blue : Color.red;
+
+        if (defeated)
+        {
+            if (defeatedSprite != null)
+                markerImage.sprite = defeatedSprite;
+        }
+        else
+        {
+            markerImage.sprite = normalSprite != null ? normalSprite : markerSprite;
+        }
+
+        if (defeated && !lastDefeatedState)
+        {
+            Debug.Log(trainer.trainerName + " 처치 완료!");
+        }
+
+        lastDefeatedState = defeated;
+    }
+
+    private void OnDestroy()
+    {
+        if (markerRect != null)
+            Destroy(markerRect.gameObject);
     }
 }
