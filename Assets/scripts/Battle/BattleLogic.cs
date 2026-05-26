@@ -516,7 +516,35 @@ public class BattleLogic
 
         if (result == Outcome.Win)
         {
-            yield return Print("승리했다!");
+            if (IsTrainerBattle)
+            {
+                var info = battleUI.BattleInfo;
+
+                // 트레이너 defeated 처리
+                info.Trainer.IsDefeated = true;
+
+
+                // 배틀 음악 정지
+                SceneInfo.StopBattleMusic();
+
+                // 승리 음악 재생
+                var singleBattle = battleUI as SingleBattle;
+                if (singleBattle != null && singleBattle.audioPlayer != null)
+                {
+                    singleBattle.audioPlayer.Stop();
+                    singleBattle.audioPlayer.clip = info.Trainer.skeleton.victoryMusic;
+                    singleBattle.audioPlayer.volume = 0.4f;
+                    singleBattle.audioPlayer.Play();
+                }
+
+                yield return Print("승리했다!");
+            }
+            else
+            {
+                SceneInfo.StopBattleMusic();
+                yield return Print("승리했다!");
+            }
+
             yield return new WaitForSeconds(1f);
             SceneInfo.ReturnToOverworld();
             yield break;

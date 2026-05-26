@@ -10,9 +10,6 @@ public enum SceneID
     Title, Initial, StarterSelection, SingleBattle, PokeCenter, Forest1, Evolution
 }
 
-/// <summary>
-/// Class used to pass information between scenes.
-/// </summary>
 public static class SceneInfo
 {
     private static BattleInfo battleInfo;
@@ -26,16 +23,17 @@ public static class SceneInfo
 
     public static bool DisplayAreaHeaderOnSpawn { get; set; }
 
+    // 추가: 다음 오버월드 진입 때 음악 자동 재생 막기
+    public static bool SuppressNextOverworldMusic { get; set; }
+
     static SceneInfo()
     {
         overworldInfo = new Dictionary<string, OverworldInfo>();
         pendingEvolutions = new List<PendingEvolution>();
         DisplayAreaHeaderOnSpawn = true;
+        SuppressNextOverworldMusic = false;
     }
 
-    /// <summary>
-    /// Begins a trainer battle, switching to the appropriate scene and storing information to later return to the overworld.
-    /// </summary>
     public static void BeginTrainerBattle(PlayerLogic playerLogic, Trainer trainer, List<Pokemon> enemies, int battleSize = 1, Weather weather = Weather.None)
     {
         Debug.Log($"[SceneInfo] BeginTrainerBattle: {trainer.trainerName}");
@@ -53,7 +51,6 @@ public static class SceneInfo
             EnemyNameColor = trainer.enemyNameColor,
             AllyLevelColor = trainer.allyLevelColor,
             EnemyLevelColor = trainer.enemyLevelColor,
-
             BattleBackground = trainer.battleBackground,
             BattleBackgroundBottom = trainer.battleBackgroundBottom
         };
@@ -61,12 +58,9 @@ public static class SceneInfo
         SetOverworldInfo(playerLogic);
         SetPlayerInfo(playerLogic);
         DisplayAreaHeaderOnSpawn = false;
-        SceneManager.LoadScene((int) SceneID.SingleBattle);
+        SceneManager.LoadScene((int)SceneID.SingleBattle);
     }
 
-    /// <summary>
-    /// Begins a wild battle, switching to the appropriate scene and storing information to later return to the overworld.
-    /// </summary>
     public static void BeginWildBattle(PlayerLogic playerLogic, Pokemon enemy, Weather weather = Weather.None)
     {
         battleInfo = new BattleInfo
@@ -81,29 +75,24 @@ public static class SceneInfo
         SetOverworldInfo(playerLogic);
         SetPlayerInfo(playerLogic);
         DisplayAreaHeaderOnSpawn = false;
-        SceneManager.LoadScene((int) SceneID.SingleBattle);
+        SceneManager.LoadScene((int)SceneID.SingleBattle);
     }
 
-    /// <summary>
-    /// Returns to the overworld after a battle or handles pending evolutions if there are any.
-    /// </summary>
     public static void ReturnToOverworldFromBattle()
     {
         StopBattleMusic();
-        SceneManager.LoadScene(pendingEvolutions.Count > 0 ? (int) SceneID.Evolution : playerInfo.Scene);
+        SceneManager.LoadScene(pendingEvolutions.Count > 0 ? (int)SceneID.Evolution : playerInfo.Scene);
     }
 
-    /// <summary>
-    /// Returns to whatever overworld the player is currently in.
-    /// </summary>
-    public static void ReturnToOverworld()
+    public static void ReturnToOverworld(bool suppressMusic = false)
     {
+        StopBattleMusic();
+
+        SuppressNextOverworldMusic = suppressMusic;
+
         SceneManager.LoadScene(playerInfo.Scene);
     }
 
-    /// <summary>
-    /// Transitions to an overworld in a different scene.
-    /// </summary>
     public static void FollowAreaExit(AreaExit exit, PlayerLogic playerLogic)
     {
         SetOverworldInfo(playerLogic);
@@ -111,12 +100,9 @@ public static class SceneInfo
         SetTargetCoordinates(exit);
         playerInfo.OverworldKey = exit.targetOverworldName;
         DisplayAreaHeaderOnSpawn = true;
-        SceneManager.LoadScene((int) exit.scene);
+        SceneManager.LoadScene((int)exit.scene);
     }
 
-    /// <summary>
-    /// Stores information about an overworld. Automatically done when starting a battle.
-    /// </summary>
     public static void SetOverworldInfo(Overworld overworld)
     {
         overworldInfo[overworld.locationName] = new OverworldInfo
@@ -271,8 +257,8 @@ public class BattleInfo
     public int BattleSize { get; set; }
     public Weather Weather { get; set; }
     public bool IsTrainerBattle { get; set; }
-    public AudioSource Music { get; set; } //unused for now
-    public Image Background { get; set; } //unused for now
+    public AudioSource Music { get; set; }
+    public Image Background { get; set; }
     public Sprite BattleBackground { get; set; }
     public Sprite BattleBackgroundBottom { get; set; }
     public bool UseCustomPokemonNameColor { get; set; }
@@ -280,7 +266,6 @@ public class BattleInfo
     public Color EnemyNameColor { get; set; }
     public Color AllyLevelColor { get; set; }
     public Color EnemyLevelColor { get; set; }
-
 }
 
 public class OverworldInfo
