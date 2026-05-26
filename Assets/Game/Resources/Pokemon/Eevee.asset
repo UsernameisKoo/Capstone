@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pokemonName: "\uC77C\uB860\uBA38\uC2A4\uD06C"
   dexNumber: 133
-  icon: {fileID: 21300000, guid: b466510f3407c3e45ba2126769c923ec, type: 3}
+  icon: {fileID: 0}
   iconFrames: []
   iconFrameRate: 12
-  frontSprite: {fileID: 21300000, guid: cb4b917cdceb3844194398ec6c37f461, type: 3}
+  frontSprite: {fileID: 0}
   backSprite: {fileID: 0}
   primaryType: 0
   secondaryType: 12
@@ -27,6 +27,9 @@ MonoBehaviour:
   spAtkStat: 45
   spDefStat: 65
   spdStat: 55
+  enemyBattleOffset: {x: 0, y: 0}
+  allyBattleOffset: {x: 0, y: 0}
+  battleScale: {x: 1, y: 1, z: 1}
   expGroup: 2
   catchRate: 45
   expStat: 65

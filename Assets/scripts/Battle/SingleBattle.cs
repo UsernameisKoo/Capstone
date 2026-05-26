@@ -52,6 +52,40 @@ public class SingleBattle : MonoBehaviour, IBattle
         if (delay) yield return new WaitForSeconds(1f);
     }
 
+    // =========================
+    // 특정 캐릭터 이름 체크
+    // =========================
+
+    private bool IsPokemonName(Pokemon pokemon, string targetName)
+    {
+        if (pokemon == null) return false;
+        if (string.IsNullOrEmpty(targetName)) return false;
+
+        string pokemonName = pokemon.Name != null ? pokemon.Name.ToLower() : "";
+        string skeletonName = "";
+
+        if (pokemon.Skeleton != null && pokemon.Skeleton.pokemonName != null)
+            skeletonName = pokemon.Skeleton.pokemonName.ToLower();
+
+        targetName = targetName.ToLower();
+
+        return pokemonName.Contains(targetName) || skeletonName.Contains(targetName);
+    }
+
+    private bool IsProfessorDirectBattlePokemon(Pokemon pokemon)
+    {
+        return IsPokemonName(pokemon, "elonmusk") ||
+               IsPokemonName(pokemon, "eevee") ||
+               IsPokemonName(pokemon, "일론머스크") ||
+               IsPokemonName(pokemon, "이브이");
+    }
+
+    private bool IsPlayerDirectBattlePokemon(Pokemon pokemon)
+    {
+        return IsPokemonName(pokemon, "pikachu") ||
+               IsPokemonName(pokemon, "피카츄");
+    }
+
     void Start()
     {
         BattleInfo = SceneInfo.GetBattleInfo();
@@ -305,9 +339,14 @@ public class SingleBattle : MonoBehaviour, IBattle
         chatbox.SetState(ChatState.ChatOnly);
         hud.ShowEnemyHUD();
         enemyUnit.PlayCry();
+
         yield return Print($"야생의 {enemyUnit.Name}이(가) 나타났다!");
 
-        yield return Print($"가라! {playerUnit.Pokemon.Name}!");
+        if (IsPlayerDirectBattlePokemon(playerUnit.Pokemon))
+            yield return Print("내가 직접 배틀에 나섰다!");
+        else
+            yield return Print($"{playerUnit.Pokemon.Name}이(가) 직접 배틀에 나섰다!");
+
         hud.ShowAllyHUD();
         playerUnit.PlayEnterCry();
         yield return anims.SwitchInPokemon(playerUnit.Pokemon);
@@ -319,15 +358,28 @@ public class SingleBattle : MonoBehaviour, IBattle
 
         yield return anims.PlayNPCIntro();
         chatbox.SetState(ChatState.ChatOnly);
-        yield return Print($"{trainer.skeleton.className} {trainer.Name}이(가) 승부를 걸어왔다!");
+
+        if (IsProfessorDirectBattlePokemon(enemyUnit.Pokemon))
+            yield return Print("일론머스크 교수님이 배틀을 걸어왔다!");
+        else
+            yield return Print($"{trainer.skeleton.className} {trainer.Name}이(가) 승부를 걸어왔다!");
+
         yield return anims.PlayNPCSlideOut();
 
-        yield return Print($"{trainer.skeleton.className} {trainer.Name}은(는) {enemyUnit.Name}을(를) 내보냈다!");
+        if (IsProfessorDirectBattlePokemon(enemyUnit.Pokemon))
+            yield return Print("일론머스크 교수님이 직접 배틀에 나섰다!");
+        else
+            yield return Print($"{enemyUnit.Name}이(가) 직접 배틀에 나섰다!");
+
         hud.ShowEnemyHUD();
         enemyUnit.PlayEnterCry();
         yield return anims.SwitchInPokemon(enemyUnit.Pokemon);
 
-        yield return Print($"가라! {playerUnit.Pokemon.Name}!");
+        if (IsPlayerDirectBattlePokemon(playerUnit.Pokemon))
+            yield return Print("내가 직접 배틀에 나섰다!");
+        else
+            yield return Print($"{playerUnit.Pokemon.Name}이(가) 직접 배틀에 나섰다!");
+
         hud.ShowAllyHUD();
         playerUnit.PlayEnterCry();
         yield return anims.SwitchInPokemon(playerUnit.Pokemon);
@@ -560,10 +612,19 @@ public class SingleBattle : MonoBehaviour, IBattle
         BattleState = BattleState.Idle;
 
         if (switchedIn.IsAlly)
-            yield return Print($"가라! {switchedIn.Name}!");
+        {
+            if (IsPlayerDirectBattlePokemon(switchedIn))
+                yield return Print("내가 직접 배틀에 나섰다!");
+            else
+                yield return Print($"{switchedIn.Name}이(가) 직접 배틀에 나섰다!");
+        }
         else
         {
-            yield return Print($"{BattleInfo.Trainer.skeleton.className} {BattleInfo.Trainer.Name}은(는) {switchedIn.Name}을(를) 내보냈다!");
+            if (IsProfessorDirectBattlePokemon(switchedIn))
+                yield return Print("일론머스크 교수님이 직접 배틀에 나섰다!");
+            else
+                yield return Print($"{switchedIn.Name}이(가) 직접 배틀에 나섰다!");
+
             hud.NotifySwitch(switchedIn);
         }
 
