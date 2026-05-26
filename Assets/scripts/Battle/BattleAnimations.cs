@@ -35,10 +35,15 @@ public class BattleAnimations : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        thrownStartingPos = thrownPokeball.transform.localPosition;
-        npcStartingPos = npcPosition.localPosition;
+        if (thrownPokeball != null)
+        {
+            thrownStartingPos = thrownPokeball.transform.localPosition;
+            thrownPokeball.enabled = false;
+        }
 
-        thrownPokeball.enabled = false;
+        if (npcPosition != null)
+            npcStartingPos = npcPosition.localPosition;
+
         pokeballs = Resources.LoadAll<Sprite>("Images/pokeballs");
     }
 

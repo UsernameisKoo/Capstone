@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177d2a6b275cce74d93b3872cf06afef, type: 3}
   m_Name: Pikachu
   m_EditorClassIdentifier: 
-  pokemonName: "\uB098 "
+  pokemonName: "\uAC15\uB0C9\uC774"
   dexNumber: 25
   icon: {fileID: -1133421101, guid: a7dae9cca8299bb48820f730d94c9731, type: 3}
   iconFrames: []
@@ -27,6 +27,9 @@ MonoBehaviour:
   spAtkStat: 50
   spDefStat: 50
   spdStat: 90
+  enemyBattleOffset: {x: 0, y: 0}
+  allyBattleOffset: {x: 0, y: 0}
+  battleScale: {x: 1, y: 1, z: 1}
   expGroup: 2
   catchRate: 190
   expStat: 112
