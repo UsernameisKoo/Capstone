@@ -52,6 +52,9 @@ public class BattleLogic
     private int orderIndex;
     private List<Pokemon> order;
 
+    // 배틀이 이미 끝났는지 확인해서 중복 처리 방지
+    private bool battleEnded;
+
     public int BattleSize { get; set; }
     public int TurnNumber { get; set; }
     public bool IsTrainerBattle { get; set; }
@@ -79,6 +82,7 @@ public class BattleLogic
         TurnNumber = 1;
         IsTrainerBattle = info.IsTrainerBattle;
         effectQueue = new List<EffectCommand>();
+        battleEnded = false;
 
         info.Allies.ForEach(pkmn => pkmn.IsAlly = true);
         info.Enemies.ForEach(pkmn => pkmn.IsAlly = false);
@@ -103,6 +107,7 @@ public class BattleLogic
 
     public IEnumerator AddEffect(EffectLogic logic, Pokemon user, Pokemon target)
     {
+        if (battleEnded) yield break;
         if (target.Health <= 0) yield break;
 
         var addedEffect = new Effect(logic);
@@ -157,6 +162,8 @@ public class BattleLogic
 
     public IEnumerator SwitchPokemonImmediate(Pokemon switchedOut, Pokemon switchedIn)
     {
+        if (battleEnded) yield break;
+
         var activeList = switchedIn.IsAlly ? ActiveAllies : ActiveEnemies;
         var partyList = switchedIn.IsAlly ? PartyAllies : PartyEnemies;
 
@@ -187,8 +194,17 @@ public class BattleLogic
 
         foreach (var user in order)
         {
+            if (battleEnded) yield break;
+
             yield return user.Ability.Functions.OnSwitchIn(user.Ability, user, battleUI);
             yield return battleUI.NotifyUpdateHealth();
+
+            var outcome = CheckVictory();
+            if (outcome != Outcome.Undecided)
+            {
+                yield return HandleBattleEndIfNeeded(outcome);
+                yield break;
+            }
         }
 
         battleUI.NotifyTurnFinished();
@@ -198,13 +214,17 @@ public class BattleLogic
                             Dictionary<Pokemon, SwitchCommand> pendingSwitches,
                             Dictionary<Pokemon, bool> usedItems)
     {
+        if (battleEnded) yield break;
+
         foreach (var user in ActivePokemons())
             user.HasActedThisTurn = false;
 
         if (Weather != Weather.None) yield return Print(WeatherToString());
 
-        if (CheckVictory() != Outcome.Undecided)
+        var outcome = CheckVictory();
+        if (outcome != Outcome.Undecided)
         {
+            yield return HandleBattleEndIfNeeded(outcome);
             battleUI.NotifyTurnFinished();
             yield break;
         }
@@ -216,6 +236,8 @@ public class BattleLogic
 
         for (var i = 0; i < order.Count; i++)
         {
+            if (battleEnded) yield break;
+
             var user = order[i];
             if (!user.WasForcedSwitch) continue;
 
@@ -224,6 +246,8 @@ public class BattleLogic
 
             for (var e = 0; e < effectQueue.Count; e++)
             {
+                if (battleEnded) yield break;
+
                 var cmd = effectQueue[e];
                 if (cmd != null && cmd.Effect.Trigger == Trigger.OnSwitchIn)
                     yield return ApplyEffect(cmd, e, user);
@@ -237,6 +261,8 @@ public class BattleLogic
 
         for (var i = 0; i < order.Count; i++)
         {
+            if (battleEnded) yield break;
+
             var user = order[i];
             var cmd = GetValue(pendingSwitches, user);
 
@@ -244,11 +270,15 @@ public class BattleLogic
             {
                 cmd.SwitchedIn.HasActedThisTurn = true;
                 yield return SwitchPokemon(cmd, order);
+
+                if (battleEnded) yield break;
             }
         }
 
-        if (CheckVictory() != Outcome.Undecided)
+        outcome = CheckVictory();
+        if (outcome != Outcome.Undecided)
         {
+            yield return HandleBattleEndIfNeeded(outcome);
             battleUI.NotifyTurnFinished();
             yield break;
         }
@@ -257,12 +287,24 @@ public class BattleLogic
 
         foreach (var user in order)
         {
+            if (battleEnded) yield break;
+
             yield return user.Ability.Functions.OnTurnBeginning(user.Ability, user, battleUI);
             yield return battleUI.NotifyUpdateHealth();
+
+            outcome = CheckVictory();
+            if (outcome != Outcome.Undecided)
+            {
+                yield return HandleBattleEndIfNeeded(outcome);
+                battleUI.NotifyTurnFinished();
+                yield break;
+            }
         }
 
         for (var i = 0; i < effectQueue.Count; i++)
         {
+            if (battleEnded) yield break;
+
             var cmd = effectQueue[i];
             if (cmd != null && cmd.Effect.Trigger == Trigger.StartOfTurn)
                 yield return ApplyEffect(cmd, i);
@@ -272,6 +314,11 @@ public class BattleLogic
 
         while (!EveryoneHasActed())
         {
+            if (battleEnded) yield break;
+
+            if (orderIndex >= order.Count)
+                break;
+
             var user = order[orderIndex];
 
             if (user.Health <= 0 || user.HasActedThisTurn)
@@ -280,8 +327,10 @@ public class BattleLogic
                 continue;
             }
 
-            if (CheckVictory() != Outcome.Undecided)
+            outcome = CheckVictory();
+            if (outcome != Outcome.Undecided)
             {
+                yield return HandleBattleEndIfNeeded(outcome);
                 battleUI.NotifyTurnFinished();
                 yield break;
             }
@@ -308,6 +357,8 @@ public class BattleLogic
                 {
                     foreach (var target in targetList)
                     {
+                        if (battleEnded) yield break;
+
                         yield return move.Functions.OnUse(move, user, target, battleUI, targetList.Count);
                         yield return battleUI.NotifyUpdateHealth();
 
@@ -343,8 +394,12 @@ public class BattleLogic
                 yield return CheckDeath();
                 yield return battleUI.NotifyUpdateHealth();
 
-                if (CheckVictory() != Outcome.Undecided)
+                if (battleEnded) yield break;
+
+                outcome = CheckVictory();
+                if (outcome != Outcome.Undecided)
                 {
+                    yield return HandleBattleEndIfNeeded(outcome);
                     battleUI.NotifyTurnFinished();
                     yield break;
                 }
@@ -355,6 +410,8 @@ public class BattleLogic
 
         for (var i = 0; i < effectQueue.Count; i++)
         {
+            if (battleEnded) yield break;
+
             var cmd = effectQueue[i];
             if (cmd == null) continue;
 
@@ -362,6 +419,8 @@ public class BattleLogic
 
             if (effect.Trigger == Trigger.EndOfTurn)
                 yield return ApplyEffect(cmd, i);
+
+            if (battleEnded) yield break;
 
             if (cmd.Target.IsAlly ? ActiveAllies.Contains(cmd.Target) : ActiveEnemies.Contains(cmd.Target))
                 effect.Turn++;
@@ -371,22 +430,104 @@ public class BattleLogic
 
         foreach (var user in order)
         {
+            if (battleEnded) yield break;
+
             if (user.Health > 0)
             {
                 yield return user.Ability.Functions.OnTurnEnding(user.Ability, user, battleUI);
                 yield return battleUI.NotifyUpdateHealth();
+
+                outcome = CheckVictory();
+                if (outcome != Outcome.Undecided)
+                {
+                    yield return HandleBattleEndIfNeeded(outcome);
+                    battleUI.NotifyTurnFinished();
+                    yield break;
+                }
+
                 user.Ability.Turn++;
             }
         }
 
         TurnNumber++;
-        CheckVictory();
+
+        outcome = CheckVictory();
+        if (outcome != Outcome.Undecided)
+        {
+            yield return HandleBattleEndIfNeeded(outcome);
+            battleUI.NotifyTurnFinished();
+            yield break;
+        }
+
         battleUI.NotifyTurnFinished();
     }
 
     private IEnumerator Print(string message, bool delay = true)
     {
         yield return battleUI.Print(message, delay);
+    }
+
+    // 람브전인지 확인
+    private bool IsLambeBattle()
+    {
+        return ActiveEnemies.Concat(PartyEnemies).Any(enemy =>
+            enemy != null &&
+            (
+                enemy.Name.Contains("람브") ||
+                enemy.Skeleton.pokemonName.Contains("람브")
+            )
+        );
+    }
+
+    // 람브전에서 아군이 쓰러졌을 때 교체창 없이 맵으로 복귀
+    private IEnumerator ReturnToMapAfterLambeDefeat()
+    {
+        if (battleEnded)
+            yield break;
+
+        battleEnded = true;
+        Outcome = Outcome.Loss;
+
+        yield return Print("람브의 힘은 아직 감당하기 어렵다...");
+        yield return Print("레벨 100이 된 뒤 다시 도전하자!");
+        yield return new WaitForSeconds(1f);
+
+        SceneInfo.ReturnToOverworld();
+    }
+
+    private IEnumerator HandleBattleEndIfNeeded(Outcome result)
+    {
+        if (battleEnded)
+            yield break;
+
+        if (result == Outcome.Undecided)
+            yield break;
+
+        battleEnded = true;
+        Outcome = result;
+
+        if (result == Outcome.Loss)
+        {
+            yield return Print("눈앞이 깜깜해졌다...");
+            yield return new WaitForSeconds(1f);
+            SceneInfo.ReturnToOverworld();
+            yield break;
+        }
+
+        if (result == Outcome.Win)
+        {
+            yield return Print("승리했다!");
+            yield return new WaitForSeconds(1f);
+            SceneInfo.ReturnToOverworld();
+            yield break;
+        }
+
+        if (result == Outcome.Escaped || result == Outcome.Caught)
+        {
+            yield return new WaitForSeconds(0.3f);
+            SceneInfo.ReturnToOverworld();
+            yield break;
+        }
     }
 
     private bool EveryoneHasActed()
@@ -425,10 +566,14 @@ public class BattleLogic
 
     private IEnumerator SwitchPokemon(SwitchCommand cmd, List<Pokemon> order)
     {
+        if (battleEnded) yield break;
+
         cmd.SwitchedOut.Ability.Functions.OnSwitchOut(cmd.SwitchedOut.Ability, cmd.SwitchedOut, battleUI);
 
         for (var i = 0; i < effectQueue.Count; i++)
         {
+            if (battleEnded) yield break;
+
             var effectCommand = effectQueue[i];
             if (effectCommand == null) continue;
 
@@ -445,6 +590,15 @@ public class BattleLogic
         }
 
         yield return CheckDeath();
+
+        if (battleEnded) yield break;
+
+        var outcome = CheckVictory();
+        if (outcome != Outcome.Undecided)
+        {
+            yield return HandleBattleEndIfNeeded(outcome);
+            yield break;
+        }
 
         var activeList = cmd.SwitchedIn.IsAlly ? ActiveAllies : ActiveEnemies;
         var partyList = cmd.SwitchedIn.IsAlly ? PartyAllies : PartyEnemies;
@@ -473,6 +627,8 @@ public class BattleLogic
 
         for (var i = 0; i < effectQueue.Count; i++)
         {
+            if (battleEnded) yield break;
+
             var effectCommand = effectQueue[i];
 
             if (effectCommand != null && effectCommand.Effect.Trigger == Trigger.OnSwitchIn)
@@ -480,6 +636,8 @@ public class BattleLogic
         }
 
         yield return CheckDeath();
+
+        if (battleEnded) yield break;
 
         battleUI.UpdateMoveTargets(cmd);
     }
@@ -531,6 +689,7 @@ public class BattleLogic
 
     private IEnumerator ApplyEffect(EffectCommand cmd, int index, Pokemon specificTarget)
     {
+        if (battleEnded) yield break;
         if (cmd == null) yield break;
 
         var target = specificTarget ?? cmd.Target;
@@ -566,6 +725,8 @@ public class BattleLogic
     {
         foreach (var user in order)
         {
+            if (battleEnded) yield break;
+
             if (user.Health <= 0 && user.Status != Status.Fainted)
             {
                 yield return battleUI.NotifyUpdateHealth();
@@ -576,8 +737,19 @@ public class BattleLogic
 
                 user.Status = Status.Fainted;
 
+                // ★ 핵심 추가:
+                // 람브전에서는 아군 포켓몬이 하나라도 쓰러지면
+                // "내보낼 포켓몬을 선택하자!"로 가지 않고 멘트 후 맵으로 복귀
+                if (user.IsAlly && IsLambeBattle())
+                {
+                    yield return ReturnToMapAfterLambeDefeat();
+                    yield break;
+                }
+
                 for (var i = 0; i < effectQueue.Count; i++)
                 {
+                    if (battleEnded) yield break;
+
                     var cmd = effectQueue[i];
 
                     if (cmd != null && cmd.User == user && cmd.Effect.Trigger == Trigger.OnDeath)
@@ -587,24 +759,43 @@ public class BattleLogic
                 yield return user.Ability.Functions.OnDeath(user.Ability, user, battleUI);
                 yield return battleUI.NotifyUpdateHealth();
 
+                var outcome = CheckVictory();
+
+                if (outcome == Outcome.Loss)
+                {
+                    yield return HandleBattleEndIfNeeded(outcome);
+                    yield break;
+                }
+
                 if (!user.IsAlly)
                 {
                     var expList = user.ExpCandidates.FindAll(pkmn => pkmn.Health > 0);
 
                     foreach (var candidate in expList)
                     {
+                        if (battleEnded) yield break;
+
                         var expReward = GetExpForKill(candidate, user, expList.Count, IsTrainerBattle);
                         yield return HandleExpGain(candidate, expReward);
                     }
                 }
 
                 order = RecalculateOrder();
+
+                outcome = CheckVictory();
+                if (outcome != Outcome.Undecided)
+                {
+                    yield return HandleBattleEndIfNeeded(outcome);
+                    yield break;
+                }
             }
         }
     }
 
     private IEnumerator HandleExpGain(Pokemon receiver, int expGained)
     {
+        if (battleEnded) yield break;
+
         receiver.Experience += expGained;
         yield return Print($"{receiver.Name}은(는) 경험치를 {expGained} 얻었다!");
 
@@ -613,6 +804,8 @@ public class BattleLogic
 
         while (targetLevel > receiver.Level)
         {
+            if (battleEnded) yield break;
+
             receiver.LevelUp();
 
             if (ActiveAllies.Contains(receiver))
@@ -643,6 +836,8 @@ public class BattleLogic
     {
         foreach (var moveSkeleton in learner.NewMovesFromLevelUp())
         {
+            if (battleEnded) yield break;
+
             Confirmation = null;
             MoveLearningSelection = null;
 

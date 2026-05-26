@@ -55,6 +55,9 @@ MonoBehaviour:
   spAtkStat: 40
   spDefStat: 40
   spdStat: 41
+  enemyBattleOffset: {x: 0, y: 0}
+  allyBattleOffset: {x: 0, y: 0}
+  battleScale: {x: 0, y: 1, z: 1}
   expGroup: 3
   catchRate: 235
   expStat: 55

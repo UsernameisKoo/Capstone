@@ -68,7 +68,7 @@ public class SpeedBoost : AbilityFunctions
     public override IEnumerator OnTurnEnding(Ability ability, Pokemon user, IBattle battle)
     {
         user.SpeedStage++;
-        yield return battle.Print($"{user.Name}'s speed rose!");
+        yield return battle.Print($"{user.Name}의 스피드가 올랐다!");
     }
 }
 
