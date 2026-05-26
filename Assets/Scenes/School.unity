@@ -2805,7 +2805,7 @@ MonoBehaviour:
   money: 1000
   pokemons:
   - speciesName: Eevee
-    level: 15
+    level: 26
   playerLogic: {fileID: 161115116}
   solidLayer:
     serializedVersion: 2
@@ -27912,6 +27912,8 @@ MonoBehaviour:
   minimapRoot: {fileID: 1533526851}
   markerSize: 30
   edgePadding: 6
+  normalSprite: {fileID: 0}
+  defeatedSprite: {fileID: 0}
 --- !u!212 &648805532
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -45618,6 +45620,8 @@ MonoBehaviour:
   minimapRoot: {fileID: 1533526851}
   markerSize: 30
   edgePadding: 6
+  normalSprite: {fileID: 0}
+  defeatedSprite: {fileID: 0}
 --- !u!212 &1150350554
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -301448,6 +301452,8 @@ MonoBehaviour:
   minimapRoot: {fileID: 1533526851}
   markerSize: 30
   edgePadding: 6
+  normalSprite: {fileID: 21300000, guid: 86caaf6a8fa62d6459c0d087736cb693, type: 3}
+  defeatedSprite: {fileID: 21300000, guid: 8244cbb0b8109b64e93d6bdcdae2b528, type: 3}
 --- !u!1 &1495980121
 GameObject:
   m_ObjectHideFlags: 0
@@ -415214,6 +415220,8 @@ MonoBehaviour:
   minimapRoot: {fileID: 1533526851}
   markerSize: 30
   edgePadding: 6
+  normalSprite: {fileID: 0}
+  defeatedSprite: {fileID: 0}
 --- !u!212 &1807394783
 SpriteRenderer:
   m_ObjectHideFlags: 0
