@@ -47,6 +47,6 @@ MonoBehaviour:
   - skeleton: {fileID: 11400000, guid: 64bb3c1765befcd4a861f188b7343072, type: 2}
     level: 1
   - skeleton: {fileID: 11400000, guid: 2404ff190a51bde4693561c0900ea5e3, type: 2}
-    level: 5
+    level: 1
   - skeleton: {fileID: 11400000, guid: 84b8dcc5cd1b7fd4db1ec2a9a40b255d, type: 2}
-    level: 5
+    level: 1
