@@ -20,5 +20,5 @@ MonoBehaviour:
   targeting: 0
   points: 25
   accuracy: 100
-  power: 60
+  power: 120
   logic: 3
