@@ -1,11 +1,10 @@
-# Pokémon Unity
+# 강남대생을 졸업시켜라!
 
 [![CircleCI](https://img.shields.io/badge/version-0.5-blue)]() 
 [![HitCount](http://hits.dwyl.com/danielsilva2017/pokemonUnity.svg)](http://hits.dwyl.com/danielsilva2017/pokemonUnity)
 
-A fully-fledged Pokémon game with a scale and complexity comparable to old school mainstream Pokémon games, built from the ground up using the [Unity Engine](https://unity.com/). It includes an entirely new story and a different take on some mechanics.
+A 2D RPG set on a university campus, built from the ground up using the Unity Engine. The game follows a graduating student who is mysteriously transported into a 2D world through an invitation on their laptop on the morning of graduation. Players explore the campus, interact with NPCs, engage in strategic battles, and ultimately confront the mysterious final boss while uncovering the truth behind the invitation.
 
-A playable demo will be available very soon.
 
 -----
 
@@ -13,17 +12,62 @@ A playable demo will be available very soon.
 
 These are **video thumbnails**. Click them to watch the actual **videos**.
 
-#### Trainer Battles
+#### Demo Video
 
-[![Trainer Battle](https://i.imgur.com/aty4nsQ.png)](https://streamable.com/i2fwls)
+[![Trainer Battle](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/demo_img.png)](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/demo.mp4)
 
-#### Wild Pokémon Encounters
+### 📌 Motivation
 
-[![Wild Pokémon Encounter](https://i.imgur.com/rnhTXD7.png)](https://streamable.com/7bpofh)
+- We apply AI-based asset generation and style harmonization techniques to improve the efficiency of indie game development.
+- Although Unity and Unreal Engine provide a wide variety of game assets, individual developers often encounter the following challenges:
+  1. Limited quality and diversity of free assets.
+  2. Inconsistent visual styles across assets from different sources.
 
-#### Overworld
+---
 
-[![Overworld](https://i.imgur.com/QqmbW1n.png)](https://streamable.com/74mxse)
+### 🔄 Proposed Asset Generation Pipeline
+
+<p align="center">
+  <img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_creation_pipeline.png" width="800">
+</p>
+
+### 🎮 Asset Generation Results
+
+<table align="center">
+<tr>
+
+<td align="center" width="50%">
+
+[<img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_baseline_img.png" width="100%">](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_base_video.mp4)
+
+**Before Asset Generation (Base)**
+
+</td>
+
+<td align="center" width="50%">
+
+[<img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_proposed_img.png" width="100%">](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_proposed_video.mp4)
+
+**After Asset Generation (Proposed)**
+
+</td>
+
+</tr>
+</table>
+
+
+### 🗺️ Main Map
+
+- **2D Main Map**
+- **00 University Map**
+  - Custom-built map based on the 00 University campus.
+- **NPCs in the Main Map**
+  - **Non-Combat NPCs**
+    - Provide game tips and guidance.
+  - **Combat NPCs**
+    - Allow players to gain battle experience and level up.
+    - 
+![2D University Map](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/map.png)
 
 -----
 
@@ -31,6 +75,7 @@ These are **video thumbnails**. Click them to watch the actual **videos**.
 
 Working towards an initial playable demo.
 
+- [x] Initial story and interactions;
 - [x] Controls, collisions and animations;
 - [x] Overworld transitions;
 - [x] AI behaviour and player detection;
@@ -40,9 +85,7 @@ Working towards an initial playable demo.
 - [x] Party screen and Pokémon switching;
 - [x] Bag and item usage;
 - [x] Learning moves;
-- [ ] Evolutions;
-- [ ] Initial story and interactions;
+- [x] Tile animations;
 - [ ] Saving/loading;
 - [ ] Trainer card;
-- [ ] Pokémon PC;
-- [ ] Tile animations;
+
