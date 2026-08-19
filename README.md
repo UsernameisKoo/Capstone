@@ -8,6 +8,10 @@ A 2D RPG set on a university campus, built from the ground up using the Unity En
 
 -----
 
+### 🏆 Award
+
+** Bronze Prize, 2026 Spring Semester Kangnam G-RISE Capstone Design Competition** 
+
 ### Game Preview
 
 These are **video thumbnails**. Click them to watch the actual **videos**.
