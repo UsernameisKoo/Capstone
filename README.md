@@ -14,7 +14,7 @@ These are **video thumbnails**. Click them to watch the actual **videos**.
 
 #### Demo Video
 
-[![Trainer Battle](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/demo_img.png)](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/demo.mp4)
+<p align="center"> <img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/demo.gif" width="800"> </p>
 
 ### 📌 Motivation
 
@@ -33,22 +33,21 @@ These are **video thumbnails**. Click them to watch the actual **videos**.
 
 ### 🎮 Asset Generation Results
 
-<table align="center">
-<tr>
+<table align="center"> <tr>
 
 <td align="center" width="50%">
 
-[<img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_baseline_img.png" width="100%">](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_base_video.mp4)
+<img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_base_video.gif" width="100%">
 
-**Before Asset Generation (Base)**
+**Before Asset Generation**
 
 </td>
 
 <td align="center" width="50%">
 
-[<img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_proposed_img.png" width="100%">](https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_proposed_video.mp4)
+<img src="https://github.com/UsernameisKoo/Capstone/blob/newversion/videos/asset_proposed_video.gif" width="100%">
 
-**After Asset Generation (Proposed)**
+**After Asset Generation**
 
 </td>
 
