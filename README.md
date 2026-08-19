@@ -1,4 +1,4 @@
-# 강남대생을 졸업시켜라!
+# Graduate_from_University!
 
 [![CircleCI](https://img.shields.io/badge/version-0.5-blue)]() 
 [![HitCount](http://hits.dwyl.com/danielsilva2017/pokemonUnity.svg)](http://hits.dwyl.com/danielsilva2017/pokemonUnity)
@@ -58,8 +58,8 @@ These are **video thumbnails**. Click them to watch the actual **videos**.
 ### 🗺️ Main Map
 
 - **2D Main Map**
-- **00 University Map**
-  - Custom-built map based on the 00 University campus.
+- **Kangnam University Map**
+  - Custom-built map based on the Kangnam University campus.
 - **NPCs in the Main Map**
   - **Non-Combat NPCs**
     - Provide game tips and guidance.
