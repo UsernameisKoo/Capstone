@@ -1,4 +1,4 @@
-# Graduate_from_University!
+# Graduate from University!
 
 [![CircleCI](https://img.shields.io/badge/version-0.5-blue)]() 
 [![HitCount](http://hits.dwyl.com/danielsilva2017/pokemonUnity.svg)](http://hits.dwyl.com/danielsilva2017/pokemonUnity)
